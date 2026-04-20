@@ -1,1 +1,1 @@
-# pru_soft_lab
+# Laboratorio pruebas de software
