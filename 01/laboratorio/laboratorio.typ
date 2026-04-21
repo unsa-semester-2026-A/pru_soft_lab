@@ -247,6 +247,8 @@
     tableTitle(weight: "bold", alignTo: center, color: white)[REFERENCIAS Y BIBLIOGRAFÍA],
   ),
   tableContents[
+    [1]#h(0.6em)A. Spillner y T. Linz, _Software Testing Foundations_, 5.ª ed. Santa Barbara, CA: Rocky Nook, 2021. \
+    [2]#h(0.6em)G. J. Myers, C. Sandler y T. Badgett, _The Art of Software Testing_, 3.ª ed. Hoboken, NJ: John Wiley & Sons, 2012.
   ]
 )
 
