@@ -26,14 +26,20 @@ El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sor
 *Proceso de depuración en VS Code* — *[Mariel y Leo]*: Se configuró `launch.json` con `args: ["14","2","7","1"]`, se colocaron breakpoints en las líneas 30, 37 y 38, y se presionó F5. El panel de variables mostró `size = 3` cuando el valor correcto es `4`.
 
 #align(center)[
-  #image("../src/img/image_dummy.webp", width: 65%)
+  #image("../src/img/exercises/solved/exe1-debug-bug.png", width: 65%)
 
-  _Figura 1 — Panel de variables del depurador mostrando `size = 3` (valor incorrecto). (Captura: Mariel)._
+  _Figura 1 — Panel de variables del depurador mostrando `size = 3` (valor incorrecto)._
 ]
 
 *Corrección aplicada.* Se reemplazó `size = len(a) - 1` por `size = len(a)`. Con la corrección, `python shell_sort.py 14 2 7 1` produce correctamente `Output:  1 2 7 14`.
 
 #util.codeBlock("src/lst/shell_sort.py", lang: "python")
+
+#align(center)[
+  #image("../src/img/exercises/solved/exe1-debug-fixed.png", width: 65%)
+
+  _Figura 2 — Panel de variables con el valor corregido `size = 4`._
+]
 
 \
 
@@ -106,7 +112,7 @@ El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sor
 #align(center)[
   #image("../src/img/image_dummy.webp", width: 80%)
 
-  _Figura 2 — Resultado de `python -m unittest triangle_test.py` (17 tests OK). (Captura: Leo)._
+  _Figura 3 — Resultado de `python -m unittest triangle_test.py` (17 tests OK). (Captura: Leo)._
 ]
 
 #table(
@@ -168,9 +174,9 @@ Se implementaron `rectangle.py` y `rectangle_test.py`. La función `calcular_are
 )
 
 #align(center)[
-  #image("../src/img/image_dummy.webp", width: 80%)
+  #image("../src/img/exercises/proposed/exe2-test-passed.png", width: 80%)
 
-  _Figura 3 — Ejecución de `python -m unittest rectangle_test.py` (9 tests OK). (Captura: Mariel)._
+  _Figura 4 — Ejecución de `python -m unittest rectangle_test.py` (9 tests OK)._
 ]
 
 \
@@ -204,7 +210,7 @@ Se implementaron `numbers.py` y `numbers_test.py`. La función `clasificar_numer
 #align(center)[
   #image("../src/img/image_dummy.webp", width: 80%)
 
-  _Figura 4 — Ejecución de `python -m unittest numbers_test.py` (7 tests OK). (Captura: Leo)._
+  _Figura 5 — Ejecución de `python -m unittest numbers_test.py` (7 tests OK). (Captura: Leo)._
 ]
 
 \
@@ -238,7 +244,7 @@ Se implementaron `atm.py` y `atm_test.py`. Las funciones `depositar` y `retirar`
 )
 
 #align(center)[
-  #image("../src/img/image_dummy.webp", width: 80%)
+  #image("../src/img/exercises/proposed/exe3-test-passed.png", width: 80%)
 
-  _Figura 5 — Ejecución de `python -m unittest atm_test.py` (9 tests OK). (Captura: Mariel)._
+  _Figura 6 — Ejecución de `python -m unittest atm_test.py` (9 tests OK)._
 ]

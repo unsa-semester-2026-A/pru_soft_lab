@@ -6,8 +6,10 @@
 #let memberList = (
   "Quispe Condori, Alvaro Raul",
   "Jara Mamani Mariel Alisson",
+  "Arce Mayhua Leonardo Ruben",
 )
 #let semCode = "A"
 #let presentationDate = datetime.today().display("[year]-[month]-[day]")
 #let presentationHour = "11:59 pm"
+
 

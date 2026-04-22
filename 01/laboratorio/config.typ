@@ -7,7 +7,7 @@
   "Quispe Condori, Alvaro Raul",
   "Jara Mamani, Mariel Alisson",
   // Completar con apellidos de Leo
-  "[Apellido Apellido], Leo Nombre",
+  "Arce Mayhua, Leonardo Ruben",
 )
 #let semCode = "VII"
 #let presentationDate = "2026-04-17"
