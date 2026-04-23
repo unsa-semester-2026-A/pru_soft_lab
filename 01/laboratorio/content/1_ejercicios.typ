@@ -3,8 +3,7 @@
 
 *Ejercicio 1.1 — Depuración: algoritmo Shell Sort* \
 
-El programa `shell_sort.py` implementa el algoritmo Shell Sort con la secuencia de incrementos de Knuth [1].
-*[Leo]* creó el proyecto `/LAB_01/` en VS Code y ejecutó el programa con los argumentos indicados en la guía, obteniendo los siguientes resultados:
+El programa `shell_sort.py` implementa el algoritmo Shell Sort con la secuencia de incrementos de Knuth [1]. Se creó el proyecto `/LAB_01/` en VS Code y ejecutó el programa con los argumentos indicados en la guía, obteniendo los siguientes resultados:
 
 #table(
   columns: (2fr, 1.5fr, 0.8fr),
@@ -23,7 +22,7 @@ El programa `shell_sort.py` implementa el algoritmo Shell Sort con la secuencia 
 
 El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sort`. Con `size = len(a) - 1`, el elemento en el último índice nunca es considerado en el ordenamiento. Por ejemplo, para la entrada `14 2 7 1`, el arreglo queda `[2, 7, 14, 1]` porque el elemento `1` en el índice 3 no es procesado.
 
-*Proceso de depuración en VS Code* — *[Mariel y Leo]*: Se configuró `launch.json` con `args: ["14","2","7","1"]`, se colocaron breakpoints en las líneas 30, 37 y 38, y se presionó F5. El panel de variables mostró `size = 3` cuando el valor correcto es `4`.
+*Proceso de depuración en VS Code*: Se configuró `launch.json` con `args: ["14","2","7","1"]`, se colocaron breakpoints en las líneas 30, 37 y 38, y se presionó F5. El panel de variables mostró `size = 3` cuando el valor correcto es `4`.
 
 #align(center)[
   #image("../src/img/exercises/solved/exe1-debug-bug.png", width: 65%)
@@ -45,7 +44,7 @@ El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sor
 
 *Ejercicio 1.2 — Pruebas: Clasificación de Triángulos [2]* \
 
-*[Leo]* creó el archivo `triangle.py` en VS Code con el código del docente.
+Se creó el archivo `triangle.py` en VS Code con el código del docente.
 
 *Paso 2 — Ingreso de valores inválidos.* Al ejecutar el código original (sin validación de lados positivos) con entradas como `(3, 0, 5)` o `(3, 4, -5)`, el programa clasifica el triángulo incorrectamente en vez de declararlo inválido. Esto evidencia un defecto: la versión original omite verificar que los lados sean positivos.
 
@@ -118,7 +117,7 @@ El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sor
 
 #util.codeBlock("src/lst/triangle.py", lang: "python")
 
-*Paso 6 — Implementación de `triangle_test.py`.* *[Leo]* creó el archivo en VS Code:
+*Paso 6 — Implementación de `triangle_test.py`.* Se creó el archivo en VS Code:
 
 #util.codeBlock("src/lst/triangle_test.py", lang: "python")
 
