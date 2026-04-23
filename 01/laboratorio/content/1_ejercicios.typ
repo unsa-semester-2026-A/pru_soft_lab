@@ -65,7 +65,10 @@ El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sor
   [7], [Tres enteros positivos donde la suma de dos lados iguala al tercero.], [Sí — (1, 2, 3)],
   [8], [Las tres permutaciones del caso 7 (a+b=c, a+c=b, b+c=a).], [Sí — (1,2,3); (1,3,2); (3,1,2)],
   [9], [Tres enteros positivos donde la suma de dos lados es menor que el tercero.], [Sí — (1, 2, 4)],
-  [10], [Las tres permutaciones del caso 9 (a+b menor que c, a+c menor que b, b+c menor que a).], [Sí — (1,2,4); (1,4,2); (4,1,2)],
+  [10],
+  [Las tres permutaciones del caso 9 (a+b menor que c, a+c menor que b, b+c menor que a).],
+  [Sí — (1,2,4); (1,4,2); (4,1,2)],
+
   [11], [Todos los lados son cero.], [Sí — (0, 0, 0)],
   [12], [Al menos un valor no entero (decimal).], [Sí — (2.5, 3.5, 5.5)],
   [13], [Número incorrecto de valores de entrada (ej. solo 2 entradas).], [Sí — (5, 5)],
@@ -78,25 +81,37 @@ El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sor
   stroke: 0.5pt,
   inset: 0.4em,
   [*Id.*], [*Descripción*], [*Datos de Entrada*], [*Resultado Esperado*],
-  [1],  [Triángulo escaleno válido],                       [(3, 4, 5)],     [El triangulo es escaleno.],
-  [2],  [Triángulo equilátero válido],                     [(7, 7, 7)],     [El triangulo es equilatero.],
-  [3],  [Triángulo isósceles válido],                      [(5, 5, 8)],     [El triangulo es isosceles.],
-  [4a], [Isósceles — permutación a=b],                     [(3, 3, 4)],     [El triangulo es isosceles.],
-  [4b], [Isósceles — permutación a=c],                     [(3, 4, 3)],     [El triangulo es isosceles.],
-  [4c], [Isósceles — permutación b=c],                     [(4, 3, 3)],     [El triangulo es isosceles.],
-  [5],  [Un lado con valor cero],                          [(3, 0, 5)],     [Triangulo invalido: lados deben ser positivos.],
-  [6],  [Un lado con valor negativo],                      [(3, 4, -5)],    [Triangulo invalido: lados deben ser positivos.],
-  [7],  [Suma de dos lados igual al tercero],              [(1, 2, 3)],     [Triangulo invalido: no cumple desigualdad triangular.],
-  [8a], [Suma igual — permutación a+b=c],                  [(1, 2, 3)],     [Triangulo invalido: no cumple desigualdad triangular.],
-  [8b], [Suma igual — permutación a+c=b],                  [(1, 3, 2)],     [Triangulo invalido: no cumple desigualdad triangular.],
-  [8c], [Suma igual — permutación b+c=a],                  [(3, 1, 2)],     [Triangulo invalido: no cumple desigualdad triangular.],
-  [9],  [Suma de dos lados menor que el tercero],          [(1, 2, 4)],     [Triangulo invalido: no cumple desigualdad triangular.],
-  [10a],[Suma menor — permutación a+b menor que c],        [(1, 2, 4)],     [Triangulo invalido: no cumple desigualdad triangular.],
-  [10b],[Suma menor — permutación a+c menor que b],        [(1, 4, 2)],     [Triangulo invalido: no cumple desigualdad triangular.],
-  [10c],[Suma menor — permutación b+c menor que a],        [(4, 1, 2)],     [Triangulo invalido: no cumple desigualdad triangular.],
-  [11], [Todos los lados son cero],                        [(0, 0, 0)],     [Triangulo invalido: lados deben ser positivos.],
-  [12], [Valores no enteros],                              [(2.5, 3.5, 5.5)],[Error: ingrese solo numeros enteros.],
-  [13], [Número incorrecto de entradas (solo 2)],          [(5, 5)],        [El programa espera la tercera entrada (bloquea).],
+  [1], [Triángulo escaleno válido], [(3, 4, 5)], [El triangulo es escaleno.],
+  [2], [Triángulo equilátero válido], [(7, 7, 7)], [El triangulo es equilatero.],
+  [3], [Triángulo isósceles válido], [(5, 5, 8)], [El triangulo es isosceles.],
+  [4a], [Isósceles — permutación a=b], [(3, 3, 4)], [El triangulo es isosceles.],
+  [4b], [Isósceles — permutación a=c], [(3, 4, 3)], [El triangulo es isosceles.],
+  [4c], [Isósceles — permutación b=c], [(4, 3, 3)], [El triangulo es isosceles.],
+  [5], [Un lado con valor cero], [(3, 0, 5)], [Triangulo invalido: lados deben ser positivos.],
+  [6], [Un lado con valor negativo], [(3, 4, -5)], [Triangulo invalido: lados deben ser positivos.],
+  [7], [Suma de dos lados igual al tercero], [(1, 2, 3)], [Triangulo invalido: no cumple desigualdad triangular.],
+  [8a], [Suma igual — permutación a+b=c], [(1, 2, 3)], [Triangulo invalido: no cumple desigualdad triangular.],
+  [8b], [Suma igual — permutación a+c=b], [(1, 3, 2)], [Triangulo invalido: no cumple desigualdad triangular.],
+  [8c], [Suma igual — permutación b+c=a], [(3, 1, 2)], [Triangulo invalido: no cumple desigualdad triangular.],
+  [9], [Suma de dos lados menor que el tercero], [(1, 2, 4)], [Triangulo invalido: no cumple desigualdad triangular.],
+  [10a],
+  [Suma menor — permutación a+b menor que c],
+  [(1, 2, 4)],
+  [Triangulo invalido: no cumple desigualdad triangular.],
+
+  [10b],
+  [Suma menor — permutación a+c menor que b],
+  [(1, 4, 2)],
+  [Triangulo invalido: no cumple desigualdad triangular.],
+
+  [10c],
+  [Suma menor — permutación b+c menor que a],
+  [(4, 1, 2)],
+  [Triangulo invalido: no cumple desigualdad triangular.],
+
+  [11], [Todos los lados son cero], [(0, 0, 0)], [Triangulo invalido: lados deben ser positivos.],
+  [12], [Valores no enteros], [(2.5, 3.5, 5.5)], [Error: ingrese solo numeros enteros.],
+  [13], [Número incorrecto de entradas (solo 2)], [(5, 5)], [El programa espera la tercera entrada (bloquea).],
 )
 
 *Paso 5 — Defecto identificado en el código original.* La versión inicial de `triangle.py` (guía, p. 8) no valida que los lados sean positivos. La versión corregida agrega la condición `if lado1 <= 0 or lado2 <= 0 or lado3 <= 0` antes de la desigualdad triangular. El código final utilizado es:
@@ -110,9 +125,9 @@ El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sor
 *Paso 7 — Validación de casos de prueba.*
 
 #align(center)[
-  #image("../src/img/image_dummy.webp", width: 80%)
+  #image("../src/img/exercises/solved/exe2-test-passed.png", width: 80%)
 
-  _Figura 3 — Resultado de `python -m unittest triangle_test.py` (17 tests OK). (Captura: Leo)._
+  _Figura 3 — Resultado de `python -m unittest triangle_test.py` (17 tests OK)._
 ]
 
 #table(
@@ -120,23 +135,23 @@ El valor `size` delimita el bucle `for i in range(h, size)` dentro de `shell_sor
   stroke: 0.5pt,
   inset: 0.4em,
   [*Id.*], [*Descripción*], [*Entrada*], [*Resultado real*], [*Estado*],
-  [1],     [Escaleno válido],       [(3,4,5)],       [El triangulo es escaleno.],       [Pasa],
-  [2],     [Equilátero válido],     [(7,7,7)],       [El triangulo es equilatero.],     [Pasa],
-  [3],     [Isósceles válido],      [(5,5,8)],       [El triangulo es isosceles.],      [Pasa],
-  [4a],    [Isósceles a=b],         [(3,3,4)],       [El triangulo es isosceles.],      [Pasa],
-  [4b],    [Isósceles a=c],         [(3,4,3)],       [El triangulo es isosceles.],      [Pasa],
-  [4c],    [Isósceles b=c],         [(4,3,3)],       [El triangulo es isosceles.],      [Pasa],
-  [5],     [Lado cero],             [(3,0,5)],       [Invalido: lados positivos.],      [Pasa],
-  [6],     [Lado negativo],         [(3,4,-5)],      [Invalido: lados positivos.],      [Pasa],
-  [7/8a],  [Suma=tercero (perm. 1)],[(1,2,3)],       [Invalido: desigualdad.],          [Pasa],
-  [8b],    [Suma=tercero (perm. 2)],[(1,3,2)],       [Invalido: desigualdad.],          [Pasa],
-  [8c],    [Suma=tercero (perm. 3)],[(3,1,2)],       [Invalido: desigualdad.],          [Pasa],
-  [9/10a], [Suma menor que tercero (perm. 1)],[(1,2,4)],       [Invalido: desigualdad.],          [Pasa],
-  [10b],   [Suma menor que tercero (perm. 2)],[(1,4,2)],       [Invalido: desigualdad.],          [Pasa],
-  [10c],   [Suma menor que tercero (perm. 3)],[(4,1,2)],       [Invalido: desigualdad.],          [Pasa],
-  [11],    [Todos cero],            [(0,0,0)],       [Invalido: lados positivos.],      [Pasa],
-  [12],    [No enteros],            [(2.5,3.5,5.5)], [ValueError → mensaje de error.],  [Pasa],
-  [13],    [Solo 2 entradas],       [(5,5)],         [Bloquea esperando Lado 3.],       [N/A],
+  [1], [Escaleno válido], [(3,4,5)], [El triangulo es escaleno.], [Pasa],
+  [2], [Equilátero válido], [(7,7,7)], [El triangulo es equilatero.], [Pasa],
+  [3], [Isósceles válido], [(5,5,8)], [El triangulo es isosceles.], [Pasa],
+  [4a], [Isósceles a=b], [(3,3,4)], [El triangulo es isosceles.], [Pasa],
+  [4b], [Isósceles a=c], [(3,4,3)], [El triangulo es isosceles.], [Pasa],
+  [4c], [Isósceles b=c], [(4,3,3)], [El triangulo es isosceles.], [Pasa],
+  [5], [Lado cero], [(3,0,5)], [Invalido: lados positivos.], [Pasa],
+  [6], [Lado negativo], [(3,4,-5)], [Invalido: lados positivos.], [Pasa],
+  [7/8a], [Suma=tercero (perm. 1)], [(1,2,3)], [Invalido: desigualdad.], [Pasa],
+  [8b], [Suma=tercero (perm. 2)], [(1,3,2)], [Invalido: desigualdad.], [Pasa],
+  [8c], [Suma=tercero (perm. 3)], [(3,1,2)], [Invalido: desigualdad.], [Pasa],
+  [9/10a], [Suma menor que tercero (perm. 1)], [(1,2,4)], [Invalido: desigualdad.], [Pasa],
+  [10b], [Suma menor que tercero (perm. 2)], [(1,4,2)], [Invalido: desigualdad.], [Pasa],
+  [10c], [Suma menor que tercero (perm. 3)], [(4,1,2)], [Invalido: desigualdad.], [Pasa],
+  [11], [Todos cero], [(0,0,0)], [Invalido: lados positivos.], [Pasa],
+  [12], [No enteros], [(2.5,3.5,5.5)], [ValueError → mensaje de error.], [Pasa],
+  [13], [Solo 2 entradas], [(5,5)], [Bloquea esperando Lado 3.], [N/A],
 )
 
 *El programa no presenta errores* en los 16 casos automatizables (casos 1–12). El caso 13 no es verificable con `unittest` estándar porque requiere interacción interactiva de E/S.
@@ -162,19 +177,19 @@ Se implementaron `rectangle.py` y `rectangle_test.py`. La función `calcular_are
   stroke: 0.5pt,
   inset: 0.4em,
   [*Id.*], [*Descripción*], [*Entrada (base, altura)*], [*Resultado Esperado*], [*Estado*],
-  [1], [Enteros positivos],        [(3, 4)],     [12],      [Pasa],
-  [2], [Decimales positivos],      [(2.5, 3.5)], [8.75],    [Pasa],
-  [3], [Base igual a 1],           [(1, 7)],     [7],       [Pasa],
-  [4], [Altura igual a 1],         [(5, 1)],     [5],       [Pasa],
-  [5], [Base igual a cero],        [(0, 5)],     [0],       [Pasa],
-  [6], [Altura igual a cero],      [(5, 0)],     [0],       [Pasa],
-  [7], [Ambos iguales a cero],     [(0, 0)],     [0],       [Pasa],
-  [8], [Decimal con precisión],    [(1.5, 2.0)], [3.0],     [Pasa],
-  [9], [Enteros grandes],          [(100, 200)], [20 000],  [Pasa],
+  [1], [Enteros positivos], [(3, 4)], [12], [Pasa],
+  [2], [Decimales positivos], [(2.5, 3.5)], [8.75], [Pasa],
+  [3], [Base igual a 1], [(1, 7)], [7], [Pasa],
+  [4], [Altura igual a 1], [(5, 1)], [5], [Pasa],
+  [5], [Base igual a cero], [(0, 5)], [0], [Pasa],
+  [6], [Altura igual a cero], [(5, 0)], [0], [Pasa],
+  [7], [Ambos iguales a cero], [(0, 0)], [0], [Pasa],
+  [8], [Decimal con precisión], [(1.5, 2.0)], [3.0], [Pasa],
+  [9], [Enteros grandes], [(100, 200)], [20 000], [Pasa],
 )
 
 #align(center)[
-  #image("../src/img/exercises/proposed/exe2-test-passed.png", width: 80%)
+  #image("../src/img/exercises/proposed/exe1-test-passed.png", width: 80%)
 
   _Figura 4 — Ejecución de `python -m unittest rectangle_test.py` (9 tests OK)._
 ]
@@ -198,19 +213,19 @@ Se implementaron `numbers.py` y `numbers_test.py`. La función `clasificar_numer
   stroke: 0.5pt,
   inset: 0.4em,
   [*Id.*], [*Descripción*], [*Entrada*], [*Resultado Esperado*], [*Estado*],
-  [1], [Par positivo típico],     [4],  [par],   [Pasa],
-  [2], [Impar positivo típico],   [7],  [impar], [Pasa],
-  [3], [Cero (frontera)],         [0],  [par],   [Pasa],
-  [4], [Negativo par],            [-4], [par],   [Pasa],
-  [5], [Negativo impar],          [-3], [impar], [Pasa],
-  [6], [Menor par positivo (2)],  [2],  [par],   [Pasa],
-  [7], [Menor impar positivo (1)],[1],  [impar], [Pasa],
+  [1], [Par positivo típico], [4], [par], [Pasa],
+  [2], [Impar positivo típico], [7], [impar], [Pasa],
+  [3], [Cero (frontera)], [0], [par], [Pasa],
+  [4], [Negativo par], [-4], [par], [Pasa],
+  [5], [Negativo impar], [-3], [impar], [Pasa],
+  [6], [Menor par positivo (2)], [2], [par], [Pasa],
+  [7], [Menor impar positivo (1)], [1], [impar], [Pasa],
 )
 
 #align(center)[
-  #image("../src/img/image_dummy.webp", width: 80%)
+  #image("../src/img/exercises/proposed/exe2-test-passed.png", width: 80%)
 
-  _Figura 5 — Ejecución de `python -m unittest numbers_test.py` (7 tests OK). (Captura: Leo)._
+  _Figura 5 — Ejecución de `python -m unittest numbers_test.py` (7 tests OK)._
 ]
 
 \
@@ -232,15 +247,15 @@ Se implementaron `atm.py` y `atm_test.py`. Las funciones `depositar` y `retirar`
   stroke: 0.5pt,
   inset: 0.4em,
   [*Id.*], [*Descripción*], [*Parámetros*], [*Resultado Esperado*], [*Estado*],
-  [1], [Consultar saldo inicial],        [saldo=1000],             [1000.0],       [Pasa],
-  [2], [Depósito válido],                [saldo=1000, dep=200],    [1200.0],       [Pasa],
-  [3], [Depósito monto cero],            [dep=0],                  [ValueError],   [Pasa],
-  [4], [Depósito monto negativo],        [dep=-100],               [ValueError],   [Pasa],
-  [5], [Retiro válido],                  [saldo=1000, ret=300],    [700.0],        [Pasa],
-  [6], [Retiro saldo exacto],            [saldo=1000, ret=1000],   [0.0],          [Pasa],
-  [7], [Retiro que excede saldo],        [saldo=1000, ret=1500],   [ValueError],   [Pasa],
-  [8], [Retiro monto cero],              [ret=0],                  [ValueError],   [Pasa],
-  [9], [Retiro monto negativo],          [ret=-50],                [ValueError],   [Pasa],
+  [1], [Consultar saldo inicial], [saldo=1000], [1000.0], [Pasa],
+  [2], [Depósito válido], [saldo=1000, dep=200], [1200.0], [Pasa],
+  [3], [Depósito monto cero], [dep=0], [ValueError], [Pasa],
+  [4], [Depósito monto negativo], [dep=-100], [ValueError], [Pasa],
+  [5], [Retiro válido], [saldo=1000, ret=300], [700.0], [Pasa],
+  [6], [Retiro saldo exacto], [saldo=1000, ret=1000], [0.0], [Pasa],
+  [7], [Retiro que excede saldo], [saldo=1000, ret=1500], [ValueError], [Pasa],
+  [8], [Retiro monto cero], [ret=0], [ValueError], [Pasa],
+  [9], [Retiro monto negativo], [ret=-50], [ValueError], [Pasa],
 )
 
 #align(center)[
