@@ -175,16 +175,18 @@ Se implementaron `rectangle.py` y `rectangle_test.py`. La función `calcular_are
   columns: (0.35fr, 1.7fr, 0.9fr, 1.3fr, 0.55fr),
   stroke: 0.5pt,
   inset: 0.4em,
-  [*Id.*], [*Descripción*], [*Entrada (base, altura)*], [*Resultado Esperado*], [*Estado*],
-  [1], [Enteros positivos], [(3, 4)], [12], [Pasa],
-  [2], [Decimales positivos], [(2.5, 3.5)], [8.75], [Pasa],
-  [3], [Base igual a 1], [(1, 7)], [7], [Pasa],
-  [4], [Altura igual a 1], [(5, 1)], [5], [Pasa],
-  [5], [Base igual a cero], [(0, 5)], [0], [Pasa],
-  [6], [Altura igual a cero], [(5, 0)], [0], [Pasa],
-  [7], [Ambos iguales a cero], [(0, 0)], [0], [Pasa],
-  [8], [Decimal con precisión], [(1.5, 2.0)], [3.0], [Pasa],
-  [9], [Enteros grandes], [(100, 200)], [20 000], [Pasa],
+  [*Id.*], [*Descripción (Partición)*], [*Entrada (b, a)*], [*Resultado Esperado*], [*Estado*],
+  [1], [Enteros positivos ($a>0, b>0$)], [(3, 4)], [12], [Pasa],
+  [2], [Decimales positivos ($a>0, b>0$)], [(2.5, 3.5)], [8.75], [Pasa],
+  [3], [Límite inferior exacto ($a=0$)], [(0, 5.5)], [0], [Pasa],
+  [4], [Límite inferior exacto ($b=0$)], [(5.5, 0)], [0], [Pasa],
+  [5], [Identidad multiplicativa ($a=1$)], [(1, 7.5)], [7.5], [Pasa],
+  [6], [Límite precisión flotante alta], [(`max_float`, 1)], [`max_float`], [Pasa],
+  [7], [Inválido: Base negativa ($a<0$)], [(-3, 4)], [`ValueError`], [Pasa],
+  [8], [Inválido: Altura negativa ($b<0$)], [(3, -4)], [`ValueError`], [Pasa],
+  [9], [Inválido: Ambos negativos], [(-3, -4)], [`ValueError`], [Pasa],
+  [10], [Inválido: Tipo String], [("3", 4)], [`TypeError`], [Pasa],
+  [11], [Inválido: Tipo None/Null], [(None, 5)], [`TypeError`], [Pasa]
 )
 
 #align(center)[
@@ -208,17 +210,22 @@ Se implementaron `numbers.py` y `numbers_test.py`. La función `clasificar_numer
 *Casos de prueba diseñados:*
 
 #table(
-  columns: (0.35fr, 1.8fr, 0.7fr, 1fr, 0.55fr),
+  columns: (0.35fr, 2.0fr, 0.9fr, 1.0fr, 0.55fr),
   stroke: 0.5pt,
   inset: 0.4em,
-  [*Id.*], [*Descripción*], [*Entrada*], [*Resultado Esperado*], [*Estado*],
-  [1], [Par positivo típico], [4], [par], [Pasa],
-  [2], [Impar positivo típico], [7], [impar], [Pasa],
-  [3], [Cero (frontera)], [0], [par], [Pasa],
-  [4], [Negativo par], [-4], [par], [Pasa],
-  [5], [Negativo impar], [-3], [impar], [Pasa],
-  [6], [Menor par positivo (2)], [2], [par], [Pasa],
-  [7], [Menor impar positivo (1)], [1], [impar], [Pasa],
+  [*Id.*], [*Descripción (Partición)*], [*Entrada ($n$)*], [*Resultado Esperado*], [*Estado*],
+  [1], [Par positivo típico], [4], [`"par"`], [Pasa],
+  [2], [Impar positivo típico], [7], [`"impar"`], [Pasa],
+  [3], [Cero (Límite central)], [0], [`"par"`], [Pasa],
+  [4], [Negativo par], [-4], [`"par"`], [Pasa],
+  [5], [Negativo impar], [-3], [`"impar"`], [Pasa],
+  [6], [Menor par positivo], [2], [`"par"`], [Pasa],
+  [7], [Menor impar positivo], [1], [`"impar"`], [Pasa],
+  [8], [Límites enteros extremos], [`sys.maxsize`], [`"impar"`], [Pasa],
+  [9], [Inválido: Flotante], [2.5], [`TypeError`], [Pasa],
+  [10], [Inválido: String], [`"4"`], [`TypeError`], [Pasa],
+  [11], [Inválido: Booleano], [`True`], [`TypeError`], [Pasa],
+  [12], [Inválido: None/Null], [`None`], [`TypeError`], [Pasa],
 )
 
 #align(center)[
@@ -242,19 +249,23 @@ Se implementaron `atm.py` y `atm_test.py`. Las funciones `depositar` y `retirar`
 *Casos de prueba diseñados:*
 
 #table(
-  columns: (0.35fr, 2fr, 1fr, 1.5fr, 0.55fr),
+  columns: (0.35fr, 2.2fr, 1.3fr, 1.2fr, 0.55fr),
   stroke: 0.5pt,
   inset: 0.4em,
-  [*Id.*], [*Descripción*], [*Parámetros*], [*Resultado Esperado*], [*Estado*],
-  [1], [Consultar saldo inicial], [saldo=1000], [1000.0], [Pasa],
-  [2], [Depósito válido], [saldo=1000, dep=200], [1200.0], [Pasa],
-  [3], [Depósito monto cero], [dep=0], [ValueError], [Pasa],
-  [4], [Depósito monto negativo], [dep=-100], [ValueError], [Pasa],
-  [5], [Retiro válido], [saldo=1000, ret=300], [700.0], [Pasa],
-  [6], [Retiro saldo exacto], [saldo=1000, ret=1000], [0.0], [Pasa],
-  [7], [Retiro que excede saldo], [saldo=1000, ret=1500], [ValueError], [Pasa],
-  [8], [Retiro monto cero], [ret=0], [ValueError], [Pasa],
-  [9], [Retiro monto negativo], [ret=-50], [ValueError], [Pasa],
+  [*Id.*], [*Descripción (Partición)*], [*Parámetros*], [*Resultado Esperado*], [*Estado*],
+  [1], [Consultar saldo válido], [`saldo=1000`], [`1000.0`], [Pasa],
+  [2], [Consultar saldo inválido (Tipo)], [`saldo="1000"`], [`TypeError`], [Pasa],
+  [3], [Depósito válido (`monto > 0`)], [`saldo=1000, dep=200`], [`1200.0`], [Pasa],
+  [4], [Depósito inválido (Límite cero)], [`dep=0`], [`ValueError`], [Pasa],
+  [5], [Depósito inválido (`monto < 0`)], [`dep=-100`], [`ValueError`], [Pasa],
+  [6], [Depósito inválido (Tipo String)], [`dep="200"`], [`TypeError`], [Pasa],
+  [7], [Depósito inválido (Tipo None)], [`dep=None`], [`TypeError`], [Pasa],
+  [8], [Retiro válido (`0 < monto < saldo`)], [`saldo=1000, ret=300`], [`700.0`], [Pasa],
+  [9], [Retiro límite exacto (`monto == saldo`)], [`saldo=1000, ret=1000`], [`0.0`], [Pasa],
+  [10], [Retiro inválido (`monto > saldo`)], [`saldo=1000, ret=1500`], [`ValueError`], [Pasa],
+  [11], [Retiro inválido (Límite cero)], [`ret=0`], [`ValueError`], [Pasa],
+  [12], [Retiro inválido (`monto < 0`)], [`ret=-50`], [`ValueError`], [Pasa],
+  [13], [Retiro inválido (Tipo String)], [`ret="50"`], [`TypeError`], [Pasa],
 )
 
 #align(center)[
