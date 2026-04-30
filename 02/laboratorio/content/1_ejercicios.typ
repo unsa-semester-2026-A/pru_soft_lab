@@ -70,9 +70,15 @@ Entonces debe lanzar una excepción TypeError
 
 #v(1em)
 
-*FASE 2 — Diseño: Clases de Equivalencia y Valores Límite*
+*FASE 2 — Diseño de Pruebas: Clases de Equivalencia y Valores Límite*
 
-*Tabla de Clases de Equivalencia*
+En esta fase se identificaron los diferentes tipos de entradas válidas e inválidas para la función `evaluar_rendimiento(nota)`. Primero se definieron las clases de equivalencia, luego los valores límite y finalmente se verificó que todos los criterios estuvieran cubiertos mediante casos de prueba.
+
+#v(0.5em)
+
+*Paso 1 — Identificación de Clases de Equivalencia.*
+
+Las clases de equivalencia permiten agrupar entradas que producen el mismo comportamiento esperado dentro del sistema, reduciendo la cantidad de pruebas necesarias sin perder cobertura funcional.
 
 #table(
   columns: (0.7fr, 0.8fr, 1fr, 1.5fr),
@@ -93,7 +99,9 @@ Entonces debe lanzar una excepción TypeError
 
 #v(1em)
 
-*Tabla de Valores Límite*
+*Paso 2 — Análisis de Valores Límite.*
+
+Se evaluaron los valores extremos de cada rango, ya que son los puntos donde normalmente ocurren errores de validación.
 
 #table(
   columns: (0.7fr, 1fr, 1.5fr),
@@ -114,7 +122,9 @@ Entonces debe lanzar una excepción TypeError
 
 #v(1em)
 
-*Paso 3 — Respuesta a los criterios de prueba.*
+*Paso 3 — Verificación de Cobertura de Criterios de Prueba.*
+
+En este paso se comprobó que todas las clases de equivalencia y valores límite definidos anteriormente estuvieran representados mediante al menos un caso de prueba. Esto garantiza que el diseño de pruebas cubra correctamente los escenarios válidos, inválidos y los límites críticos del sistema.
 
 #table(
   columns: (0.35fr, 2.4fr, 0.9fr),
@@ -144,6 +154,8 @@ Entonces debe lanzar una excepción TypeError
 
 *Paso 4 — Diseño de Casos de Prueba.*
 
+Finalmente, se definieron los casos de prueba concretos que serán implementados posteriormente durante la fase TDD para validar el comportamiento del sistema.
+
 #table(
   columns: (0.35fr, 2fr, 0.8fr, 1.8fr),
   stroke: 0.5pt,
@@ -167,9 +179,6 @@ Entonces debe lanzar una excepción TypeError
   [14], [Valor vacío], [(None)], [TypeError],
   [15], [Cadena numérica], [("18")], [TypeError],
 )
-
-#v(1em)
-
 *FASE 3 — TDD (RED)*
 
 Se creó el archivo `test_evaluador.py` antes de implementar la lógica principal.
