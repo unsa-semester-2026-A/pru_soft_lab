@@ -28,6 +28,9 @@ El sistema debe lanzar excepciones en los siguientes casos:
 
 *FASE 1 — BDD (Behavior Driven Development)*
 
+*Escenario Gherkin:*
+#util.codeBlock("src/lst/ejercicio3/evaluador.feature", lang: "gherkin")
+
 *Escenario 1 — Nota insuficiente*
 
 ```text

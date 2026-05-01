@@ -1,8 +1,42 @@
 #set par(justify: true)
 #set enum(numbering: "1.")
 
-+ La depuración y las pruebas de software son actividades complementarias pero conceptualmente distintas: la depuración localiza y corrige la causa raíz de un defecto _conocido_, mientras que las pruebas revelan la _existencia_ de defectos mediante ejecución controlada [1]. La práctica del Ejercicio 1.1 demostró que el uso de breakpoints en VS Code permite aislar rápidamente errores de lógica —como la instrucción `size = len(a) - 1` en Shell Sort— que pasarían inadvertidos con revisión de código estática para entradas que casualmente producen un resultado correcto.
++ **TDD como disciplina de diseño, no solo de verificación.** El ciclo Red-Green-Refactor no es únicamente una técnica de detección de errores; es ante todo una disciplina de diseño que fuerza a comprender los requisitos antes de escribir código. El ejemplo del validador de contraseñas y el módulo de descuentos ilustra cómo el código mínimo del paso *Green* puede ser deliberadamente incorrecto (orden erróneo de condicionales), y cómo es la propia prueba la que lo descubre, no la revisión manual.
 
-+ El diseño sistemático de casos de prueba siguiendo los criterios de Myers [2] —triángulos válidos, condiciones de invalidez, valores límite y permutaciones— resultó significativamente más efectivo que la ejecución aleatoria. El conjunto de 17 casos del Ejercicio 1.2 cubre exhaustivamente las particiones de equivalencia del problema de clasificación, evidenciando que el código mejorado supera las limitaciones de la versión original al incorporar la validación de lados positivos. El análisis también confirmó que los casos de prueba 7 y 8a son redundantes (misma entrada), lo cual es una señal de un diseño de pruebas que puede optimizarse.
++ **BDD como puente entre negocio y tecnología.** Los escenarios Gherkin (*Dado / Cuando / Entonces*) convierten los requisitos en artefactos ejecutables que cualquier miembro del equipo puede leer y validar. Esto reduce la ambigüedad en la interpretación de los requisitos y produce documentación viva que se mantiene sincronizada con el código.
 
-+ La separación de la lógica de negocio de la interacción con el usuario —implementar funciones puras (`calcular_area`, `clasificar_numero`, `depositar`, `retirar`) independientes del `main`— facilitó la escritura de pruebas unitarias automatizadas con `unittest` en los tres ejercicios propuestos. Las pruebas automatizadas son reproducibles y detectan regresiones de forma inmediata, lo que respalda el principio de que probar temprano y con frecuencia reduce el costo acumulado de los defectos en el software [1].
++ **La selección sistemática de casos de prueba es superior al azar.** Aplicar particiones de equivalencia y análisis de valor límite permite construir suites pequeñas pero exhaustivas en los puntos donde estadísticamente se concentran los defectos. Como demuestran los ejercicios, probar los límites exactos (2, 3, 4, 5 extras) detecta errores que una prueba aleatoria difícilmente encontraría.
+
++ **unittest y pytest son complementarios.** unittest impone una estructura orientada a objetos que favorece la organización formal de los casos de prueba (útil en equipos grandes o entornos con estándares estrictos), mientras que pytest ofrece una sintaxis más ágil y reportes detallados que aceleran el ciclo de retroalimentación, especialmente valioso en proyectos que aplican integración continua.
+
++ **La combinación TDD + BDD maximiza la calidad.** TDD garantiza la corrección técnica interna; BDD garantiza que el software entregue el valor de negocio esperado. Usados juntos conforman una estrategia de pruebas completa que cubre tanto la micro-validación del código como la validación de los requisitos del usuario final.
+
+#v(2em)
+*Referencias en formato BibTeX*
+
+```bibtex
+@book{myers2012art,
+  author    = {Glenford J. Myers and Corey Sandler and Tom Badgett},
+  title     = {The Art of Software Testing},
+  edition   = {3},
+  publisher = {John Wiley \& Sons},
+  year      = {2012}
+}
+
+@book{spillner2021foundations,
+  author    = {Andreas Spillner and Tilo Linz},
+  title     = {Software Testing Foundations: A Study Guide for the Certified Tester Exam},
+  edition   = {5},
+  publisher = {Rocky Nook},
+  year      = {2021}
+}
+
+@misc{mit6031testing2022,
+  author       = {{MIT 6.031 Course Staff}},
+  title        = {Reading 3: Testing},
+  year         = {2022},
+  howpublished = {Massachusetts Institute of Technology, Software Construction (6.031)},
+  url          = {https://web.mit.edu/6.031/www/sp22/classes/03-testing/},
+  note         = {Consultado en abril de 2026}
+}
+```
