@@ -1,17 +1,17 @@
 #set par(justify: true)
 #set enum(numbering: "1.")
 
-+ *¿Cuál es el objetivo de la depuración de software?*
+// + *¿Cuál es el objetivo de la depuración de software?*
 
-  La depuración (_debugging_) tiene como objetivo identificar la causa raíz de un defecto conocido y corregirlo. A diferencia de las pruebas, que detectan la _presencia_ de fallas, la depuración las _localiza_ con precisión para eliminarlas [1]. Las actividades clave comprenden: reproducir el error en un entorno controlado, inspeccionar variables mediante breakpoints, analizar el flujo de ejecución paso a paso, y validar que la corrección no introduce nuevos defectos.
+//   La depuración (_debugging_) tiene como objetivo identificar la causa raíz de un defecto conocido y corregirlo. A diferencia de las pruebas, que detectan la _presencia_ de fallas, la depuración las _localiza_ con precisión para eliminarlas [1]. Las actividades clave comprenden: reproducir el error en un entorno controlado, inspeccionar variables mediante breakpoints, analizar el flujo de ejecución paso a paso, y validar que la corrección no introduce nuevos defectos.
 
-+ *¿Cuál es el objetivo de las pruebas de software?*
+// + *¿Cuál es el objetivo de las pruebas de software?*
 
-  Las pruebas (_testing_) buscan verificar que el software cumple los requisitos especificados y validar que el producto satisface las necesidades reales del usuario [2]. Mediante la ejecución sistemática de casos de prueba se detectan defectos antes de la entrega al cliente, reduciendo el costo de corrección —cuyo incremento es exponencial cuanto más tarde se detecta el defecto— y aumentando la confianza en el sistema.
+//   Las pruebas (_testing_) buscan verificar que el software cumple los requisitos especificados y validar que el producto satisface las necesidades reales del usuario [2]. Mediante la ejecución sistemática de casos de prueba se detectan defectos antes de la entrega al cliente, reduciendo el costo de corrección —cuyo incremento es exponencial cuanto más tarde se detecta el defecto— y aumentando la confianza en el sistema.
 
-+ *Perfil de un analista de pruebas y un ingeniero de pruebas de software.*
+// + *Perfil de un analista de pruebas y un ingeniero de pruebas de software.*
 
-  Según el estándar ISTQB _Foundation Level_ [1], el *analista de pruebas* diseña, ejecuta y documenta casos de prueba; analiza resultados y reporta defectos. Requiere pensamiento analítico, atención al detalle y conocimiento del dominio de negocio. El *ingeniero de pruebas* (perfil técnico) se ocupa de la automatización, la infraestructura de pruebas y las métricas de cobertura; requiere habilidades en programación y herramientas como `pytest`, Selenium o Jenkins. Ambos roles demandan comunicación efectiva y comprensión del ciclo de vida del software.
+//   Según el estándar ISTQB _Foundation Level_ [1], el *analista de pruebas* diseña, ejecuta y documenta casos de prueba; analiza resultados y reporta defectos. Requiere pensamiento analítico, atención al detalle y conocimiento del dominio de negocio. El *ingeniero de pruebas* (perfil técnico) se ocupa de la automatización, la infraestructura de pruebas y las métricas de cobertura; requiere habilidades en programación y herramientas como `pytest`, Selenium o Jenkins. Ambos roles demandan comunicación efectiva y comprensión del ciclo de vida del software.
 
 + *Criterios y técnicas para garantizar alta confiabilidad ante la imposibilidad de pruebas exhaustivas.*
 
