@@ -20,3 +20,8 @@
 + *¿Cuál es la diferencia entre verificación y validación de software?*
 
   La *verificación* comprueba que el software fue construido correctamente respecto a la especificación ("¿estamos construyendo el producto bien?"). Se realiza mediante inspecciones, revisiones de código y pruebas estáticas, sin necesidad de ejecutar el sistema. La *validación* comprueba que se construyó el producto correcto respecto a las necesidades reales del usuario ("¿estamos construyendo el producto correcto?"), y se realiza mediante pruebas dinámicas con el sistema en ejecución [1]. En síntesis: la verificación controla la coherencia interna del proceso de construcción, mientras que la validación controla que el resultado final satisface al usuario final.
+
+
++ *Explique la importancia de definir el resultado esperado antes de la ejecución de una prueba.*
+
+  Definir el resultado esperado antes de ejecutar una prueba es importante porque nos permite garantizar la objetividad y la precisión en la evaluación del software. Sin un resultado establecido antes, la interpretación de los resultados puede volverse subjetiva, perdiendo sentido la prueba. Además, el resultado esperado sirve como criterio de aceptación para determinar si la prueba ha pasado o fallado, facilitando la comunicación entre desarrolladores, testers y stakeholders.
