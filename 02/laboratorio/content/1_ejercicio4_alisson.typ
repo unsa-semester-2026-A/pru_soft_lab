@@ -1,7 +1,7 @@
 #import "../util.typ" as util
 #set par(justify: true)
 
-*Ejercicio 4 — Calculadora de Reembolsos de Hotel usando BDD Y TDD (Alisson)* \
+*Ejercicio 4 — Calculadora de Reembolsos de Hotel usando BDD Y TDD * \
 
 Se definió la regla de negocio indicada en la guía: el reembolso depende de las horas de anticipación y del estatus VIP del cliente.
 

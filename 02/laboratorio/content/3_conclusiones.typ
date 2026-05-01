@@ -12,31 +12,4 @@
 + **La combinación TDD + BDD maximiza la calidad.** TDD garantiza la corrección técnica interna; BDD garantiza que el software entregue el valor de negocio esperado. Usados juntos conforman una estrategia de pruebas completa que cubre tanto la micro-validación del código como la validación de los requisitos del usuario final.
 
 #v(2em)
-*Referencias en formato BibTeX*
-
-```bibtex
-@book{myers2012art,
-  author    = {Glenford J. Myers and Corey Sandler and Tom Badgett},
-  title     = {The Art of Software Testing},
-  edition   = {3},
-  publisher = {John Wiley \& Sons},
-  year      = {2012}
-}
-
-@book{spillner2021foundations,
-  author    = {Andreas Spillner and Tilo Linz},
-  title     = {Software Testing Foundations: A Study Guide for the Certified Tester Exam},
-  edition   = {5},
-  publisher = {Rocky Nook},
-  year      = {2021}
-}
-
-@misc{mit6031testing2022,
-  author       = {{MIT 6.031 Course Staff}},
-  title        = {Reading 3: Testing},
-  year         = {2022},
-  howpublished = {Massachusetts Institute of Technology, Software Construction (6.031)},
-  url          = {https://web.mit.edu/6.031/www/sp22/classes/03-testing/},
-  note         = {Consultado en abril de 2026}
-}
-```
+#bibliography("refs.bib", style: "ieee")

@@ -1,0 +1,71 @@
+[38;5;114m❯ [38;5;111mpython3[0m [38;5;217m-m unittest test_atm.py[0m
+FFFFFFFE
+======================================================================
+ERROR: test_saldo_no_cambia_cuando_hay_fondos_insuficientes (test_atm.TestCajeroATM.test_saldo_no_cambia_cuando_hay_fondos_insuficientes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/02/laboratorio/src/lst/ejercicio2/test_atm.py", line 56, in test_saldo_no_cambia_cuando_hay_fondos_insuficientes
+    self.assertEqual(cajero.saldo, 100)
+                     ^^^^^^^^^^^^
+AttributeError: 'CajeroATM' object has no attribute 'saldo'
+
+======================================================================
+FAIL: test_retiro_de_cero_es_invalido (test_atm.TestCajeroATM.test_retiro_de_cero_es_invalido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/02/laboratorio/src/lst/ejercicio2/test_atm.py", line 9, in test_retiro_de_cero_es_invalido
+    self.assertEqual(resultado, "Monto inválido")
+AssertionError: None != 'Monto inválido'
+
+======================================================================
+FAIL: test_retiro_exactamente_igual_al_saldo (test_atm.TestCajeroATM.test_retiro_exactamente_igual_al_saldo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/02/laboratorio/src/lst/ejercicio2/test_atm.py", line 22, in test_retiro_exactamente_igual_al_saldo
+    self.assertEqual(resultado, "Retiro exitoso")
+AssertionError: None != 'Retiro exitoso'
+
+======================================================================
+FAIL: test_retiro_mayor_al_saldo_muestra_fondos_insuficientes (test_atm.TestCajeroATM.test_retiro_mayor_al_saldo_muestra_fondos_insuficientes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/02/laboratorio/src/lst/ejercicio2/test_atm.py", line 29, in test_retiro_mayor_al_saldo_muestra_fondos_insuficientes
+    self.assertEqual(resultado, "Fondos Insuficientes")
+AssertionError: None != 'Fondos Insuficientes'
+
+======================================================================
+FAIL: test_retiro_negativo_es_invalido (test_atm.TestCajeroATM.test_retiro_negativo_es_invalido)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/02/laboratorio/src/lst/ejercicio2/test_atm.py", line 15, in test_retiro_negativo_es_invalido
+    self.assertEqual(resultado, "Monto inválido")
+AssertionError: None != 'Monto inválido'
+
+======================================================================
+FAIL: test_retiro_normal_exitoso (test_atm.TestCajeroATM.test_retiro_normal_exitoso)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/02/laboratorio/src/lst/ejercicio2/test_atm.py", line 36, in test_retiro_normal_exitoso
+    self.assertEqual(resultado, "Retiro exitoso")
+AssertionError: None != 'Retiro exitoso'
+
+======================================================================
+FAIL: test_retiro_un_peso_mas_del_saldo_falla (test_atm.TestCajeroATM.test_retiro_un_peso_mas_del_saldo_falla)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/02/laboratorio/src/lst/ejercicio2/test_atm.py", line 43, in test_retiro_un_peso_mas_del_saldo_falla
+    self.assertEqual(resultado, "Fondos Insuficientes")
+AssertionError: None != 'Fondos Insuficientes'
+
+======================================================================
+FAIL: test_retiro_un_peso_menos_del_saldo_exitoso (test_atm.TestCajeroATM.test_retiro_un_peso_menos_del_saldo_exitoso)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/02/laboratorio/src/lst/ejercicio2/test_atm.py", line 50, in test_retiro_un_peso_menos_del_saldo_exitoso
+    self.assertEqual(resultado, "Retiro exitoso")
+AssertionError: None != 'Retiro exitoso'
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.003s
+
+FAILED (failures=7, errors=1)
