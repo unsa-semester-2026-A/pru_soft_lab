@@ -31,45 +31,6 @@ El sistema debe lanzar excepciones en los siguientes casos:
 *Escenario Gherkin:*
 #util.codeBlock("src/lst/ejercicio3/evaluador.feature", lang: "gherkin")
 
-*Escenario 1 — Nota insuficiente*
-
-```text
-Dado que el usuario ingresa una nota entre 0 y 10
-Cuando el sistema evalúa la nota
-Entonces debe mostrar "Insuficiente"
-```
-
-*Escenario 2 — Nota regular*
-
-```text
-Dado que el usuario ingresa una nota entre 11 y 15
-Cuando el sistema evalúa la nota
-Entonces debe mostrar "Regular"
-```
-
-*Escenario 3 — Nota excelente*
-
-```text
-Dado que el usuario ingresa una nota entre 16 y 20
-Cuando el sistema evalúa la nota
-Entonces debe mostrar "Excelente"
-```
-
-*Escenario 4 — Nota inválida*
-
-```text
-Dado que el usuario ingresa una nota fuera del rango 0–20
-Cuando el sistema evalúa la nota
-Entonces debe lanzar una excepción ValueError
-```
-
-*Escenario 5 — Tipo inválido*
-
-```text
-Dado que el usuario ingresa un valor no entero
-Cuando el sistema evalúa la nota
-Entonces debe lanzar una excepción TypeError
-```
 
 #v(1em)
 
