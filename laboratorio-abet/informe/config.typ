@@ -1,9 +1,12 @@
 // Variables de fecha y semestre
-#let courseName = "Laboratorio de Física Computacional"
+#let courseName = "Pruebas de Software"
 #let labTitle = "Título del Laboratorio"
 #let labNumber = "N"
-#let instructorName = "Edwin Agapito Llamoca Requena"
+#let instructorName = "Ing. Diego Iquira"
 #let memberList = (
+  "Arce Mayhua Leonardo Ruben",
+  "Gallegos Condori Anette Isabel",
+  "Jara Mamani Mariel Alisson",
   "Quispe Condori, Alvaro Raul",
 )
 #let semCode = "A"

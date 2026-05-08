@@ -1,5 +1,5 @@
-#import  "util.typ" as util
-#import "config.typ" as config
+#import  "informe/util/util.typ" as util
+#import "informe/config.typ" as config
 // Constantes de diseño
 #let tableBorderWidth = 0.5pt
 #let headerBorderColor = rgb("#808080")
@@ -10,6 +10,10 @@
   font: "Lato",
 )
 
+#show heading: it => {
+  set text(size: 8.5pt, weight: "bold")
+  it.body
+}
 #let headerBig(content, weight: "regular", alignTo: none, color: black) = util.fontBuild(
   content,
   weight,
@@ -68,13 +72,13 @@
     align: center + horizon,
     stroke: tableBorderWidth + headerBorderColor,
     columns: (1fr, 2fr, 1fr),
-    align(horizon)[#image("src/img/fixed/epis.png", width: 95%)],
+    align(horizon)[#image("informe/src/img/fixed/epis.png", width: 95%)],
     headerBig(weight: "bold")[
       UNIVERSIDAD NACIONAL DE SAN AGUSTÍN \
       FACULTAD DE INGENIERÍA DE PRODUCCIÓN Y SERVICIOS \
       ESCUELA PROFESIONAL DE INGENIERÍA DE SISTEMAS
     ],
-    align(horizon)[#image("src/img/fixed/abet.png", width: 97%)],
+    align(horizon)[#image("informe/src/img/fixed/abet.png", width: 97%)],
     table.cell(colspan: 3)[
       #headerSmall(weight: "bold")[Formato: ]
       #headerSmall[Guía de Práctica de Laboratorio / Talleres / Centros de Simulación]
@@ -198,24 +202,24 @@
     tableTitle(weight: "bold", color: white)[SOLUCIÓN Y RESULTADOS],
   ),
   tableContents[
-    *I. SOLUCIÓN DE EJERCICIOS/PROBLEMAS* \
+    #heading(level: 1)[I. SOLUCIÓN DE EJERCICIOS/PROBLEMAS]
 
-    #include "content/1_ejercicios.typ"
+    #include "informe/content/1_ejercicios.typ"
 
     
     // Espacio reservado para las soluciones
     #v(4em)
   ],
   tableContents[
-    *II. \u{00A0}\u{00A0}SOLUCIÓN DEL CUESTIONARIO*
+    #heading(level: 1)[II. \u{00A0}\u{00A0}SOLUCIÓN DEL CUESTIONARIO]
     
-    #include "content/2_cuestionario.typ"
+    #include "informe/content/2_cuestionario.typ"
     #v(4em)
   ],
   tableContents[
-    *III. \u{00A0}CONCLUSIONES* \ \
+    #heading(level: 1)[III. \u{00A0}CONCLUSIONES] \ \
     
-    #include "content/3_conclusiones.typ"
+    #include "informe/content/3_conclusiones.typ"
     // Espacio reservado para las conclusiones
     #v(4em)
   ]
@@ -247,6 +251,7 @@
     tableTitle(weight: "bold", alignTo: center, color: white)[REFERENCIAS Y BIBLIOGRAFÍA],
   ),
   tableContents[
+    #bibliography("informe/references.bib", title: none, style: "ieee")
   ]
 )
 
