@@ -1,6 +1,6 @@
 #import  "../util.typ" as util
 
-*Problema 1: Validador de Identificadores * \
+*Ejercicio 1: Validador de Identificadores * \
 
 *Fase 1: BDD (Comportamiento Esperado)* \
 Antes de escribir código, se definió el comportamiento mediante un escenario en Gherkin (`identificador.feature`) basado en las reglas de Fortran descritas por Myers:

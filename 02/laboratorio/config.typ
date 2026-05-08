@@ -7,6 +7,7 @@
   "Quispe Condori, Alvaro Raul",
   "Jara Mamani, Mariel Alisson",
   "Arce Mayhua, Leonardo Ruben",
+  "Anette Isabel Gallegos Condori"
   // Completar con los nombres de ntra 4 integrante
   // "Annette"
 )
