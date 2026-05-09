@@ -27,7 +27,7 @@
   ]
 ]
 #let codeBlock(file, lang: "text") = block(
-  fill: codeBgColor,
+  fill: rgb("#F1F3F4"),
   breakable: true,
   width: 100%,
   inset: 1em,
