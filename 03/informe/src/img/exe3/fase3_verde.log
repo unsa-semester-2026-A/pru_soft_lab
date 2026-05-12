@@ -1,0 +1,26 @@
+[38;5;114m❯ [38;5;111muv[0m [38;5;217mrun pytest -v test_atm.py[0m
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe3/atm_cajero/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe3/atm_cajero
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collecting ... collected 15 items
+
+test_atm.py::test_saldo_inicial_correcto PASSED                          [  6%]
+test_atm.py::test_inicializacion_saldo_negativo_lanza_excepcion PASSED   [ 13%]
+test_atm.py::test_depositos_validos[500.0-1500.0] PASSED                 [ 20%]
+test_atm.py::test_depositos_validos[0.01-1000.01] PASSED                 [ 26%]
+test_atm.py::test_depositos_validos[10000.0-11000.0] PASSED              [ 33%]
+test_atm.py::test_retiros_validos[300.0-700.0] PASSED                    [ 40%]
+test_atm.py::test_retiros_validos[1000.0-0.0] PASSED                     [ 46%]
+test_atm.py::test_retiros_validos[0.01-999.99] PASSED                    [ 53%]
+test_atm.py::test_multiples_operaciones_consecutivas PASSED              [ 60%]
+test_atm.py::test_limites_deposito_y_retiro_minimo PASSED                [ 66%]
+test_atm.py::test_deposito_monto_invalido_lanza_excepcion[-200.0] PASSED [ 73%]
+test_atm.py::test_deposito_monto_invalido_lanza_excepcion[0.0] PASSED    [ 80%]
+test_atm.py::test_retiro_monto_invalido_lanza_excepcion[-50.0] PASSED    [ 86%]
+test_atm.py::test_retiro_monto_invalido_lanza_excepcion[0.0] PASSED      [ 93%]
+test_atm.py::test_retiro_mayor_al_saldo_lanza_excepcion PASSED           [100%]
+
+============================== 15 passed in 0.04s ==============================

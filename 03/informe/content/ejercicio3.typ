@@ -42,3 +42,16 @@ A continuación, implementamos las pruebas unitarias siguiendo el patrón AAA (A
   image("../src/img/exe3/fase2_rojo.png", width: 85%, height: 85%, fit: "contain"),
   caption: "Ejecución de pruebas unitarias - Fase Rojo",
 )
+
+=== Fase 3: Implementación (Verde)
+
+Con las pruebas diseñadas y fallando, procedimos a implementar la lógica de negocio dentro de la clase `Atm`, reemplazando las declaraciones `pass` con el código funcional que maneja las validaciones de montos y el cálculo del saldo, además de lanzar las excepciones correspondientes según las reglas del negocio definidas en la Guía de Laboratorio.
+
+#codeBlock("../../exercises/exe3/atm_cajero/atm.py", lang: "python")
+
+Una vez implementada la lógica, ejecutamos nuevamente la suite de pruebas. Como se observa a continuación, los 15 casos de prueba pasaron exitosamente, confirmando que la unidad de código cumple con la especificación funcional y el diseño previo (Fase Verde del TDD).
+
+#figure(
+  image("../src/img/exe3/fase3_verde.png", width: 85%, height: 85%, fit: "contain"),
+  caption: "Ejecución de pruebas unitarias - Fase Verde",
+)
