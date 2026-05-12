@@ -1,0 +1,13 @@
+Observaciones detectadas durante la fusión de ramas (main)
+==========================================================
+
+1) Corrección aplicada (bloqueante de compilación)
+- En `informe/content/ejercicios/ejercicio1.typ` había rutas de imágenes absolutas
+  (`/03/informe/src/...`) que rompían `typst compile laboratorio.typ`.
+- Se cambiaron a rutas relativas válidas (`../../src/...`).
+
+2) Hallazgos no bloqueantes (se respetó el contenido original)
+- En ejercicio 2, el archivo de imagen se llama `gree_image.jpg` (aparente typo en "green"),
+  pero es consistente con su referencia y no rompe compilación.
+- En ejercicio 1 hay detalles de redacción/consistencia (por ejemplo numeración y frases
+  con pequeñas erratas), pero no afectan la construcción del informe.

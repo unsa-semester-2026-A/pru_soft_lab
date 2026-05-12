@@ -6,7 +6,7 @@ En este paso definimos la "promesa" de comportamiento de nuestra clase antes de 
 // #util.codeBlock("src/lst/exe1/calculadora_docstrings.py", lang: "python")
 
 #align(center)[
-  #image("/03/informe/src/img/exe1/test_calculadora_fallo.png", width: 85%)
+  #image("../../src/img/exe1/test_calculadora_fallo.png", width: 85%)
   _Figura 1 — Ejecución inicial mostrando fallos debido a funciones no implementadas (fase ROJA)._
 ]
 
@@ -88,7 +88,7 @@ Se implementó el archivo `test_calculadora.py` utilizando el framework Pytest. 
 // #util.codeBlock("src/lst/exe1/test_calculadora.py", lang: "python")
 
 #align(center)[
-  #image("/03/informe/src/img/exe1/test_calculadora.png", width: 85%)
+  #image("../../src/img/exe1/test_calculadora.png", width: 85%)
   _Figura 2 — Ejecución mostrando todos los casos de prueba pasando exitosamente (fase VERDE) ._
 ]
 
@@ -99,6 +99,6 @@ Se agregó una interfaz gráfica simple desarrollada con `tkinter` que permite a
 // #util.codeBlock("src/lst/exe1/ui/gui.py", lang: "python")
 
 #align(center)[
-  #image("/03/informe/src/img/exe1/gui_calculadora.png", width: 70%)
+  #image("../../src/img/exe1/gui_calculadora.png", width: 70%)
   _Figura 3 — Interfaz gráfica de la calculadora con botones operativos._
 ]
