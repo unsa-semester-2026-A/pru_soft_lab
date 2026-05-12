@@ -6,8 +6,9 @@
   let caps = chars.filter(c => c == upper(c) and c != lower(c))
   caps.join("")
 }
+
 /// Abrevia un nombre completo mostrando el primer apellido y el primer nombre.
-/// 
+///
 /// El nombre debe tener al menos tres palabras separadas por espacios.
 ///
 /// - name (string): El nombre completo que se desea abreviar.
@@ -22,12 +23,14 @@
 // Funciones de componentes
 #let fontBuild(content, weight, size, alignTo, color) = [
   #set text(size: size, weight: weight, fill: color)
+
   #if alignTo != none [
     #align(alignTo)[#content]
   ] else [
     #content
   ]
 ]
+
 #let codeBlock(file, lang: "text") = block(
   fill: rgb("#F1F3F4"),
   breakable: true,
