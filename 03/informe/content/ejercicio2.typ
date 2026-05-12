@@ -7,10 +7,10 @@ El primer paso consistió en definir la interfaz de la función `validar_contras
 El siguiente código muestra la especificación inicial:
 
 #import "../util/util.typ": codeBlock
-#figure(
-  caption: "Especificación de la función validar_contrasena (fase 1)",
-  codeBlock("../src/lst/exe2/fase1/validador_specification.py", lang: "python")
-)
+
+_Especificación de la función validar_contrasena (fase 1)_
+#codeBlock("../src/lst/exe2/fase1/validador_specification.py", lang: "python")
+
 
 === Fase 2: Casos de Prueba (Rojo)
 
@@ -38,10 +38,8 @@ Con la especificación definida, diseñamos los casos de prueba utilizando parti
 
 A continuación, implementamos las pruebas unitarias siguiendo el patrón AAA. Al ejecutar las pruebas con la función aún vacía, todas fallaron, confirmando el estado "Rojo" inicial del desarrollo.
 
-#figure(
-  caption: "Pruebas unitarias de validador_contrasena (fase 2)",
-  codeBlock("../src/lst/exe2/fase2/test_validador.py", lang: "python")
-)
+_Pruebas unitarias de validador_contrasena (fase 2)_
+#codeBlock("../src/lst/exe2/fase2/test_validador.py", lang: "python")
 
 #figure(
   image("../src/img/exe2/fase2_rojo.png", width: 90%),
@@ -52,10 +50,8 @@ A continuación, implementamos las pruebas unitarias siguiendo el patrón AAA. A
 
 Finalmente, procedimos a implementar la lógica interna de validación dentro de la función `validar_contrasena` para satisfacer cada una de las reglas estipuladas.
 
-#figure(
-  caption: "Implementación de validar_contrasena (fase 3)",
-  codeBlock("../src/lst/exe2/fase3/validador.py", lang: "python")
-)
+_Implementación de validar_contrasena (fase 3)_
+#codeBlock("../src/lst/exe2/fase3/validador.py", lang: "python")
 
 Tras completar la implementación, volvimos a ejecutar la suite de pruebas comprobando que todos los casos pasan exitosamente (estado "Verde").
 
