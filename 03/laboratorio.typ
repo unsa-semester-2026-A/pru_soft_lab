@@ -146,7 +146,7 @@
   table.cell(
     colspan: 4,
     [
-      #tableContents(weight: "bold")[INTEGRANTE(s):] \
+      #tableContents(weight: "bold")[INTEGRANTE(s):] 
       #tableContents[#unordList(config.memberList)]
 
     ],

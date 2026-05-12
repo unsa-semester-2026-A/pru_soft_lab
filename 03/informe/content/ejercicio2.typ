@@ -42,7 +42,7 @@ _Pruebas unitarias de validador_contrasena (fase 2)_
 #codeBlock("../src/lst/exe2/fase2/test_validador.py", lang: "python")
 
 #figure(
-  image("../src/img/exe2/fase2_rojo.png", width: 90%),
+  image("../src/img/exe2/fase2_rojo.png", width: 90%, height: auto, fit: "contain"),
   caption: "Ejecución de pruebas unitarias - Fase Rojo",
 )
 
@@ -56,6 +56,6 @@ _Implementación de validar_contrasena (fase 3)_
 Tras completar la implementación, volvimos a ejecutar la suite de pruebas comprobando que todos los casos pasan exitosamente (estado "Verde").
 
 #figure(
-  image("../src/img/exe2/fase3_verde.png", width: 90%),
+  image("../src/img/exe2/fase3_verde.png", width: 90%, height: auto, fit: "contain"),
   caption: "Ejecución de pruebas unitarias - Fase Verde",
 )
