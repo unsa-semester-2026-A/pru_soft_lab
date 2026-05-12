@@ -64,20 +64,13 @@ from validador import validar_contrasena
     ]),
 ])
 def test_validar_contrasena(contrasena, expected_errores):
-    """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
     # Arrange
-    # (Los valores ya están listos gracias a parametrize)
+    esperado_valida = len(expected_errores) == 0
     
     # Act
     resultado = validar_contrasena(contrasena)
     
     # Assert
-    assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-    
-    if len(expected_errores) == 0:
-        assert resultado["valida"] is True, "La contraseña debe ser válida."
-        assert resultado["errores"] == [], "La lista de errores debe estar vacía."
-    else:
-        assert resultado["valida"] is False, "La contraseña debe ser inválida."
-        # Validar que los errores devueltos coincidan con los esperados (sin importar el orden)
-        assert set(resultado["errores"]) == set(expected_errores), f"Errores esperados: {expected_errores}, pero se obtuvo: {resultado['errores']}"
+    assert type(resultado) is dict
+    assert resultado["valida"] == esperado_valida
+    assert set(resultado["errores"]) == set(expected_errores)

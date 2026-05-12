@@ -1,4 +1,4 @@
-[38;5;114m❯ [38;5;111muv[0m [38;5;217mrun pytest -v test_validador.py[0m
+[38;5;114m❯ [38;5;111muv[0m [38;5;217mrun pytest -v test_validador.py || true[0m
 ============================= test session starts ==============================
 platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe2/validador_pwd/.venv/bin/python
 cachedir: .pytest_cache
@@ -88,20 +88,18 @@ contrasena = 'Segura#1', expected_errores = []
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _______________ test_validar_contrasena[Ab1!-expected_errores1] ________________
 
 contrasena = 'Ab1!'
@@ -170,20 +168,18 @@ expected_errores = ['La contraseña debe tener al menos 8 caracteres.']
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _____________ test_validar_contrasena[segura#1-expected_errores2] ______________
 
 contrasena = 'segura#1'
@@ -252,20 +248,18 @@ expected_errores = ['La contraseña debe contener al menos una letra mayúscula.
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _____________ test_validar_contrasena[SEGURA#1-expected_errores3] ______________
 
 contrasena = 'SEGURA#1'
@@ -334,20 +328,18 @@ expected_errores = ['La contraseña debe contener al menos una letra minúscula.
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _____________ test_validar_contrasena[Segura##-expected_errores4] ______________
 
 contrasena = 'Segura##'
@@ -416,20 +408,18 @@ expected_errores = ['La contraseña debe contener al menos un dígito numérico.
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _____________ test_validar_contrasena[Segura12-expected_errores5] ______________
 
 contrasena = 'Segura12'
@@ -498,20 +488,18 @@ expected_errores = ['La contraseña debe contener al menos un carácter especial
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _________________ test_validar_contrasena[-expected_errores6] __________________
 
 contrasena = ''
@@ -580,20 +568,18 @@ expected_errores = ['La contraseña debe tener al menos 8 caracteres.', 'La cont
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _____________ test_validar_contrasena[aB1!cDe2-expected_errores7] ______________
 
 contrasena = 'aB1!cDe2', expected_errores = []
@@ -661,20 +647,18 @@ contrasena = 'aB1!cDe2', expected_errores = []
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _____________ test_validar_contrasena[abcdefghi-expected_errores8] _____________
 
 contrasena = 'abcdefghi'
@@ -743,20 +727,18 @@ expected_errores = ['La contraseña debe contener al menos una letra mayúscula.
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 ____________ test_validar_contrasena[SuperSegura-expected_errores9] ____________
 
 contrasena = 'SuperSegura'
@@ -825,20 +807,18 @@ expected_errores = ['La contraseña debe contener al menos un dígito numérico.
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 ____________ test_validar_contrasena[Seg ura#1-expected_errores10] _____________
 
 contrasena = 'Seg ura#1', expected_errores = []
@@ -906,20 +886,18 @@ contrasena = 'Seg ura#1', expected_errores = []
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 _____________ test_validar_contrasena[Segura1?-expected_errores11] _____________
 
 contrasena = 'Segura1?'
@@ -988,20 +966,18 @@ expected_errores = ['La contraseña debe contener al menos un carácter especial
         ]),
     ])
     def test_validar_contrasena(contrasena, expected_errores):
-        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
         # Arrange
-        # (Los valores ya están listos gracias a parametrize)
+        esperado_valida = len(expected_errores) == 0
     
         # Act
         resultado = validar_contrasena(contrasena)
     
         # Assert
->       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
-E       AssertionError: El resultado debe ser un diccionario
-E       assert False
-E        +  where False = isinstance(None, dict)
+>       assert type(resultado) is dict
+E       AssertionError: assert <class 'NoneType'> is dict
+E        +  where <class 'NoneType'> = type(None)
 
-test_validador.py:75: AssertionError
+test_validador.py:74: AssertionError
 =========================== short test summary info ============================
 FAILED test_validador.py::test_validar_contrasena[Segura#1-expected_errores0]
 FAILED test_validador.py::test_validar_contrasena[Ab1!-expected_errores1] - A...
@@ -1015,4 +991,4 @@ FAILED test_validador.py::test_validar_contrasena[abcdefghi-expected_errores8]
 FAILED test_validador.py::test_validar_contrasena[SuperSegura-expected_errores9]
 FAILED test_validador.py::test_validar_contrasena[Seg ura#1-expected_errores10]
 FAILED test_validador.py::test_validar_contrasena[Segura1?-expected_errores11]
-============================== 12 failed in 0.15s ==============================
+============================== 12 failed in 0.08s ==============================
