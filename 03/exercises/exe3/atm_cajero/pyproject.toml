@@ -1,0 +1,17 @@
+[project]
+name = "atm-cajero"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest==9.0.3",
+    "pytest-cov==7.1.0",
+]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"

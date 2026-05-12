@@ -1,4 +1,6 @@
 // Utilidades
+#let codeBgColor = rgb("#F1F3F4")
+
 #let AbbreviateByCaps(w) = {
   let chars = w.clusters()
   let caps = chars.filter(c => c == upper(c) and c != lower(c))
@@ -33,5 +35,6 @@
   inset: 1em,
   radius: 8pt,
 )[
+  #set align(left)
   #raw(read(file), lang: lang)
 ]

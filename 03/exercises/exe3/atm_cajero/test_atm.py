@@ -55,7 +55,7 @@ def test_retiros_validos(cajero, monto_retiro, saldo_esperado):
     assert abs(cajero.consultar_saldo() - saldo_esperado) < 0.001
 
 def test_multiples_operaciones_consecutivas(cajero):
-    """TC-11 / TC-12: Verifica que el saldo se mantenga consistente tras varias operaciones."""
+    """TC-11: Verifica que el saldo se mantenga consistente tras varias operaciones."""
     # Arrange: fixture 'cajero' (saldo inicial 1000.0)
     # Act
     cajero.depositar(500.0)
@@ -63,6 +63,19 @@ def test_multiples_operaciones_consecutivas(cajero):
     cajero.depositar(100.0)
     # Assert (1000 + 500 - 200 + 100 = 1400)
     assert cajero.consultar_saldo() == 1400.0
+
+def test_limites_deposito_y_retiro_minimo(cajero):
+    """TC-12: Verifica los límites de depósito mínimo y retiro mínimo (0.01)."""
+    # Act & Assert 1: Depósito mínimo
+    cajero.depositar(0.01)
+    assert abs(cajero.consultar_saldo() - 1000.01) < 0.001
+
+    # Arrange 2: Retiramos el depósito para volver a 1000.0
+    cajero.retirar(0.01)
+
+    # Act & Assert 2: Retiro mínimo desde 1000.0
+    cajero.retirar(0.01)
+    assert abs(cajero.consultar_saldo() - 999.99) < 0.001
 
 # --- Pruebas parametrizadas para excepciones de validación ---
 

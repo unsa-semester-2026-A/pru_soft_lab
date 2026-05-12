@@ -6,12 +6,9 @@ El primer paso consistió en definir la interfaz de la clase `Atm` y las excepci
 
 El siguiente código muestra la especificación inicial:
 
-#import "../util/util.typ": code
-#code(
-  lang: "python",
-  caption: "Especificación de la clase Atm (fase 1)",
-  read("../src/lst/exe3/fase1/atm_specification.py")
-)
+#import "../util/util.typ": codeBlock
+
+#codeBlock("../src/lst/exe3/fase1/atm_specification.py", lang: "python")
 
 === Fase 2: Casos de Prueba (Rojo)
 
@@ -39,13 +36,9 @@ Con la especificación definida, procedimos a crear los casos de prueba utilizan
 
 A continuación, implementamos las pruebas unitarias siguiendo el patrón AAA (Arrange, Act, Assert) haciendo uso de `pytest`, `fixtures` y pruebas parametrizadas. Al ejecutar las pruebas sin la lógica implementada, todas fallaron, lo cual corresponde a la fase roja del TDD.
 
-#code(
-  lang: "python",
-  caption: "Pruebas unitarias de la clase Atm (fase 2)",
-  read("../src/lst/exe3/fase2/test_atm.py")
-)
+#codeBlock("../../exercises/exe3/atm_cajero/test_atm.py", lang: "python")
 
 #figure(
-  image("../src/img/exe3/fase2_rojo.png", width: 90%),
+  image("../src/img/exe3/fase2_rojo.png", width: 85%, height: 85%, fit: "contain"),
   caption: "Ejecución de pruebas unitarias - Fase Rojo",
 )

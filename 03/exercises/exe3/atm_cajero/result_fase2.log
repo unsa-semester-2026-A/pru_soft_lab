@@ -1,32 +1,30 @@
-[38;5;114m❯ [38;5;111muv[0m [38;5;217mrun pytest -v test_atm.py[0m
 ============================= test session starts ==============================
 platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe3/atm_cajero/.venv/bin/python
 cachedir: .pytest_cache
 rootdir: /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe3/atm_cajero
 configfile: pyproject.toml
 plugins: cov-7.1.0
-collecting ... collected 15 items
+collecting ... collected 14 items
 
-test_atm.py::test_saldo_inicial_correcto FAILED                          [  6%]
-test_atm.py::test_inicializacion_saldo_negativo_lanza_excepcion FAILED   [ 13%]
-test_atm.py::test_depositos_validos[500.0-1500.0] FAILED                 [ 20%]
-test_atm.py::test_depositos_validos[0.01-1000.01] FAILED                 [ 26%]
-test_atm.py::test_depositos_validos[10000.0-11000.0] FAILED              [ 33%]
-test_atm.py::test_retiros_validos[300.0-700.0] FAILED                    [ 40%]
-test_atm.py::test_retiros_validos[1000.0-0.0] FAILED                     [ 46%]
-test_atm.py::test_retiros_validos[0.01-999.99] FAILED                    [ 53%]
-test_atm.py::test_multiples_operaciones_consecutivas FAILED              [ 60%]
-test_atm.py::test_limites_deposito_y_retiro_minimo FAILED                [ 66%]
-test_atm.py::test_deposito_monto_invalido_lanza_excepcion[-200.0] FAILED [ 73%]
-test_atm.py::test_deposito_monto_invalido_lanza_excepcion[0.0] FAILED    [ 80%]
-test_atm.py::test_retiro_monto_invalido_lanza_excepcion[-50.0] FAILED    [ 86%]
-test_atm.py::test_retiro_monto_invalido_lanza_excepcion[0.0] FAILED      [ 93%]
+test_atm.py::test_saldo_inicial_correcto FAILED                          [  7%]
+test_atm.py::test_inicializacion_saldo_negativo_lanza_excepcion FAILED   [ 14%]
+test_atm.py::test_depositos_validos[500.0-1500.0] FAILED                 [ 21%]
+test_atm.py::test_depositos_validos[0.01-1000.01] FAILED                 [ 28%]
+test_atm.py::test_depositos_validos[10000.0-11000.0] FAILED              [ 35%]
+test_atm.py::test_retiros_validos[300.0-700.0] FAILED                    [ 42%]
+test_atm.py::test_retiros_validos[1000.0-0.0] FAILED                     [ 50%]
+test_atm.py::test_retiros_validos[0.01-999.99] FAILED                    [ 57%]
+test_atm.py::test_multiples_operaciones_consecutivas FAILED              [ 64%]
+test_atm.py::test_deposito_monto_invalido_lanza_excepcion[-200.0] FAILED [ 71%]
+test_atm.py::test_deposito_monto_invalido_lanza_excepcion[0.0] FAILED    [ 78%]
+test_atm.py::test_retiro_monto_invalido_lanza_excepcion[-50.0] FAILED    [ 85%]
+test_atm.py::test_retiro_monto_invalido_lanza_excepcion[0.0] FAILED      [ 92%]
 test_atm.py::test_retiro_mayor_al_saldo_lanza_excepcion FAILED           [100%]
 
 =================================== FAILURES ===================================
 _________________________ test_saldo_inicial_correcto __________________________
 
-cajero = <atm.Atm object at 0x7d7dc19377a0>
+cajero = <atm.Atm object at 0x7c391a21b350>
 
     def test_saldo_inicial_correcto(cajero):
         """TC-01: Verifica que el saldo inicial se asigne correctamente."""
@@ -51,7 +49,7 @@ E       Failed: DID NOT RAISE <class 'atm.MontoInvalidoError'>
 test_atm.py:26: Failed
 _____________________ test_depositos_validos[500.0-1500.0] _____________________
 
-cajero = <atm.Atm object at 0x7d7dc1937890>, monto_deposito = 500.0
+cajero = <atm.Atm object at 0x7c391a219a90>, monto_deposito = 500.0
 saldo_esperado = 1500.0
 
     @pytest.mark.parametrize("monto_deposito, saldo_esperado", [
@@ -72,7 +70,7 @@ E       TypeError: unsupported operand type(s) for -: 'NoneType' and 'float'
 test_atm.py:42: TypeError
 _____________________ test_depositos_validos[0.01-1000.01] _____________________
 
-cajero = <atm.Atm object at 0x7d7dc16fc050>, monto_deposito = 0.01
+cajero = <atm.Atm object at 0x7c391a218560>, monto_deposito = 0.01
 saldo_esperado = 1000.01
 
     @pytest.mark.parametrize("monto_deposito, saldo_esperado", [
@@ -93,7 +91,7 @@ E       TypeError: unsupported operand type(s) for -: 'NoneType' and 'float'
 test_atm.py:42: TypeError
 ___________________ test_depositos_validos[10000.0-11000.0] ____________________
 
-cajero = <atm.Atm object at 0x7d7dc16fc800>, monto_deposito = 10000.0
+cajero = <atm.Atm object at 0x7c391a2199a0>, monto_deposito = 10000.0
 saldo_esperado = 11000.0
 
     @pytest.mark.parametrize("monto_deposito, saldo_esperado", [
@@ -114,7 +112,7 @@ E       TypeError: unsupported operand type(s) for -: 'NoneType' and 'float'
 test_atm.py:42: TypeError
 ______________________ test_retiros_validos[300.0-700.0] _______________________
 
-cajero = <atm.Atm object at 0x7d7dc16fcf80>, monto_retiro = 300.0
+cajero = <atm.Atm object at 0x7c391a215b80>, monto_retiro = 300.0
 saldo_esperado = 700.0
 
     @pytest.mark.parametrize("monto_retiro, saldo_esperado", [
@@ -135,7 +133,7 @@ E       TypeError: unsupported operand type(s) for -: 'NoneType' and 'float'
 test_atm.py:55: TypeError
 _______________________ test_retiros_validos[1000.0-0.0] _______________________
 
-cajero = <atm.Atm object at 0x7d7dc16fd700>, monto_retiro = 1000.0
+cajero = <atm.Atm object at 0x7c391a217a10>, monto_retiro = 1000.0
 saldo_esperado = 0.0
 
     @pytest.mark.parametrize("monto_retiro, saldo_esperado", [
@@ -156,7 +154,7 @@ E       TypeError: unsupported operand type(s) for -: 'NoneType' and 'float'
 test_atm.py:55: TypeError
 ______________________ test_retiros_validos[0.01-999.99] _______________________
 
-cajero = <atm.Atm object at 0x7d7dc16fdf70>, monto_retiro = 0.01
+cajero = <atm.Atm object at 0x7c391a218a10>, monto_retiro = 0.01
 saldo_esperado = 999.99
 
     @pytest.mark.parametrize("monto_retiro, saldo_esperado", [
@@ -177,10 +175,10 @@ E       TypeError: unsupported operand type(s) for -: 'NoneType' and 'float'
 test_atm.py:55: TypeError
 ___________________ test_multiples_operaciones_consecutivas ____________________
 
-cajero = <atm.Atm object at 0x7d7dc16fe5d0>
+cajero = <atm.Atm object at 0x7c391a21a0f0>
 
     def test_multiples_operaciones_consecutivas(cajero):
-        """TC-11: Verifica que el saldo se mantenga consistente tras varias operaciones."""
+        """TC-11 / TC-12: Verifica que el saldo se mantenga consistente tras varias operaciones."""
         # Arrange: fixture 'cajero' (saldo inicial 1000.0)
         # Act
         cajero.depositar(500.0)
@@ -190,25 +188,12 @@ cajero = <atm.Atm object at 0x7d7dc16fe5d0>
 >       assert cajero.consultar_saldo() == 1400.0
 E       assert None == 1400.0
 E        +  where None = consultar_saldo()
-E        +    where consultar_saldo = <atm.Atm object at 0x7d7dc16fe5d0>.consultar_saldo
+E        +    where consultar_saldo = <atm.Atm object at 0x7c391a21a0f0>.consultar_saldo
 
 test_atm.py:65: AssertionError
-____________________ test_limites_deposito_y_retiro_minimo _____________________
-
-cajero = <atm.Atm object at 0x7d7dc16fee70>
-
-    def test_limites_deposito_y_retiro_minimo(cajero):
-        """TC-12: Verifica los límites de depósito mínimo y retiro mínimo (0.01)."""
-        # Act & Assert 1: Depósito mínimo
-        cajero.depositar(0.01)
->       assert abs(cajero.consultar_saldo() - 1000.01) < 0.001
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E       TypeError: unsupported operand type(s) for -: 'NoneType' and 'float'
-
-test_atm.py:71: TypeError
 _____________ test_deposito_monto_invalido_lanza_excepcion[-200.0] _____________
 
-cajero = <atm.Atm object at 0x7d7dc1934bc0>, monto_invalido = -200.0
+cajero = <atm.Atm object at 0x7c391a21aae0>, monto_invalido = -200.0
 
     @pytest.mark.parametrize("monto_invalido", [
         -200.0, # TC-06: Depósito de monto negativo
@@ -221,10 +206,10 @@ cajero = <atm.Atm object at 0x7d7dc1934bc0>, monto_invalido = -200.0
 >       with pytest.raises(MontoInvalidoError):
 E       Failed: DID NOT RAISE <class 'atm.MontoInvalidoError'>
 
-test_atm.py:90: Failed
+test_atm.py:77: Failed
 ______________ test_deposito_monto_invalido_lanza_excepcion[0.0] _______________
 
-cajero = <atm.Atm object at 0x7d7dc1936480>, monto_invalido = 0.0
+cajero = <atm.Atm object at 0x7c391a21a330>, monto_invalido = 0.0
 
     @pytest.mark.parametrize("monto_invalido", [
         -200.0, # TC-06: Depósito de monto negativo
@@ -237,10 +222,10 @@ cajero = <atm.Atm object at 0x7d7dc1936480>, monto_invalido = 0.0
 >       with pytest.raises(MontoInvalidoError):
 E       Failed: DID NOT RAISE <class 'atm.MontoInvalidoError'>
 
-test_atm.py:90: Failed
+test_atm.py:77: Failed
 ______________ test_retiro_monto_invalido_lanza_excepcion[-50.0] _______________
 
-cajero = <atm.Atm object at 0x7d7dc16fed50>, monto_invalido = -50.0
+cajero = <atm.Atm object at 0x7c391a21b8f0>, monto_invalido = -50.0
 
     @pytest.mark.parametrize("monto_invalido", [
         -50.0,  # Retiro de monto negativo (equivalente a TC-08 asumido)
@@ -253,10 +238,10 @@ cajero = <atm.Atm object at 0x7d7dc16fed50>, monto_invalido = -50.0
 >       with pytest.raises(MontoInvalidoError):
 E       Failed: DID NOT RAISE <class 'atm.MontoInvalidoError'>
 
-test_atm.py:101: Failed
+test_atm.py:88: Failed
 _______________ test_retiro_monto_invalido_lanza_excepcion[0.0] ________________
 
-cajero = <atm.Atm object at 0x7d7dc16feae0>, monto_invalido = 0.0
+cajero = <atm.Atm object at 0x7c391a21a630>, monto_invalido = 0.0
 
     @pytest.mark.parametrize("monto_invalido", [
         -50.0,  # Retiro de monto negativo (equivalente a TC-08 asumido)
@@ -269,10 +254,10 @@ cajero = <atm.Atm object at 0x7d7dc16feae0>, monto_invalido = 0.0
 >       with pytest.raises(MontoInvalidoError):
 E       Failed: DID NOT RAISE <class 'atm.MontoInvalidoError'>
 
-test_atm.py:101: Failed
+test_atm.py:88: Failed
 __________________ test_retiro_mayor_al_saldo_lanza_excepcion __________________
 
-cajero = <atm.Atm object at 0x7d7dc16fcc80>
+cajero = <atm.Atm object at 0x7c391a0a0320>
 
     def test_retiro_mayor_al_saldo_lanza_excepcion(cajero):
         """TC-05: Verifica que retirar más del saldo disponible lance SaldoInsuficienteError."""
@@ -282,7 +267,7 @@ cajero = <atm.Atm object at 0x7d7dc16fcc80>
 >       with pytest.raises(SaldoInsuficienteError):
 E       Failed: DID NOT RAISE <class 'atm.SaldoInsuficienteError'>
 
-test_atm.py:109: Failed
+test_atm.py:96: Failed
 =========================== short test summary info ============================
 FAILED test_atm.py::test_saldo_inicial_correcto - assert None == 1000.0
 FAILED test_atm.py::test_inicializacion_saldo_negativo_lanza_excepcion - Fail...
@@ -293,10 +278,9 @@ FAILED test_atm.py::test_retiros_validos[300.0-700.0] - TypeError: unsupporte...
 FAILED test_atm.py::test_retiros_validos[1000.0-0.0] - TypeError: unsupported...
 FAILED test_atm.py::test_retiros_validos[0.01-999.99] - TypeError: unsupporte...
 FAILED test_atm.py::test_multiples_operaciones_consecutivas - assert None == ...
-FAILED test_atm.py::test_limites_deposito_y_retiro_minimo - TypeError: unsupp...
 FAILED test_atm.py::test_deposito_monto_invalido_lanza_excepcion[-200.0] - Fa...
 FAILED test_atm.py::test_deposito_monto_invalido_lanza_excepcion[0.0] - Faile...
 FAILED test_atm.py::test_retiro_monto_invalido_lanza_excepcion[-50.0] - Faile...
 FAILED test_atm.py::test_retiro_monto_invalido_lanza_excepcion[0.0] - Failed:...
 FAILED test_atm.py::test_retiro_mayor_al_saldo_lanza_excepcion - Failed: DID ...
-============================== 15 failed in 0.08s ==============================
+============================== 14 failed in 0.09s ==============================
