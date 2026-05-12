@@ -1,9 +1,12 @@
 == Ejercicio 1: Calculadora Básica
-*Paso 1: Crear la Especificación (Docstrings)*
+
+*Fase 1: Crear la Especificación (Docstrings)*
 En este paso definimos la "promesa" de comportamiento de nuestra clase antes de programar logica interna.
 
 * Archivo `calculadora.docstrings.py`: *
-// #util.codeBlock("src/lst/exe1/calculadora_docstrings.py", lang: "python")
+
+#import "../../util/util.typ": codeBlock
+#codeBlock("/informe/src/lst/exe1/calculadora_docstrings.py", lang: "python")
 
 #align(center)[
   #image("../../src/img/exe1/test_calculadora_fallo.png", width: 85%)
@@ -12,7 +15,7 @@ En este paso definimos la "promesa" de comportamiento de nuestra clase antes de 
 
 La ejecucion nos dara error porque las funciones no estan implementadas, pero esto es intencional: el objetivo es definir claramente lo que cada función debe hacer antes de escribir el codigo.
 
-*Paso 2: Tabla de Casos de Prueba* \
+*Fase 2: Tabla de Casos de Prueba* \
 Diseñamos 9 casos de prueba (TC-01 a TC-09) que cubren las cuatro operaciones, incluyendo operandos enteros, decimales y negativos.
 
 Los casos TC-01 al TC-05 abordan sumas y restas (positivos y negativos). Los casos TC-06 y TC-07 evalúan la multiplicación con valores enteros y decimales. Los casos TC-08 y TC-09 verifican la división exacta y decimal, mientras TC-09 valida la gestión de la excepción ante divisor igual a cero.
@@ -64,16 +67,16 @@ Adicionalmente, se incorporaron casos de prueba de valores límites y precisión
   [TC-L4], [División prohibida], [`dividir(10, 0)`], [`ValueError`],
 )
 
-*Paso 3: Implementar el Código y Pruebas* \
+*Fase 3: Implementar el Código y Pruebas* \
 Ahora desarrollamos la lógica necesaria para que los casos de prueba pasen a "Verde".
 
-*Paso 3.1: Implementación del Código* \
+*Fase 3.1: Implementación del Código* \
 A continuación se presenta la implementación del módulo `calculadora.py`, la cual expone la clase `Calculadora`, siguiendo las buenas prácticas de programación orientada a objetos. Cada método de operación realiza la función matemática correspondiente, y se asegura de manejar adecuadamente la división por cero lanzando una excepción con el mensaje específico requerido por la especificación.
 
 * Archivo `calculadora.py`: *
-// #util.codeBlock("src/lst/exe1/calculadora.py", lang: "python")
+#codeBlock("/informe/src/lst/exe1/calculadora.py", lang: "python")
 
-*Paso 3.2: Implementación de Pruebas Unitarias* \
+*Fase 3.2: Implementación de Pruebas Unitarias* \
 Se implementó el archivo `test_calculadora.py` utilizando el framework Pytest. Las pruebas se organizaron mediante clases para agrupar semánticamente los casos de pruebas por operación (suma, resta, multiplicación, división).
 
 *Estandarización AAA:* Se aplicó el patrón AAA (Arrange-Act-Assert) mediante comentarios, separando las fases de preparación de datos, ejecución de la operación y verificación del resultado.
@@ -85,18 +88,18 @@ Se implementó el archivo `test_calculadora.py` utilizando el framework Pytest. 
 *Pruebas de Precisión Numérica y Límites:* Se añadieron las clases `TestPrecisionAvanzada` y `TestLimitesFlotantes` para evaluar el comportamiento del sistema bajo condiciones extremas. Los casos con exponentes muy grandes (1e300, 1e20, 1e10) verifican que la aritmética de Python maneja correctamente órdenes de magnitud extremos sin errores inesperados. Se cubren además los escenarios de desbordamiento (overflow) donde Python retorna `inf` o `-inf`, y se confirma que la división por cero lanza el `ValueError` requerido. 
 
 * Archivo `test_calculadora.py`: *
-// #util.codeBlock("src/lst/exe1/test_calculadora.py", lang: "python")
+#codeBlock("/informe/src/lst/exe1/test_calculadora.py", lang: "python")
 
 #align(center)[
   #image("../../src/img/exe1/test_calculadora.png", width: 85%)
   _Figura 2 — Ejecución mostrando todos los casos de prueba pasando exitosamente (fase VERDE) ._
 ]
 
-*Paso 4: Interfaz Gráfica de Usuario* \
+*Fase 4: Interfaz Gráfica de Usuario* \
 Se agregó una interfaz gráfica simple desarrollada con `tkinter` que permite al usuario interactuar con la calculadora mediante botones. La interfaz incluye un display de entrada, botones numéricos (0-9), botones de operadores (+, -, \*, /), el botón de limpiar (C) y el botón de ejecutar (=). Los botones de operadores están estilizados en color naranja para diferenciarlos visualmente de los numéricos, y el botón limpiar se distingue en rojo, siguiendo las convenciones típicas de calculadoras. La implementación modular en `ui/gui.py` mantiene la separación entre la lógica de negocio (clase `Calculadora`) y la capa de presentación, facilitando el mantenimiento y la extensibilidad del código.
 
 * Archivo `ui/gui.py`: *
-// #util.codeBlock("src/lst/exe1/ui/gui.py", lang: "python")
+#codeBlock("/informe/src/lst/exe1/calculadora_gui.py", lang: "python")
 
 #align(center)[
   #image("../../src/img/exe1/gui_calculadora.png", width: 70%)

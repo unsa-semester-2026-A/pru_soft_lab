@@ -1,0 +1,1018 @@
+[38;5;114m❯ [38;5;111muv[0m [38;5;217mrun pytest -v test_validador.py[0m
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe2/validador_pwd/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe2/validador_pwd
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collecting ... collected 12 items
+
+test_validador.py::test_validar_contrasena[Segura#1-expected_errores0] FAILED [  8%]
+test_validador.py::test_validar_contrasena[Ab1!-expected_errores1] FAILED [ 16%]
+test_validador.py::test_validar_contrasena[segura#1-expected_errores2] FAILED [ 25%]
+test_validador.py::test_validar_contrasena[SEGURA#1-expected_errores3] FAILED [ 33%]
+test_validador.py::test_validar_contrasena[Segura##-expected_errores4] FAILED [ 41%]
+test_validador.py::test_validar_contrasena[Segura12-expected_errores5] FAILED [ 50%]
+test_validador.py::test_validar_contrasena[-expected_errores6] FAILED    [ 58%]
+test_validador.py::test_validar_contrasena[aB1!cDe2-expected_errores7] FAILED [ 66%]
+test_validador.py::test_validar_contrasena[abcdefghi-expected_errores8] FAILED [ 75%]
+test_validador.py::test_validar_contrasena[SuperSegura-expected_errores9] FAILED [ 83%]
+test_validador.py::test_validar_contrasena[Seg ura#1-expected_errores10] FAILED [ 91%]
+test_validador.py::test_validar_contrasena[Segura1?-expected_errores11] FAILED [100%]
+
+=================================== FAILURES ===================================
+_____________ test_validar_contrasena[Segura#1-expected_errores0] ______________
+
+contrasena = 'Segura#1', expected_errores = []
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_______________ test_validar_contrasena[Ab1!-expected_errores1] ________________
+
+contrasena = 'Ab1!'
+expected_errores = ['La contraseña debe tener al menos 8 caracteres.']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_____________ test_validar_contrasena[segura#1-expected_errores2] ______________
+
+contrasena = 'segura#1'
+expected_errores = ['La contraseña debe contener al menos una letra mayúscula.']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_____________ test_validar_contrasena[SEGURA#1-expected_errores3] ______________
+
+contrasena = 'SEGURA#1'
+expected_errores = ['La contraseña debe contener al menos una letra minúscula.']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_____________ test_validar_contrasena[Segura##-expected_errores4] ______________
+
+contrasena = 'Segura##'
+expected_errores = ['La contraseña debe contener al menos un dígito numérico.']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_____________ test_validar_contrasena[Segura12-expected_errores5] ______________
+
+contrasena = 'Segura12'
+expected_errores = ['La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *).']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_________________ test_validar_contrasena[-expected_errores6] __________________
+
+contrasena = ''
+expected_errores = ['La contraseña debe tener al menos 8 caracteres.', 'La contraseña debe contener al menos una letra mayúscula.', 'La c...contener al menos un dígito numérico.', 'La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *).']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_____________ test_validar_contrasena[aB1!cDe2-expected_errores7] ______________
+
+contrasena = 'aB1!cDe2', expected_errores = []
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_____________ test_validar_contrasena[abcdefghi-expected_errores8] _____________
+
+contrasena = 'abcdefghi'
+expected_errores = ['La contraseña debe contener al menos una letra mayúscula.', 'La contraseña debe contener al menos un dígito numérico.', 'La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *).']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+____________ test_validar_contrasena[SuperSegura-expected_errores9] ____________
+
+contrasena = 'SuperSegura'
+expected_errores = ['La contraseña debe contener al menos un dígito numérico.', 'La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *).']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+____________ test_validar_contrasena[Seg ura#1-expected_errores10] _____________
+
+contrasena = 'Seg ura#1', expected_errores = []
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+_____________ test_validar_contrasena[Segura1?-expected_errores11] _____________
+
+contrasena = 'Segura1?'
+expected_errores = ['La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *).']
+
+    @pytest.mark.parametrize("contrasena, expected_errores", [
+        # TC-01: Contraseña completamente válida
+        ("Segura#1", []),
+    
+        # TC-02: Falla la longitud (< 8)
+        ("Ab1!", [
+            "La contraseña debe tener al menos 8 caracteres."
+        ]),
+    
+        # TC-03: Falla por falta de mayúscula
+        ("segura#1", [
+            "La contraseña debe contener al menos una letra mayúscula."
+        ]),
+    
+        # TC-04: Falla por falta de minúscula
+        ("SEGURA#1", [
+            "La contraseña debe contener al menos una letra minúscula."
+        ]),
+    
+        # TC-05: Falla por falta de número
+        ("Segura##", [
+            "La contraseña debe contener al menos un dígito numérico."
+        ]),
+    
+        # TC-06: Falla por falta de carácter especial
+        ("Segura12", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-07: Falla en todo (vacía)
+        ("", [
+            "La contraseña debe tener al menos 8 caracteres.",
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos una letra minúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-08: Exactamente 8 caracteres válidos (borde)
+        ("aB1!cDe2", []),
+    
+        # TC-09: Solo letras (minúsculas)
+        ("abcdefghi", [
+            "La contraseña debe contener al menos una letra mayúscula.",
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-10: Combinación de faltas (sin número y sin especial)
+        ("SuperSegura", [
+            "La contraseña debe contener al menos un dígito numérico.",
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    
+        # TC-11: Contraseña válida con espacios internos (debe ser válida)
+        ("Seg ura#1", []),
+    
+        # TC-12: Contraseña con carácter especial no permitido (?), cuenta como falta de especial
+        ("Segura1?", [
+            "La contraseña debe contener al menos un carácter especial (! @ # $ % ^ & *)."
+        ]),
+    ])
+    def test_validar_contrasena(contrasena, expected_errores):
+        """Verifica que la función retorne los errores correctos y el estado 'valida' correspondiente."""
+        # Arrange
+        # (Los valores ya están listos gracias a parametrize)
+    
+        # Act
+        resultado = validar_contrasena(contrasena)
+    
+        # Assert
+>       assert isinstance(resultado, dict), "El resultado debe ser un diccionario"
+E       AssertionError: El resultado debe ser un diccionario
+E       assert False
+E        +  where False = isinstance(None, dict)
+
+test_validador.py:75: AssertionError
+=========================== short test summary info ============================
+FAILED test_validador.py::test_validar_contrasena[Segura#1-expected_errores0]
+FAILED test_validador.py::test_validar_contrasena[Ab1!-expected_errores1] - A...
+FAILED test_validador.py::test_validar_contrasena[segura#1-expected_errores2]
+FAILED test_validador.py::test_validar_contrasena[SEGURA#1-expected_errores3]
+FAILED test_validador.py::test_validar_contrasena[Segura##-expected_errores4]
+FAILED test_validador.py::test_validar_contrasena[Segura12-expected_errores5]
+FAILED test_validador.py::test_validar_contrasena[-expected_errores6] - Asser...
+FAILED test_validador.py::test_validar_contrasena[aB1!cDe2-expected_errores7]
+FAILED test_validador.py::test_validar_contrasena[abcdefghi-expected_errores8]
+FAILED test_validador.py::test_validar_contrasena[SuperSegura-expected_errores9]
+FAILED test_validador.py::test_validar_contrasena[Seg ura#1-expected_errores10]
+FAILED test_validador.py::test_validar_contrasena[Segura1?-expected_errores11]
+============================== 12 failed in 0.15s ==============================

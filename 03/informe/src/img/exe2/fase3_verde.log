@@ -1,0 +1,23 @@
+[38;5;114m❯ [38;5;111muv[0m [38;5;217mrun pytest -v test_validador.py[0m
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe2/validador_pwd/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/03/exercises/exe2/validador_pwd
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collecting ... collected 12 items
+
+test_validador.py::test_validar_contrasena[Segura#1-expected_errores0] PASSED [  8%]
+test_validador.py::test_validar_contrasena[Ab1!-expected_errores1] PASSED [ 16%]
+test_validador.py::test_validar_contrasena[segura#1-expected_errores2] PASSED [ 25%]
+test_validador.py::test_validar_contrasena[SEGURA#1-expected_errores3] PASSED [ 33%]
+test_validador.py::test_validar_contrasena[Segura##-expected_errores4] PASSED [ 41%]
+test_validador.py::test_validar_contrasena[Segura12-expected_errores5] PASSED [ 50%]
+test_validador.py::test_validar_contrasena[-expected_errores6] PASSED    [ 58%]
+test_validador.py::test_validar_contrasena[aB1!cDe2-expected_errores7] PASSED [ 66%]
+test_validador.py::test_validar_contrasena[abcdefghi-expected_errores8] PASSED [ 75%]
+test_validador.py::test_validar_contrasena[SuperSegura-expected_errores9] PASSED [ 83%]
+test_validador.py::test_validar_contrasena[Seg ura#1-expected_errores10] PASSED [ 91%]
+test_validador.py::test_validar_contrasena[Segura1?-expected_errores11] PASSED [100%]
+
+============================== 12 passed in 0.02s ==============================

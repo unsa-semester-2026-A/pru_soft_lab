@@ -1,7 +1,7 @@
 // Variables de fecha y semestre
 #let courseName = "Pruebas de Software"
-#let labTitle = "Título del Laboratorio"
-#let labNumber = "N"
+#let labTitle = "Pruebas Unitarias con Pytest"
+#let labNumber = "03"
 #let instructorName = "Ing. Diego Iquira"
 #let memberList = (
   "Arce Mayhua Leonardo Ruben",
