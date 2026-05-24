@@ -1,3 +1,16 @@
+## Setup
+
+1. Sync dependencies:
+```bash
+uv sync
+```
+
+2. **Mandatory: Install Git Hooks**
+To ensure code quality, you must install the project's Git hooks:
+```bash
+bash scripts/install-hooks.sh
+```
+
 ## Scripts
 
 - To run the app:

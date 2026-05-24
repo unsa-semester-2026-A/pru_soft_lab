@@ -1,4 +1,19 @@
 #!/bin/sh
+
+# Get the directory where the script is located
+# This works whether called directly or via Git hooks
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# The project root is one level up from .githooks
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Change to project root to ensure 'uv run' finds the correct pyproject.toml
+cd "$PROJECT_ROOT" || {
+    echo "ERROR: Could not change to project root $PROJECT_ROOT"
+    exit 1
+}
+
+echo "Running hooks in $PROJECT_ROOT"
+
 echo "1. Checking code formatting with Ruff..."
 uv run ruff format --check .
 
