@@ -109,7 +109,7 @@ public class CarritoCompra {
     }
 
     public List<ItemCarrito> getItems() {
-        return new ArrayList<>(items);
+        return java.util.Collections.unmodifiableList(items);
     }
 
     public List<String> getHistorial() {
