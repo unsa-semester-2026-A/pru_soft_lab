@@ -1,8 +1,12 @@
+"""
+Minimal module for demostration
+"""
+
 from finance.core.services import GreetingService
 
 
 class ConsoleUI:
-    def __init__(  self, service: GreetingService) -> None:
+    def __init__(self, service: GreetingService) -> None:
         self.service = service
 
     def run(self, user_name: str):
