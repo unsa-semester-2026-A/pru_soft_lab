@@ -26,12 +26,3 @@
     #content
   ]
 ]
-#let codeBlock(file, lang: "text") = block(
-  fill: codeBgColor,
-  breakable: true,
-  width: 100%,
-  inset: 1em,
-  radius: 8pt,
-)[
-  #raw(read(file), lang: lang)
-]

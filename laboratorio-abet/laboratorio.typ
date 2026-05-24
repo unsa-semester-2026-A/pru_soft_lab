@@ -147,7 +147,12 @@
     colspan: 4,
     [
       #tableContents(weight: "bold")[INTEGRANTE(s):] \
-      #tableContents[#unordList(config.memberList)]
+      #tableContents[
+        #set list(marker: "-")
+        #for member in config.memberList [
+          - #member
+        ]
+      ]
 
     ],
   ),

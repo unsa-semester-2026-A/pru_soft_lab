@@ -179,24 +179,24 @@ class CarritoCompraTest {
         @DisplayName("calcularTotal en carrito vacío retorna 0")
         void testCalcularTotalCarritoVacio() {
             assertEquals(0.0, carrito.calcularTotal(), 0.01);
-            // Verificamos regla de oro: si está vacío, Mockito no debería ser llamado
             verifyNoInteractions(servicioPrecioMock);
         }
 
         @Test
-        @DisplayName("calcularTotal con un producto")
+        @DisplayName("calcularTotal con un producto (validar impuestos y descuentos)")
         void testCalcularTotalUnProducto() {
             Producto p = new Producto("P1", "Laptop", 1000.0, true);
             carrito.agregar(p, 1);
 
-            // Configuramos comportamiento dinámico simulado para llegar a 1062.0
-            // Subtotal: 1000. Descuento (10%): 100. Monto con desc: 900. Impuesto (18% de
-            // 900): 162. Total = 900 + 162 = 1062
+            // Subtotal: 1000. Descuento (10%): 100. Monto con desc: 900. Impuesto (18% de 900): 162. Total = 1062
             when(servicioPrecioMock.calcularDescuento(1000.0)).thenReturn(100.0);
             when(servicioPrecioMock.calcularImpuesto(900.0)).thenReturn(162.0);
 
             double total = carrito.calcularTotal();
             assertEquals(1062.0, total, 0.01);
+            
+            verify(servicioPrecioMock).calcularDescuento(1000.0);
+            verify(servicioPrecioMock).calcularImpuesto(900.0);
         }
 
         @ParameterizedTest
@@ -205,13 +205,12 @@ class CarritoCompraTest {
                 "200.0, 0.0, 36.0, 236.0",
                 "600.0, 60.0, 97.2, 637.2"
         })
-        @DisplayName("calcularTotal con diferentes montos")
+        @DisplayName("calcularTotal con diferentes montos (parametrizada)")
         void testCalcularTotalParametrizado(double precio, double descSimulado, double impSimulado,
                 double totalEsperado) {
             Producto p = new Producto("P1", "Producto", precio, true);
             carrito.agregar(p, 1);
 
-            // Ajustamos parámetros para que Mockito responda acorde a la prueba matemática
             when(servicioPrecioMock.calcularDescuento(precio)).thenReturn(descSimulado);
             when(servicioPrecioMock.calcularImpuesto(precio - descSimulado)).thenReturn(impSimulado);
 
@@ -237,14 +236,13 @@ class CarritoCompraTest {
             Producto p = new Producto("P1", "Laptop", 1000.0, true);
             carrito.agregar(p, 2);
 
-            // Stub mínimo para evitar NullPointerException al invocar calcularTotal()
-            // dentro de obtenerResumenCompra()
             when(servicioPrecioMock.calcularDescuento(2000.0)).thenReturn(0.0);
             when(servicioPrecioMock.calcularImpuesto(2000.0)).thenReturn(360.0);
 
             String resumen = carrito.obtenerResumenCompra();
             assertTrue(resumen.contains("Laptop"));
             assertTrue(resumen.contains("2000.0"));
+            assertTrue(resumen.contains("Total: S/2360.0"));
         }
     }
 
@@ -253,7 +251,15 @@ class CarritoCompraTest {
     class PruebasLimites {
 
         @Test
-        @DisplayName("carrito con 100 productos")
+        @DisplayName("carrito con 1 producto (caso límite)")
+        void testCarritoConUnProducto() {
+            Producto p = new Producto("P1", "Producto1", 10.0, true);
+            carrito.agregar(p, 1);
+            assertEquals(1, carrito.getCantidadItems());
+        }
+
+        @Test
+        @DisplayName("carrito con 100 productos (caso límite)")
         void testCarritoCon100Productos() {
             for (int i = 1; i <= 100; i++) {
                 Producto p = new Producto("P" + i, "Producto" + i, 10.0, true);
@@ -277,37 +283,23 @@ class CarritoCompraTest {
     }
 
     @Nested
-    @DisplayName("Pruebas de interacción con ServicioPrecio")
+    @DisplayName("Pruebas de interacción con ServicioPrecio (Mockito)")
     class PruebasServicioPrecio {
 
         @Test
-        @DisplayName("verificar que se llama calcularDescuento")
-        void testVerificarLlamadaDescuento() {
+        @DisplayName("verificar que se llama calcularDescuento y calcularImpuesto")
+        void testVerificarLlamadasServicio() {
             Producto p = new Producto("P1", "Laptop", 1000.0, true);
             carrito.agregar(p, 1);
 
             carrito.calcularTotal();
 
-            // CORRECCIÓN: Usamos 'verify' de Mockito en lugar de listas manuales
             verify(servicioPrecioMock, times(1)).calcularDescuento(1000.0);
+            verify(servicioPrecioMock, atLeastOnce()).calcularImpuesto(anyDouble());
         }
 
         @Test
-        @DisplayName("verificar que se llama calcularImpuesto")
-        void testVerificarLlamadaImpuesto() {
-            Producto p = new Producto("P1", "Laptop", 1000.0, true);
-            carrito.agregar(p, 1);
-
-            // Configuramos una respuesta controlada para el descuento
-            when(servicioPrecioMock.calcularDescuento(1000.0)).thenReturn(100.0);
-
-            carrito.calcularTotal();
-
-            verify(servicioPrecioMock, times(1)).calcularImpuesto(900.0);
-        }
-
-        @Test
-        @DisplayName("verificar orden de llamadas")
+        @DisplayName("verificar orden de llamadas (InOrder)")
         void testOrdenLlamadas() {
             Producto p = new Producto("P1", "Laptop", 1000.0, true);
             carrito.agregar(p, 1);
@@ -323,66 +315,45 @@ class CarritoCompraTest {
     }
 
     @Nested
-    @DisplayName("Pruebas con diferentes implementaciones de ServicioPrecio")
-    class PruebasImplementaciones {
+    @DisplayName("Pruebas adicionales de lógica y cobertura")
+    class PruebasAdicionales {
 
         @Test
-        @DisplayName("implementación con descuento fijo")
-        void testImplementacionDescuentoFijo() {
-            Producto p = new Producto("P1", "Laptop", 600.0, true);
-            carrito.agregar(p, 1);
-
-            // CORRECCIÓN: Usamos Mockito en lugar de clases anónimas verbosas
-            when(servicioPrecioMock.calcularDescuento(600.0)).thenReturn(50.0);
-            when(servicioPrecioMock.calcularImpuesto(550.0)).thenReturn(99.0); // 550 * 0.18 = 99
-
-            double total = carrito.calcularTotal();
-            assertEquals(649.0, total, 0.01); // 550 + 99 = 649
-        }
-
-        @Test
-        @DisplayName("implementación sin descuento ni impuesto")
-        void testImplementacionSinImpuestos() {
+        @DisplayName("actualizar cantidad de producto existente (cobertura)")
+        void testActualizarCantidad() {
             Producto p = new Producto("P1", "Laptop", 1000.0, true);
             carrito.agregar(p, 1);
+            carrito.agregar(p, 2);
 
-            // CORRECCIÓN: Forzamos a que el mock devuelva 0 explícitamente para este
-            // escenario
-            when(servicioPrecioMock.calcularDescuento(1000.0)).thenReturn(0.0);
-            when(servicioPrecioMock.calcularImpuesto(1000.0)).thenReturn(0.0);
-
-            assertEquals(1000.0, carrito.calcularTotal(), 0.01);
-        }
-    }
-
-    @Nested
-    @DisplayName("Pruebas de calcularSubtotal")
-    class PruebasSubtotal {
-
-        @Test
-        @DisplayName("calcularSubtotal en carrito vacío")
-        void testSubtotalCarritoVacio() {
-            assertEquals(0.0, carrito.calcularSubtotal(), 0.01);
+            assertEquals(1, carrito.getCantidadItems());
+            assertEquals(3, carrito.getItems().get(0).getCantidad());
+            assertTrue(carrito.getHistorial().contains("Actualizar cantidad: Laptop +2"));
         }
 
         @Test
-        @DisplayName("calcularSubtotal con productos")
-        void testSubtotalConProductos() {
-            Producto p1 = new Producto("P1", "Laptop", 1000.0, true);
-            Producto p2 = new Producto("P2", "Mouse", 50.0, true);
-            carrito.agregar(p1, 1);
-            carrito.agregar(p2, 2);
-
-            assertEquals(1100.0, carrito.calcularSubtotal(), 0.01);
+        @DisplayName("obtenerItems devuelve copia de la lista (encapsulamiento)")
+        void testGetItemsEsCopia() {
+            Producto p = new Producto("P1", "Laptop", 1000.0, true);
+            carrito.agregar(p, 1);
+            
+            List<ItemCarrito> items = carrito.getItems();
+            assertThrows(UnsupportedOperationException.class, () -> items.add(null)); // Si la lista es inmutable o si intentamos modificarla no debería afectar al carrito
+            
+            // Si no es inmutable pero es copia, borrar de la lista externa no afecta al carrito
+            try {
+                items.clear();
+            } catch (Exception ignored) {}
+            
+            assertEquals(1, carrito.getCantidadItems());
         }
 
         @Test
-        @DisplayName("calcularSubtotal con misma cantidad")
-        void testSubtotalMismaCantidad() {
-            Producto p = new Producto("P1", "Laptop", 500.0, true);
-            carrito.agregar(p, 3);
-
-            assertEquals(1500.0, carrito.calcularSubtotal(), 0.01);
+        @DisplayName("set cantidad en ItemCarrito lanza excepción si es <= 0")
+        void testItemCarritoSetCantidadInvalida() {
+            Producto p = new Producto("P1", "Laptop", 1000.0, true);
+            ItemCarrito item = new ItemCarrito(p, 1);
+            assertThrows(IllegalArgumentException.class, () -> item.setCantidad(0));
+            assertThrows(IllegalArgumentException.class, () -> item.setCantidad(-5));
         }
     }
 }

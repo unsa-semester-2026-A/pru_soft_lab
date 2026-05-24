@@ -190,6 +190,7 @@
 // )
 
 // CONTENIDO
+#show figure: set block(breakable: true)
 #table(
   align: left + top,
   stroke: black + 0.5pt,

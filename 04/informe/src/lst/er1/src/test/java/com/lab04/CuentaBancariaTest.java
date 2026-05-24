@@ -118,11 +118,22 @@ class CuentaBancariaTest {
     }
     
     @Test
-    @DisplayName("Registrar transacciones")
+    @DisplayName("Registrar y validar detalles de transacciones")
     void testRegistroTransacciones() {
         cuenta.depositar(100);
         cuenta.retirar(50);
         
         assertEquals(2, cuenta.getTransacciones().size());
+        
+        Transaccion t1 = cuenta.getTransacciones().get(0);
+        assertEquals(Transaccion.Tipo.DEPOSITO, t1.getTipo());
+        assertEquals(100.0, t1.getMonto());
+        assertNotNull(t1.getFecha());
+
+        Transaccion t2 = cuenta.getTransacciones().get(1);
+        assertEquals(Transaccion.Tipo.RETIRO, t2.getTipo());
+        assertEquals(50.0, t2.getMonto());
+        
+        assertEquals("1234567890", cuenta.getNumero());
     }
 }
