@@ -1,14 +1,14 @@
 """Main entry point for the finance application."""
 
-from finance.adapters.ui import ConsoleUI
-from finance.core.services import GreetingService
+from finance.adapters.inbound.ui_python.app_ui import FinanceApp
+from finance.config.bootstrap import AppContainer
 
 
-def main():
-    """Run the main application logic."""
-    service = GreetingService()
-    app = ConsoleUI(service=service)
-    app.run(user_name="Equipo")
+def main() -> None:
+    """Wire the real service and launch the UI."""
+    container = AppContainer.build_container()
+    app = FinanceApp(servicio=container.finance_service)
+    app.mainloop()
 
 
 if __name__ == "__main__":
