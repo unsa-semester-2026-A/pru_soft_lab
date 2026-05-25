@@ -85,3 +85,62 @@ class FinanceInboundPort(Protocol):
             if the budget for that category has been exceeded.
         """
         ...
+
+    def list_active_accounts(self) -> list[Account]:
+        """List all active accounts.
+
+        Returns:
+            A list of active Account entities.
+        """
+        ...
+
+    def list_active_categories(self) -> list[Category]:
+        """List all active categories.
+
+        Returns:
+            A list of active Category entities.
+        """
+        ...
+
+    def deactivate_account(self, account_id: UUID) -> None:
+        """Deactivate an account (soft delete).
+
+        Args:
+            account_id: The ID of the account to deactivate.
+        """
+        ...
+
+    def deactivate_category(self, category_id: UUID) -> None:
+        """Deactivate a category (soft delete).
+
+        Args:
+            category_id: The ID of the category to deactivate.
+        """
+        ...
+
+    def list_all_budgets(self) -> list[Budget]:
+        """List all defined budgets.
+
+        Returns:
+            A list of all Budget entities.
+        """
+        ...
+
+    def list_all_transactions(self) -> list[Transaction]:
+        """List all registered transactions.
+
+        Returns:
+            A list of all Transaction entities.
+        """
+        ...
+
+    def calculate_budget_status(self, budget_id: UUID) -> tuple[Decimal, bool]:
+        """Calculate current spending status for a budget at runtime.
+
+        Args:
+            budget_id: The ID of the budget to check.
+
+        Returns:
+            A tuple containing (total_spent, is_exceeded).
+        """
+        ...

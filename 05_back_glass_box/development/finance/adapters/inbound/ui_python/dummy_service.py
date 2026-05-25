@@ -132,6 +132,8 @@ class DummyFinanceService:
         """Initialize the dummy with empty in-memory collections."""
         self._accounts: list[Account] = []
         self._categories: list[Category] = []
+        self._budgets: list[Budget] = []
+        self._transactions: list[Transaction] = []
         self._balance: Decimal = Decimal("1000.00")
 
     def create_user(self, name: str, email: str) -> User:
@@ -215,12 +217,14 @@ class DummyFinanceService:
         """
         if limit_amount <= Decimal("0"):
             raise ValueError("Limit amount must be greater than 0.")
-        return Budget(
+        budget = Budget(
             category_id=category_id,
             limit_amount=limit_amount,
             month=month,
             year=year,
         )
+        self._budgets.append(budget)
+        return budget
 
     def register_transaction(
         self,
@@ -273,7 +277,73 @@ class DummyFinanceService:
             description=description,
             created_at=datetime.now(timezone.utc),
         )
+        self._transactions.append(transaction)
         return transaction, budget_exceeded
+
+    def list_active_accounts(self) -> list[Account]:
+        """Return active accounts.
+
+        Returns:
+            List of active Account objects.
+        """
+        return [a for a in self._accounts if a.is_active]
+
+    def list_active_categories(self) -> list[Category]:
+        """Return active categories.
+
+        Returns:
+            List of active Category objects.
+        """
+        return [c for c in self._categories if c.is_active]
+
+    def deactivate_account(self, account_id: UUID) -> None:
+        """Simulate account deactivation.
+
+        Args:
+            account_id: The ID of the account to deactivate.
+        """
+        for account in self._accounts:
+            if account.id == account_id:
+                account.is_active = False
+                return
+
+    def deactivate_category(self, category_id: UUID) -> None:
+        """Simulate category deactivation.
+
+        Args:
+            category_id: The ID of the category to deactivate.
+        """
+        for category in self._categories:
+            if category.id == category_id:
+                category.is_active = False
+                return
+
+    def list_all_budgets(self) -> list[Budget]:
+        """Return all simulated budgets.
+
+        Returns:
+            List of Budget objects.
+        """
+        return self._budgets
+
+    def list_all_transactions(self) -> list[Transaction]:
+        """Return all simulated transactions.
+
+        Returns:
+            List of Transaction objects.
+        """
+        return self._transactions
+
+    def calculate_budget_status(self, budget_id: UUID) -> tuple[Decimal, bool]:
+        """Return a fake status for UI simulation.
+
+        Args:
+            budget_id: The ID of the budget to check.
+
+        Returns:
+            A tuple containing (fake_spent, fake_exceeded).
+        """
+        return Decimal("50.00"), False
 
     def list_accounts(self) -> list[Account]:
         """Return active accounts (not in real inbound.py, mocked here).

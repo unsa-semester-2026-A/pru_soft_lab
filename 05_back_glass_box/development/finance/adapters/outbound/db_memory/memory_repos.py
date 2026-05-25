@@ -103,6 +103,14 @@ class InMemoryAccountRepository(AccountRepository):
             raise ValueError(f"Account with id {account.id} not found")
         self._storage[account.id] = account
 
+    def list_all(self) -> list[Account]:
+        """List all accounts (active and inactive).
+
+        Returns:
+            A list of all Account entities.
+        """
+        return list(self._storage.values())
+
 
 class InMemoryCategoryRepository(CategoryRepository):
     """Category repository that stores data in a dictionary."""
@@ -145,6 +153,14 @@ class InMemoryCategoryRepository(CategoryRepository):
         if category.id not in self._storage:
             raise ValueError(f"Category with id {category.id} not found")
         self._storage[category.id] = category
+
+    def list_all(self) -> list[Category]:
+        """List all categories (active and inactive).
+
+        Returns:
+            A list of all Category entities.
+        """
+        return list(self._storage.values())
 
 
 class InMemoryBudgetRepository(BudgetRepository):
@@ -197,6 +213,14 @@ class InMemoryBudgetRepository(BudgetRepository):
             raise ValueError(f"Budget with id {budget.id} not found")
         self._storage[budget.id] = budget
 
+    def list_all(self) -> list[Budget]:
+        """List all budgets.
+
+        Returns:
+            A list of all Budget entities.
+        """
+        return list(self._storage.values())
+
 
 class InMemoryTransactionRepository(TransactionRepository):
     """Transaction repository that stores data in a list."""
@@ -235,3 +259,11 @@ class InMemoryTransactionRepository(TransactionRepository):
             ):
                 result.append(transaction)
         return result
+
+    def list_all(self) -> list[Transaction]:
+        """List all transactions.
+
+        Returns:
+            A list of all Transaction entities.
+        """
+        return self._storage

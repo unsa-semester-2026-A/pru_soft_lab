@@ -69,6 +69,14 @@ class AccountRepository(Protocol):
         """
         ...
 
+    def list_all(self) -> list[Account]:
+        """List all accounts (active and inactive).
+
+        Returns:
+            A list of all Account entities.
+        """
+        ...
+
 
 class CategoryRepository(Protocol):
     """Persistence operations for categories."""
@@ -97,6 +105,14 @@ class CategoryRepository(Protocol):
 
         Args:
             category: The Category entity with updated information.
+        """
+        ...
+
+    def list_all(self) -> list[Category]:
+        """List all categories (active and inactive).
+
+        Returns:
+            A list of all Category entities.
         """
         ...
 
@@ -135,6 +151,14 @@ class BudgetRepository(Protocol):
         """
         ...
 
+    def list_all(self) -> list[Budget]:
+        """List all budgets.
+
+        Returns:
+            A list of all Budget entities.
+        """
+        ...
+
 
 class TransactionRepository(Protocol):
     """Persistence operations for transactions."""
@@ -159,5 +183,13 @@ class TransactionRepository(Protocol):
 
         Returns:
             A list of Transaction entities matching the criteria.
+        """
+        ...
+
+    def list_all(self) -> list[Transaction]:
+        """List all transactions.
+
+        Returns:
+            A list of all Transaction entities.
         """
         ...

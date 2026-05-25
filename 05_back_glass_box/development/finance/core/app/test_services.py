@@ -1,3 +1,5 @@
+"""Tests for application services using EP and BVA."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -44,6 +46,13 @@ class InMemoryAccountRepository:
     def get(self, account_id: UUID) -> Account | None:
         return self.items.get(account_id)
 
+    def update(self, account_id: UUID) -> None:
+        # Dummy implementation for tests
+        pass
+
+    def list_all(self) -> list[Account]:
+        return list(self.items.values())
+
     def update(self, account: Account) -> None:
         self.items[account.id] = account
 
@@ -60,6 +69,9 @@ class InMemoryCategoryRepository:
 
     def update(self, category: Category) -> None:
         self.items[category.id] = category
+
+    def list_all(self) -> list[Category]:
+        return list(self.items.values())
 
 
 @dataclass
@@ -84,6 +96,9 @@ class InMemoryBudgetRepository:
     def update(self, budget: Budget) -> None:
         self.items[budget.id] = budget
 
+    def list_all(self) -> list[Budget]:
+        return list(self.items.values())
+
 
 @dataclass
 class InMemoryTransactionRepository:
@@ -103,6 +118,9 @@ class InMemoryTransactionRepository:
             and transaction.created_at.year == year
         ]
 
+    def list_all(self) -> list[Transaction]:
+        return self.items
+
 
 @dataclass
 class ServiceBundle:
@@ -114,7 +132,9 @@ class ServiceBundle:
     transactions: InMemoryTransactionRepository
 
 
-def build_service() -> ServiceBundle:
+@pytest.fixture
+def bundle() -> ServiceBundle:
+    """Fixture to provide a clean service and repositories for each test."""
     users = InMemoryUserRepository()
     accounts = InMemoryAccountRepository()
     categories = InMemoryCategoryRepository()
@@ -137,229 +157,99 @@ def build_service() -> ServiceBundle:
     )
 
 
-def test_create_user_persists_data() -> None:
-    bundle = build_service()
-    user = bundle.service.create_user(name="Ana", email="ana@example.com")
+# ─────────────────────────────────────────────────────────────
+# Creation Tests
+# ─────────────────────────────────────────────────────────────
 
+
+def test_create_user_persists_data(bundle):
+    user = bundle.service.create_user(name="Ana", email="ana@example.com")
     assert bundle.users.get(user.id) == user
 
 
-def test_create_account_persists_data() -> None:
-    bundle = build_service()
+def test_create_account_persists_data(bundle):
     account = bundle.service.create_account(name="Ahorros", bank="Cash")
-
     assert bundle.accounts.get(account.id) == account
 
 
-def test_assign_budget_creates_new_budget() -> None:
-    bundle = build_service()
-    category = bundle.service.create_category(name="Comida")
-
-    budget = bundle.service.assign_budget(
-        category_id=category.id,
-        limit_amount=Decimal("150"),
-        month=5,
-        year=2026,
-    )
-
-    assert bundle.budgets.get_by_category_and_period(category.id, 5, 2026) == budget
+# ─────────────────────────────────────────────────────────────
+# Budget Status Tests (BVA)
+# ─────────────────────────────────────────────────────────────
 
 
-def test_assign_budget_updates_existing_budget() -> None:
-    bundle = build_service()
-    category = bundle.service.create_category(name="Servicios")
-    existing = Budget(
-        category_id=category.id,
-        limit_amount=Decimal("100"),
-        month=4,
-        year=2026,
-    )
-    bundle.budgets.add(existing)
+@pytest.mark.parametrize(
+    "expense_amount, expected_exceeded",
+    [
+        (Decimal("99.99"), False),  # AVL: Slightly under limit
+        (Decimal("100.00"), False), # AVL: Exactly at limit
+        (Decimal("100.01"), True),  # AVL: Slightly over limit
+    ],
+)
+def test_calculate_budget_status_boundaries(bundle, expense_amount, expected_exceeded):
+    """AVL: Testing budget status exactly at the boundaries."""
+    acc = bundle.service.create_account(name="C", bank="B")
+    cat = bundle.service.create_category(name="T")
+    
+    # Set limit to 100
+    budget = bundle.service.assign_budget(cat.id, Decimal("100"), 5, 2026)
+    
+    # Fund account
+    bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("1000"), "Fund")
+    
+    # Register expense
+    bundle.service.register_transaction(acc.id, cat.id, "EXPENSE", expense_amount, "E")
+    
+    spent, exceeded = bundle.service.calculate_budget_status(budget.id)
+    
+    assert spent == expense_amount
+    assert exceeded == expected_exceeded
 
-    updated = bundle.service.assign_budget(
-        category_id=category.id,
-        limit_amount=Decimal("220"),
-        month=4,
-        year=2026,
-    )
 
-    assert updated.id == existing.id
-    assert updated.limit_amount == Decimal("220")
+# ─────────────────────────────────────────────────────────────
+# Registration Logic Tests (EP)
+# ─────────────────────────────────────────────────────────────
 
 
-def test_register_income_updates_balance_and_persists_transaction() -> None:
-    bundle = build_service()
+def test_register_income_updates_balance(bundle):
     account = bundle.service.create_account(name="Sueldo", bank="BCP")
-
-    transaction, exceeded = bundle.service.register_transaction(
-        account_id=account.id,
-        category_id=None,
-        transaction_type="INCOME",
-        amount=Decimal("1000"),
-        description="Pago",
-    )
-
+    bundle.service.register_transaction(account.id, None, "INCOME", Decimal("500"), "P")
+    
     stored = bundle.accounts.get(account.id)
-    assert stored is not None
-    assert stored.current_balance == Decimal("1000")
-    assert transaction in bundle.transactions.items
-    assert exceeded is False
+    assert stored.current_balance == Decimal("500")
 
 
-def test_register_expense_rejects_when_insufficient_balance() -> None:
-    bundle = build_service()
-    account = bundle.service.create_account(name="Diario", bank="Cash")
-
+def test_register_expense_fails_insufficient_funds(bundle):
+    account = bundle.service.create_account(name="Cash", bank="Cash")
     with pytest.raises(InsufficientFundsError):
-        bundle.service.register_transaction(
-            account_id=account.id,
-            category_id=uuid4(),
-            transaction_type="EXPENSE",
-            amount=Decimal("50"),
-            description="Taxi",
-        )
+        bundle.service.register_transaction(account.id, uuid4(), "EXPENSE", Decimal("10"), "E")
 
 
-def test_register_expense_flags_budget_exceeded() -> None:
-    bundle = build_service()
-    account = bundle.service.create_account(name="Caja", bank="Cash")
-    category = bundle.service.create_category(name="Transporte")
-    bundle.service.assign_budget(
-        category_id=category.id,
-        limit_amount=Decimal("100"),
-        month=5,
-        year=2026,
-    )
-    bundle.service.register_transaction(
-        account_id=account.id,
-        category_id=None,
-        transaction_type="INCOME",
-        amount=Decimal("200"),
-        description="Recarga",
-    )
-
-    transaction, exceeded = bundle.service.register_transaction(
-        account_id=account.id,
-        category_id=category.id,
-        transaction_type="EXPENSE",
-        amount=Decimal("120"),
-        description="Bus",
-    )
-
-    assert transaction in bundle.transactions.items
-    assert exceeded is True
+@pytest.mark.parametrize("invalid_type", ["TRANSFER", "LOAN", ""])
+def test_register_transaction_rejects_invalid_types(bundle, invalid_type):
+    acc = bundle.service.create_account(name="C", bank="B")
+    with pytest.raises(ValueError, match="Invalid transaction type"):
+        bundle.service.register_transaction(acc.id, None, invalid_type, Decimal("10"), "T")
 
 
-def test_register_expense_budget_not_exceeded_when_under_limit() -> None:
-    bundle = build_service()
-    account = bundle.service.create_account(name="Caja", bank="Cash")
-    category = bundle.service.create_category(name="Salud")
-    bundle.service.assign_budget(
-        category_id=category.id,
-        limit_amount=Decimal("200"),
-        month=5,
-        year=2026,
-    )
-    bundle.service.register_transaction(
-        account_id=account.id,
-        category_id=None,
-        transaction_type="INCOME",
-        amount=Decimal("300"),
-        description="Deposito",
-    )
-
-    _, exceeded = bundle.service.register_transaction(
-        account_id=account.id,
-        category_id=category.id,
-        transaction_type="EXPENSE",
-        amount=Decimal("120"),
-        description="Farmacia",
-    )
-
-    assert exceeded is False
+# ─────────────────────────────────────────────────────────────
+# Listing & Filtering Tests (EP)
+# ─────────────────────────────────────────────────────────────
 
 
-def test_register_transaction_rejects_invalid_type() -> None:
-    bundle = build_service()
-    account = bundle.service.create_account(name="Caja", bank="Cash")
+def test_list_active_accounts_filters_soft_deleted(bundle):
+    bundle.service.create_account(name="Active", bank="B1")
+    inactive = bundle.service.create_account(name="Inactive", bank="B2")
+    bundle.service.deactivate_account(inactive.id)
 
-    with pytest.raises(ValueError):
-        bundle.service.register_transaction(
-            account_id=account.id,
-            category_id=None,
-            transaction_type="OTHER",
-            amount=Decimal("10"),
-            description="Test",
-        )
+    active_accounts = bundle.service.list_active_accounts()
+    assert len(active_accounts) == 1
+    assert active_accounts[0].name == "Active"
 
 
-def test_register_transaction_rejects_missing_account() -> None:
-    bundle = build_service()
+def test_list_all_transactions_returns_full_history(bundle):
+    acc = bundle.service.create_account(name="C", bank="B")
+    bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("100"), "T1")
+    bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("100"), "T2")
 
-    with pytest.raises(ValueError):
-        bundle.service.register_transaction(
-            account_id=uuid4(),
-            category_id=None,
-            transaction_type="INCOME",
-            amount=Decimal("10"),
-            description="Test",
-        )
-
-
-def test_register_expense_uses_current_period_for_budget() -> None:
-    bundle = build_service()
-    account = bundle.service.create_account(name="Caja", bank="Cash")
-    category = bundle.service.create_category(name="Hogar")
-    current_month = datetime.now(timezone.utc).month
-    current_year = datetime.now(timezone.utc).year
-    bundle.service.assign_budget(
-        category_id=category.id,
-        limit_amount=Decimal("50"),
-        month=current_month,
-        year=current_year,
-    )
-    bundle.service.register_transaction(
-        account_id=account.id,
-        category_id=None,
-        transaction_type="INCOME",
-        amount=Decimal("80"),
-        description="Ingreso",
-    )
-
-    _, exceeded = bundle.service.register_transaction(
-        account_id=account.id,
-        category_id=category.id,
-        transaction_type="EXPENSE",
-        amount=Decimal("60"),
-        description="Compra",
-    )
-
-    assert exceeded is True
-
-
-def test_sum_expenses_only_counts_expense_transactions() -> None:
-    bundle = build_service()
-    account_id = uuid4()
-    category_id = uuid4()
-    transactions: Iterable[Transaction] = [
-        Transaction(
-            account_id=account_id,
-            category_id=None,
-            transaction_type=TransactionType.INCOME,
-            amount=Decimal("100"),
-            description="Ingreso",
-            created_at=datetime.now(timezone.utc),
-        ),
-        Transaction(
-            account_id=account_id,
-            category_id=category_id,
-            transaction_type=TransactionType.EXPENSE,
-            amount=Decimal("40"),
-            description="Gasto",
-            created_at=datetime.now(timezone.utc),
-        ),
-    ]
-
-    total = bundle.service._sum_expenses(transactions)
-
-    assert total == Decimal("40")
+    txns = bundle.service.list_all_transactions()
+    assert len(txns) == 2

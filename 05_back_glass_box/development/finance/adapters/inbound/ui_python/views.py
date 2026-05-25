@@ -50,6 +50,23 @@ def validate_name(value: str) -> str:
     return value.strip()
 
 
+def validate_description(value: str) -> str:
+    """Validate that a description is not empty or whitespace-only.
+
+    Args:
+        value: Raw string from a UI entry widget.
+
+    Returns:
+        The stripped description string if valid.
+
+    Raises:
+        ValueError: If the value is empty or whitespace-only.
+    """
+    if not value.strip():
+        raise ValueError("La descripción no puede estar vacía.")
+    return value.strip()
+
+
 def validate_month(value: str) -> int:
     """Validate and convert a user-entered month string.
 

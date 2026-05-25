@@ -217,6 +217,94 @@ class FinanceService(FinanceInboundPort):
         total_expenses = self._sum_expenses(transactions)
         return total_expenses > budget.limit_amount
 
+    def list_active_accounts(self) -> list[Account]:
+        """List all active accounts.
+
+        Returns:
+            A list of active Account entities.
+        """
+        all_accounts = self._account_repository.list_all()
+        return [acc for acc in all_accounts if acc.is_active]
+
+    def list_active_categories(self) -> list[Category]:
+        """List all active categories.
+
+        Returns:
+            A list of active Category entities.
+        """
+        all_categories = self._category_repository.list_all()
+        return [cat for cat in all_categories if cat.is_active]
+
+    def deactivate_account(self, account_id: UUID) -> None:
+        """Deactivate an account (soft delete).
+
+        Args:
+            account_id: The ID of the account to deactivate.
+
+        Raises:
+            ValueError: If the account is not found.
+        """
+        account = self._account_repository.get(account_id)
+        if account is None:
+            raise ValueError("Account not found.")
+        account.is_active = False
+        self._account_repository.update(account)
+
+    def deactivate_category(self, category_id: UUID) -> None:
+        """Deactivate a category (soft delete).
+
+        Args:
+            category_id: The ID of the category to deactivate.
+
+        Raises:
+            ValueError: If the category is not found.
+        """
+        category = self._category_repository.get(category_id)
+        if category is None:
+            raise ValueError("Category not found.")
+        category.is_active = False
+        self._category_repository.update(category)
+
+    def list_all_budgets(self) -> list[Budget]:
+        """List all defined budgets.
+
+        Returns:
+            A list of all Budget entities.
+        """
+        return self._budget_repository.list_all()
+
+    def list_all_transactions(self) -> list[Transaction]:
+        """List all registered transactions.
+
+        Returns:
+            A list of all Transaction entities.
+        """
+        return self._transaction_repository.list_all()
+
+    def calculate_budget_status(self, budget_id: UUID) -> tuple[Decimal, bool]:
+        """Calculate current spending status for a budget at runtime.
+
+        Args:
+            budget_id: The ID of the budget to check.
+
+        Returns:
+            A tuple containing (total_spent, is_exceeded).
+
+        Raises:
+            ValueError: If the budget is not found.
+        """
+        all_budgets = self._budget_repository.list_all()
+        target = next((b for b in all_budgets if b.id == budget_id), None)
+
+        if target is None:
+            raise ValueError("Budget not found.")
+
+        transactions = self._transaction_repository.list_by_category_and_period(
+            target.category_id, target.month, target.year
+        )
+        total_spent = self._sum_expenses(transactions)
+        return total_spent, total_spent > target.limit_amount
+
     def _sum_expenses(self, transactions: Iterable[Transaction]) -> Decimal:
         """Sum expenses from a list of transactions.
 

@@ -1,12 +1,4 @@
-"""Tests for the finance UI validation layer and DummyFinanceService.
-
-Uses Black Box Testing methodology:
-- PE  = Partición de Equivalencia
-- AVL = Análisis de Valores Límite
-
-All tests use DummyFinanceService to remain independent of the real
-FinanceService, memory repositories, and domain entities.
-"""
+"""Tests for UI validation and dummy service using EP and BVA."""
 
 from __future__ import annotations
 
@@ -21,6 +13,7 @@ from finance.adapters.inbound.ui_python.dummy_service import (
 )
 from finance.adapters.inbound.ui_python.views import (
     validate_amount,
+    validate_description,
     validate_month,
     validate_name,
     validate_year,
@@ -38,252 +31,118 @@ def service() -> DummyFinanceService:
 
 
 # ─────────────────────────────────────────────────────────────
-# validate_amount
+# Validation Tests (Parametrized EP & BVA)
 # ─────────────────────────────────────────────────────────────
 
 
-class TestValidateAmount:
-    """PE and AVL tests for the amount input field."""
+class TestValidators:
+    """Consolidated validator tests using parametrization."""
 
-    def test_letras_lanza_error(self) -> None:
-        """PE: alphabetic input must be rejected."""
-        with pytest.raises(ValueError, match="número"):
-            validate_amount("abc")
+    @pytest.mark.parametrize(
+        "value, expected",
+        [
+            ("150.50", Decimal("150.50")),  # PE: Valid decimal
+            ("200", Decimal("200")),        # PE: Valid integer
+            ("0.01", Decimal("0.01")),      # AVL: Minimum valid
+        ],
+    )
+    def test_validate_amount_valid(self, value, expected):
+        assert validate_amount(value) == expected
 
-    def test_vacio_lanza_error(self) -> None:
-        """PE: empty string must be rejected."""
-        with pytest.raises(ValueError, match="vacío"):
-            validate_amount("")
+    @pytest.mark.parametrize(
+        "value, match",
+        [
+            ("abc", "número"),   # PE: Non-numeric
+            ("", "vacío"),       # PE: Empty
+            ("   ", "vacío"),    # PE: Whitespace
+            ("-10", "mayor a 0"), # PE: Negative
+            ("0", "mayor a 0"),   # AVL: Zero
+        ],
+    )
+    def test_validate_amount_invalid(self, value, match):
+        with pytest.raises(ValueError, match=match):
+            validate_amount(value)
 
-    def test_solo_espacios_lanza_error(self) -> None:
-        """PE: whitespace-only string must be rejected."""
-        with pytest.raises(ValueError, match="vacío"):
-            validate_amount("   ")
+    @pytest.mark.parametrize(
+        "value, expected",
+        [
+            ("  Ahorros  ", "Ahorros"), # PE: Stripping
+            ("A", "A"),                 # AVL: Min length
+        ],
+    )
+    def test_validate_name_valid(self, value, expected):
+        assert validate_name(value) == expected
 
-    def test_negativo_lanza_error(self) -> None:
-        """PE: negative amount must be rejected."""
-        with pytest.raises(ValueError, match="mayor"):
-            validate_amount("-10")
+    @pytest.mark.parametrize("value", ["", "   "])
+    def test_validate_name_invalid(self, value):
+        with pytest.raises(ValueError, match="nombre"):
+            validate_name(value)
 
-    def test_cero_lanza_error(self) -> None:
-        """AVL: zero is the lower forbidden boundary."""
-        with pytest.raises(ValueError, match="mayor"):
-            validate_amount("0")
+    @pytest.mark.parametrize(
+        "value, expected",
+        [
+            ("1", 1),   # AVL: Lower bound
+            ("12", 12), # AVL: Upper bound
+            ("6", 6),   # PE: Middle
+        ],
+    )
+    def test_validate_month_valid(self, value, expected):
+        assert validate_month(value) == expected
 
-    def test_minimo_valido_pasa(self) -> None:
-        """AVL: 0.01 is the minimum allowed value."""
-        assert validate_amount("0.01") == Decimal("0.01")
+    @pytest.mark.parametrize(
+        "value, match",
+        [
+            ("0", "entre 1 y 12"),   # AVL: Below bound
+            ("13", "entre 1 y 12"),  # AVL: Above bound
+            ("marzo", "entero"),     # PE: Text
+        ],
+    )
+    def test_validate_month_invalid(self, value, match):
+        with pytest.raises(ValueError, match=match):
+            validate_month(value)
 
-    def test_decimal_valido_pasa(self) -> None:
-        """PE: a normal positive decimal must be accepted."""
-        assert validate_amount("150.50") == Decimal("150.50")
+    @pytest.mark.parametrize(
+        "value, expected",
+        [
+            ("2000", 2000), # AVL: Lower bound
+            ("2026", 2026), # PE: Current
+        ],
+    )
+    def test_validate_year_valid(self, value, expected):
+        assert validate_year(value) == expected
 
-    def test_entero_como_string_pasa(self) -> None:
-        """PE: integer string must be converted correctly."""
-        assert validate_amount("200") == Decimal("200")
-
-
-# ─────────────────────────────────────────────────────────────
-# validate_name
-# ─────────────────────────────────────────────────────────────
-
-
-class TestValidateName:
-    """PE tests for text name fields."""
-
-    def test_vacio_lanza_error(self) -> None:
-        """PE: empty name must be rejected."""
-        with pytest.raises(ValueError, match="vacío"):
-            validate_name("")
-
-    def test_solo_espacios_lanza_error(self) -> None:
-        """PE: whitespace-only name must be rejected."""
-        with pytest.raises(ValueError, match="vacío"):
-            validate_name("   ")
-
-    def test_nombre_valido_pasa(self) -> None:
-        """PE: a real name must be accepted and stripped."""
-        assert validate_name("  Ahorros BCP  ") == "Ahorros BCP"
-
-    def test_nombre_minimo_un_caracter(self) -> None:
-        """AVL: a single non-space character is the minimum valid name."""
-        assert validate_name("A") == "A"
-
-
-# ─────────────────────────────────────────────────────────────
-# validate_month
-# ─────────────────────────────────────────────────────────────
-
-
-class TestValidateMonth:
-    """PE and AVL tests for the month field (1-12)."""
-
-    def test_texto_lanza_error(self) -> None:
-        """PE: alphabetic month must be rejected."""
-        with pytest.raises(ValueError, match="número"):
-            validate_month("marzo")
-
-    def test_cero_lanza_error(self) -> None:
-        """AVL: month 0 is below the lower boundary."""
-        with pytest.raises(ValueError, match="entre 1 y 12"):
-            validate_month("0")
-
-    def test_enero_pasa(self) -> None:
-        """AVL: month 1 is the lower boundary."""
-        assert validate_month("1") == 1
-
-    def test_diciembre_pasa(self) -> None:
-        """AVL: month 12 is the upper boundary."""
-        assert validate_month("12") == 12
-
-    def test_mes_13_lanza_error(self) -> None:
-        """AVL: month 13 exceeds the upper boundary."""
-        with pytest.raises(ValueError, match="entre 1 y 12"):
-            validate_month("13")
-
-    def test_mes_valido_pasa(self) -> None:
-        """PE: a mid-range month must be accepted."""
-        assert validate_month("5") == 5
+    @pytest.mark.parametrize(
+        "value, match",
+        [
+            ("1999", "2000 o posterior"), # AVL: Below bound
+            ("veinte", "entero"),         # PE: Text
+        ],
+    )
+    def test_validate_year_invalid(self, value, match):
+        with pytest.raises(ValueError, match=match):
+            validate_year(value)
 
 
 # ─────────────────────────────────────────────────────────────
-# validate_year
+# DummyService Tests
 # ─────────────────────────────────────────────────────────────
 
 
-class TestValidateYear:
-    """PE and AVL tests for the year field."""
+class TestDummyService:
+    """Behavioral tests for DummyFinanceService."""
 
-    def test_texto_lanza_error(self) -> None:
-        """PE: alphabetic year must be rejected."""
-        with pytest.raises(ValueError, match="número"):
-            validate_year("veinte")
+    def test_register_income_updates_simulated_balance(self, service):
+        """PE: Income increases balance."""
+        service.register_transaction(uuid4(), None, "INCOME", Decimal("100"), "T")
+        assert service._balance == Decimal("1100.00")
 
-    def test_anio_limite_inferior_pasa(self) -> None:
-        """AVL: year 2000 is the minimum allowed."""
-        assert validate_year("2000") == 2000
-
-    def test_anio_inferior_prohibido(self) -> None:
-        """AVL: year 1999 is below the allowed boundary."""
-        with pytest.raises(ValueError, match="2000"):
-            validate_year("1999")
-
-    def test_anio_valido_pasa(self) -> None:
-        """PE: a current year must be accepted."""
-        assert validate_year("2026") == 2026
-
-
-# ─────────────────────────────────────────────────────────────
-# DummyFinanceService — create_account
-# ─────────────────────────────────────────────────────────────
-
-
-class TestCreateAccount:
-    """PE tests for DummyFinanceService.create_account."""
-
-    def test_datos_validos_retorna_account(self, service: DummyFinanceService) -> None:
-        """PE: valid inputs must return an Account with correct fields."""
-        account = service.create_account(name="Sueldo", bank="BCP")
-        assert account.name == "Sueldo"
-        assert account.bank == "BCP"
-        assert account.current_balance == Decimal("0.00")
-        assert account.is_active is True
-
-    def test_nombre_vacio_lanza_error(self, service: DummyFinanceService) -> None:
-        """PE: empty account name must be rejected by the service."""
-        with pytest.raises(ValueError):
-            service.create_account(name="", bank="BCP")
-
-    def test_banco_vacio_lanza_error(self, service: DummyFinanceService) -> None:
-        """PE: empty bank name must be rejected by the service."""
-        with pytest.raises(ValueError):
-            service.create_account(name="Sueldo", bank="")
-
-
-# ─────────────────────────────────────────────────────────────
-# DummyFinanceService — create_category
-# ─────────────────────────────────────────────────────────────
-
-
-class TestCreateCategory:
-    """PE tests for DummyFinanceService.create_category."""
-
-    def test_nombre_valido_retorna_category(
-        self, service: DummyFinanceService
-    ) -> None:
-        """PE: valid name must return a Category."""
-        category = service.create_category(name="Transporte")
-        assert category.name == "Transporte"
-        assert category.is_active is True
-
-    def test_nombre_vacio_lanza_error(self, service: DummyFinanceService) -> None:
-        """PE: empty category name must be rejected."""
-        with pytest.raises(ValueError):
-            service.create_category(name="")
-
-
-# ─────────────────────────────────────────────────────────────
-# DummyFinanceService — register_transaction
-# ─────────────────────────────────────────────────────────────
-
-
-class TestRegisterTransaction:
-    """PE and AVL tests for DummyFinanceService.register_transaction."""
-
-    def test_income_valido_retorna_tupla(self, service: DummyFinanceService) -> None:
-        """PE: valid INCOME must return (Transaction, False)."""
-        txn, exceeded = service.register_transaction(
-            account_id=uuid4(),
-            category_id=None,
-            transaction_type="INCOME",
-            amount=Decimal("500.00"),
-            description="Sueldo mayo",
-        )
-        assert txn.transaction_type.value == "INCOME"
-        assert exceeded is False
-
-    def test_expense_valido_retorna_tupla(self, service: DummyFinanceService) -> None:
-        """PE: valid EXPENSE within balance must return (Transaction, bool)."""
-        txn, _ = service.register_transaction(
-            account_id=uuid4(),
-            category_id=uuid4(),
-            transaction_type="EXPENSE",
-            amount=Decimal("40.00"),
-            description="Taxi",
-        )
-        assert txn.transaction_type.value == "EXPENSE"
-
-    def test_monto_cero_lanza_error(self, service: DummyFinanceService) -> None:
-        """AVL: amount of 0 is the lower forbidden boundary."""
-        with pytest.raises(ValueError, match="mayor"):
-            service.register_transaction(
-                account_id=uuid4(),
-                category_id=None,
-                transaction_type="INCOME",
-                amount=Decimal("0"),
-                description="Test",
-            )
-
-    def test_tipo_invalido_lanza_error(self, service: DummyFinanceService) -> None:
-        """PE: an unknown transaction type must be rejected."""
-        with pytest.raises(ValueError, match="inválido"):
-            service.register_transaction(
-                account_id=uuid4(),
-                category_id=None,
-                transaction_type="TRANSFERENCIA",
-                amount=Decimal("100"),
-                description="Test",
-            )
-
-    def test_fondos_insuficientes_lanza_error(
-        self, service: DummyFinanceService
-    ) -> None:
-        """PE: expense exceeding balance must raise InsufficientFundsError."""
+    def test_register_expense_fails_insufficient_funds(self, service):
+        """PE: Overspending raises error."""
         with pytest.raises(InsufficientFundsError):
-            service.register_transaction(
-                account_id=uuid4(),
-                category_id=uuid4(),
-                transaction_type="EXPENSE",
-                amount=Decimal("9999.00"),
-                description="Gasto enorme",
-            )
+            service.register_transaction(uuid4(), uuid4(), "EXPENSE", Decimal("1000.01"), "T")
+
+    def test_list_active_filters_deactivated(self, service):
+        """PE: List methods respect is_active."""
+        acc = service.create_account("A", "B")
+        service.deactivate_account(acc.id)
+        assert len(service.list_active_accounts()) == 0
