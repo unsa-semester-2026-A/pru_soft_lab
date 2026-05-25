@@ -205,7 +205,7 @@
   tableContents[
     #heading(level: 1)[I. SOLUCIÓN DE EJERCICIOS/PROBLEMAS]
 
-    #include "informe/content/1_ejercicios.typ"
+    
 
     
     // Espacio reservado para las soluciones
