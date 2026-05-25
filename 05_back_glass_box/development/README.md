@@ -1,34 +1,43 @@
-## Setup
+# Glass Box - Finance Tracking
 
-1. Sync dependencies:
+A minimal personal finance tracker focusing on local execution and hexagonal architecture.
+
+## Setup & Workflow
+
+We use `make` as our primary command runner to simplify the workflow. 
+
+### 1. Initial Setup (Mandatory)
+
+To install dependencies and configure the Git hooks (works on Windows/Linux/macOS):
 ```bash
-uv sync
+make install
 ```
 
-2. **Mandatory: Install Git Hooks**
-To ensure code quality, you must install the project's Git hooks:
+### 2. Running the Application
+
+To run the main application:
 ```bash
-bash scripts/install-hooks.sh
+make run
 ```
 
-## Scripts
+### 3. Development Commands
 
-- To run the app:
+During development, you can use the following commands to ensure your code is clean and correct:
 
+- **Format code:** `make format`
+- **Lint code (auto-fix):** `make lint`
+- **Type checking:** `make typecheck`
+- **Run tests:** `make test`
+
+### 4. Pre-Submit Validation
+
+To run all checks exactly as they will be run by the `pre-push` git hook:
 ```bash
-uv sync
-uv run finance
+make check
 ```
 
-- validation before submit 
+## Structure
 
-```bash
-#!/bin/sh
-uv run ruff format .
-
-uv run ruff check --fix .
-
-uv run pyright
-
-uv run pytest
-```
+- `finance/core`: Hexagon core containing domain and ports.
+- `finance/adapters`: Outside world implementations.
+- `finance/config`: Dependency injection and bootstrap.

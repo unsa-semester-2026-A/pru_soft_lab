@@ -1,50 +1,19 @@
 #!/bin/sh
 
 # Get the directory where the script is located
-# This works whether called directly or via Git hooks
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# The project root is one level up from .githooks
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Change to project root to ensure 'uv run' finds the correct pyproject.toml
 cd "$PROJECT_ROOT" || {
     echo "ERROR: Could not change to project root $PROJECT_ROOT"
     exit 1
 }
 
-echo "Running hooks in $PROJECT_ROOT"
-
-echo "1. Checking code formatting with Ruff..."
-uv run ruff format --check .
-
-if [ $? -ne 0 ]; then
-echo "ERROR: Code is not formatted. Run 'uv run ruff format .' to fix it. Push aborted."
-exit 1
-fi
-
-echo "2. Running Ruff linter..."
-uv run ruff check .
-
-if [ $? -ne 0 ]; then
-echo "ERROR: Ruff detected linting issues. Fix them before pushing. Push aborted."
-exit 1
-fi
-
-echo "3. Running Pyright for strict type checking..."
-uv run pyright
-
-if [ $? -ne 0 ]; then
-echo "ERROR: Pyright detected typing issues. Push aborted."
-exit 1
-fi
-
-echo "4. Running unit tests with Pytest..."
-uv run pytest
-
-if [ $? -ne 0 ]; then
-echo "ERROR: Tests failed. Push aborted."
-exit 1
-fi
+echo "Running pre-push hook via make..."
+make check || {
+    echo "ERROR: pre-push checks failed. Please fix the issues before pushing."
+    exit 1
+}
 
 echo "All checks passed. Pushing changes..."
 exit 0

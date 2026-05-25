@@ -1,12 +1,31 @@
 .PHONY: install
 install:
 	uv sync
-	bash scripts/install-hooks.sh
+	uv run python scripts/install_hooks.py
 
 .PHONY: run
 run:
-	uv run finance
+	uv run python -m finance
+
+.PHONY: format
+format:
+	uv run ruff format .
+
+.PHONY: lint
+lint:
+	uv run ruff check --fix .
+
+.PHONY: typecheck
+typecheck:
+	uv run pyright
+
+.PHONY: test
+test:
+	uv run pytest
 
 .PHONY: check
 check:
-	bash .githooks/pre-push
+	uv run ruff format --check .
+	uv run ruff check .
+	uv run pyright
+	uv run pytest
