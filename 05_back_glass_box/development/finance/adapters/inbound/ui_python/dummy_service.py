@@ -8,7 +8,7 @@ Do NOT use in production.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from enum import Enum
 from uuid import UUID, uuid4
@@ -233,7 +233,7 @@ class DummyFinanceService:
             transaction_type=parsed_type,
             amount=amount,
             description=description,
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(timezone.utc),
         )
         return transaction, budget_exceeded
 

@@ -20,7 +20,6 @@ from finance.adapters.inbound.ui_python.views import (
     validar_mes,
     validar_nombre,
 )
-from finance.core.ports.inbound import FinanceInboundPort
 
 
 class FinanceApp(ctk.CTk):
@@ -44,9 +43,7 @@ class FinanceApp(ctk.CTk):
         """
         super().__init__()
         # If no service provided, use a dummy one for testing/non-blocking UI
-        self.servicio: Any = (
-        servicio if servicio is not None else DummyFinanceService()
-        )
+        self.servicio: Any = servicio if servicio is not None else DummyFinanceService()
         self.title("Finanzas Personales")
         self.geometry("780x560")
         self.resizable(False, False)
