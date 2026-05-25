@@ -2,14 +2,13 @@
 
 from datetime import datetime
 from decimal import Decimal
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 
 from finance.core.domain.entities import (
     Account,
     Budget,
-    Category,
     InsufficientFundsError,
     Transaction,
     TransactionType,
@@ -24,7 +23,7 @@ from finance.core.domain.entities import (
 class TestUser:
     """Test suite for User entity."""
 
-    def test_valid_user(self):
+    def test_valid_user(self) -> None:
         """PE: Valid user creation."""
         user = User(name="John Doe", email="john@example.com")
         assert user.name == "John Doe"
@@ -40,7 +39,9 @@ class TestUser:
             ("John", "invalid-email", "Email must have a valid format"),
         ],
     )
-    def test_invalid_user_creation(self, name, email, error_match):
+    def test_invalid_user_creation(
+        self, name: str, email: str, error_match: str
+    ) -> None:
         """PE/AVL: Invalid inputs for user creation."""
         with pytest.raises(ValueError, match=error_match):
             User(name=name, email=email)
@@ -54,7 +55,7 @@ class TestUser:
 class TestAccount:
     """Test suite for Account entity."""
 
-    def test_valid_account(self):
+    def test_valid_account(self) -> None:
         """PE: Valid account creation."""
         account = Account(name="Savings", bank="BCP")
         assert account.name == "Savings"
@@ -62,14 +63,25 @@ class TestAccount:
         assert account.current_balance == Decimal("0.00")
         assert account.is_active is True
 
+    def test_register_income_and_expense_valid(self) -> None:
+        """PE: Registro de ingresos y gastos dentro del saldo."""
+        account = Account(name="S", bank="B")
+        account.register_income(Decimal("100.00"))
+        account.register_expense(Decimal("40.00"))
+        assert account.current_balance == Decimal("60.00")
+
     @pytest.mark.parametrize(
         "name, bank, error_match",
         [
             ("", "BCP", "Account name cannot be empty"),
-            ("Savings", " ", "Bank name cannot be empty"),
+            ("   ", "BCP", "Account name cannot be empty"),
+            ("Savings", "", "Bank name cannot be empty"),
+            ("Savings", "   ", "Bank name cannot be empty"),
         ],
     )
-    def test_invalid_account_creation(self, name, bank, error_match):
+    def test_invalid_account_creation(
+        self, name: str, bank: str, error_match: str
+    ) -> None:
         """PE: Invalid strings for account creation."""
         with pytest.raises(ValueError, match=error_match):
             Account(name=name, bank=bank)
@@ -78,10 +90,12 @@ class TestAccount:
         "amount, expected_balance",
         [
             (Decimal("0.01"), Decimal("0.01")),  # AVL: Minimum positive
-            (Decimal("100"), Decimal("100")),    # PE: Normal positive
+            (Decimal("100"), Decimal("100")),  # PE: Normal positive
         ],
     )
-    def test_register_income_valid(self, amount, expected_balance):
+    def test_register_income_valid(
+        self, amount: Decimal, expected_balance: Decimal
+    ) -> None:
         """AVL/PE: Valid income amounts."""
         account = Account(name="S", bank="B")
         account.register_income(amount)
@@ -90,18 +104,18 @@ class TestAccount:
     @pytest.mark.parametrize(
         "amount",
         [
-            Decimal("0.00"),   # AVL: Zero (not positive)
+            Decimal("0.00"),  # AVL: Zero (not positive)
             Decimal("-0.01"),  # AVL: Minimum negative
-            Decimal("-100"),   # PE: Large negative
+            Decimal("-100"),  # PE: Large negative
         ],
     )
-    def test_register_income_invalid(self, amount):
+    def test_register_income_invalid(self, amount: Decimal) -> None:
         """AVL/PE: Invalid income amounts."""
         account = Account(name="S", bank="B")
         with pytest.raises(ValueError, match="Income amount must be positive"):
             account.register_income(amount)
 
-    def test_register_expense_valid_boundary(self):
+    def test_register_expense_valid_boundary(self) -> None:
         """AVL: Exact balance expense (leaves zero)."""
         account = Account(name="S", bank="B", current_balance=Decimal("100.00"))
         account.register_expense(Decimal("100.00"))
@@ -110,11 +124,21 @@ class TestAccount:
     @pytest.mark.parametrize(
         "initial_balance, expense_amount, error_match",
         [
-            (Decimal("100.00"), Decimal("100.01"), "Insufficient funds"),  # AVL: 1 cent over
-            (Decimal("0.00"), Decimal("0.01"), "Insufficient funds"),      # AVL: Any expense on zero balance
+            (
+                Decimal("100.00"),
+                Decimal("100.01"),
+                "Insufficient funds",
+            ),  # AVL: 1 cent over
+            (
+                Decimal("0.00"),
+                Decimal("0.01"),
+                "Insufficient funds",
+            ),  # AVL: Any expense on zero balance
         ],
     )
-    def test_register_expense_insufficient_funds(self, initial_balance, expense_amount, error_match):
+    def test_register_expense_insufficient_funds(
+        self, initial_balance: Decimal, expense_amount: Decimal, error_match: str
+    ) -> None:
         """AVL: Insufficient funds boundaries."""
         account = Account(name="S", bank="B", current_balance=initial_balance)
         with pytest.raises(InsufficientFundsError, match=error_match):
@@ -130,16 +154,34 @@ class TestBudget:
     """Test suite for Budget entity."""
 
     @pytest.mark.parametrize(
-        "limit, month, year, error_match",
+        "limit, month, year",
         [
-            (Decimal("0.00"), 5, 2026, "greater than 0"),      # AVL: Zero limit
-            (Decimal("-1.00"), 5, 2026, "greater than 0"),     # PE: Negative limit
-            (Decimal("100"), 0, 2026, "between 1 and 12"),     # AVL: Month < 1
-            (Decimal("100"), 13, 2026, "between 1 and 12"),    # AVL: Month > 12
-            (Decimal("100"), 5, 1899, "Invalid year"),         # AVL: Year < 1900
+            (Decimal("0.01"), 1, 1900),  # AVL: Minimums
+            (Decimal("100.00"), 12, 2026),  # AVL: Max month
         ],
     )
-    def test_invalid_budget_boundaries(self, limit, month, year, error_match):
+    def test_valid_budget_boundaries(
+        self, limit: Decimal, month: int, year: int
+    ) -> None:
+        """AVL: Valid boundaries for Budget creation."""
+        budget = Budget(category_id=uuid4(), month=month, year=year, limit_amount=limit)
+        assert budget.limit_amount == limit
+        assert budget.month == month
+        assert budget.year == year
+
+    @pytest.mark.parametrize(
+        "limit, month, year, error_match",
+        [
+            (Decimal("0.00"), 5, 2026, "greater than 0"),  # AVL: Zero limit
+            (Decimal("-1.00"), 5, 2026, "greater than 0"),  # PE: Negative limit
+            (Decimal("100"), 0, 2026, "between 1 and 12"),  # AVL: Month < 1
+            (Decimal("100"), 13, 2026, "between 1 and 12"),  # AVL: Month > 12
+            (Decimal("100"), 5, 1899, "Invalid year"),  # AVL: Year < 1900
+        ],
+    )
+    def test_invalid_budget_boundaries(
+        self, limit: Decimal, month: int, year: int, error_match: str
+    ) -> None:
         """AVL: Boundary tests for Budget creation."""
         with pytest.raises(ValueError, match=error_match):
             Budget(category_id=uuid4(), month=month, year=year, limit_amount=limit)
@@ -153,14 +195,32 @@ class TestBudget:
 class TestTransaction:
     """Test suite for Transaction entity."""
 
+    def test_valid_transaction_amount(self) -> None:
+        """AVL: Monto de 0.01 (Mínimo aceptado)."""
+        tx = Transaction(
+            account_id=uuid4(),
+            category_id=None,
+            transaction_type=TransactionType.INCOME,
+            description="Minimum income",
+            created_at=datetime.now(),
+            amount=Decimal("0.01"),
+        )
+        assert tx.amount == Decimal("0.01")
+
     @pytest.mark.parametrize(
         "t_type, cat_id, error_match",
         [
-            (TransactionType.EXPENSE, None, "expense must have a category"), # logic
-            (TransactionType.INCOME, uuid4(), "income must not have a category"), # logic
+            (TransactionType.EXPENSE, None, "expense must have a category"),  # logic
+            (
+                TransactionType.INCOME,
+                uuid4(),
+                "income must not have a category",
+            ),  # logic
         ],
     )
-    def test_invalid_transaction_logic(self, t_type, cat_id, error_match):
+    def test_invalid_transaction_logic(
+        self, t_type: TransactionType, cat_id: UUID | None, error_match: str
+    ) -> None:
         """PE: Invalid logic between type and category."""
         with pytest.raises(ValueError, match=error_match):
             Transaction(
@@ -173,7 +233,7 @@ class TestTransaction:
             )
 
     @pytest.mark.parametrize("amount", [Decimal("0.00"), Decimal("-0.01")])
-    def test_invalid_transaction_amount(self, amount):
+    def test_invalid_transaction_amount(self, amount: Decimal) -> None:
         """AVL: Transaction amount must be positive."""
         with pytest.raises(ValueError, match="greater than 0"):
             Transaction(

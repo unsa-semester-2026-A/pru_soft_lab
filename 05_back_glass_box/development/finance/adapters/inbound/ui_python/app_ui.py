@@ -255,15 +255,15 @@ class _FrameListaCuentas(ctk.CTkFrame):
                 ctk.CTkLabel(
                     info_frame, text=acc.name, font=ctk.CTkFont(weight="bold")
                 ).pack(anchor="w")
-                ctk.CTkLabel(
-                    info_frame, text=acc.bank, font=ctk.CTkFont(size=12)
-                ).pack(anchor="w")
+                ctk.CTkLabel(info_frame, text=acc.bank, font=ctk.CTkFont(size=12)).pack(
+                    anchor="w"
+                )
 
                 ctk.CTkLabel(
                     card,
                     text=f"${acc.current_balance:,.2f}",
                     font=ctk.CTkFont(size=16, weight="bold"),
-                    text_color="#3498db"
+                    text_color="#3498db",
                 ).pack(side="left", padx=20)
 
                 ctk.CTkButton(
@@ -378,18 +378,18 @@ class _FrameListaCategorias(ctk.CTkFrame):
         try:
             categories = self._service.list_active_categories()
             if not categories:
-                ctk.CTkLabel(
-                    self._scroll, text="No hay categorías activas."
-                ).pack(pady=20)
+                ctk.CTkLabel(self._scroll, text="No hay categorías activas.").pack(
+                    pady=20
+                )
                 return
 
             for cat in categories:
                 card = ctk.CTkFrame(self._scroll)
                 card.pack(fill="x", pady=4, padx=10)
 
-                ctk.CTkLabel(
-                    card, text=cat.name, font=ctk.CTkFont(weight="bold")
-                ).pack(side="left", padx=12, pady=10)
+                ctk.CTkLabel(card, text=cat.name, font=ctk.CTkFont(weight="bold")).pack(
+                    side="left", padx=12, pady=10
+                )
 
                 ctk.CTkButton(
                     card,
@@ -560,12 +560,14 @@ class _FrameListaPresupuestos(ctk.CTkFrame):
             results = []
             for b in budgets:
                 spent, exceeded = self._service.calculate_budget_status(b.id)
-                results.append({
-                    "budget": b,
-                    "spent": spent,
-                    "exceeded": exceeded,
-                    "period": b.year * 100 + b.month
-                })
+                results.append(
+                    {
+                        "budget": b,
+                        "spent": spent,
+                        "exceeded": exceeded,
+                        "period": b.year * 100 + b.month,
+                    }
+                )
 
             results.sort(key=lambda x: x["period"], reverse=True)
 
@@ -594,9 +596,9 @@ class _FrameListaPresupuestos(ctk.CTkFrame):
         if not items:
             return
 
-        ctk.CTkLabel(
-            self._scroll, text=title, font=ctk.CTkFont(weight="bold")
-        ).pack(anchor="w", pady=(12, 4), padx=10)
+        ctk.CTkLabel(self._scroll, text=title, font=ctk.CTkFont(weight="bold")).pack(
+            anchor="w", pady=(12, 4), padx=10
+        )
 
         for r in items:
             card = ctk.CTkFrame(self._scroll)
@@ -609,12 +611,12 @@ class _FrameListaPresupuestos(ctk.CTkFrame):
             top_f = ctk.CTkFrame(card, fg_color="transparent")
             top_f.pack(fill="x", padx=12, pady=(8, 2))
 
-            ctk.CTkLabel(
-                top_f, text=c_name, font=ctk.CTkFont(weight="bold")
-            ).pack(side="left")
-            ctk.CTkLabel(
-                top_f, text=period, font=ctk.CTkFont(size=12)
-            ).pack(side="right")
+            ctk.CTkLabel(top_f, text=c_name, font=ctk.CTkFont(weight="bold")).pack(
+                side="left"
+            )
+            ctk.CTkLabel(top_f, text=period, font=ctk.CTkFont(size=12)).pack(
+                side="right"
+            )
 
             mid_f = ctk.CTkFrame(card, fg_color="transparent")
             mid_f.pack(fill="x", padx=12, pady=(2, 8))
@@ -622,14 +624,13 @@ class _FrameListaPresupuestos(ctk.CTkFrame):
             status_text = "EXCEDIDO" if r["exceeded"] else "CUMPLIDO"
             status_color = "#e74c3c" if r["exceeded"] else "#2ecc71"
 
-            info = (
-                f"Límite: ${b.limit_amount:,.2f} | "
-                f"Gastado: ${r['spent']:,.2f}"
-            )
+            info = f"Límite: ${b.limit_amount:,.2f} | Gastado: ${r['spent']:,.2f}"
             ctk.CTkLabel(mid_f, text=info, font=ctk.CTkFont(size=13)).pack(side="left")
             ctk.CTkLabel(
-                mid_f, text=status_text, text_color=status_color,
-                font=ctk.CTkFont(weight="bold")
+                mid_f,
+                text=status_text,
+                text_color=status_color,
+                font=ctk.CTkFont(weight="bold"),
             ).pack(side="right")
 
 
@@ -810,10 +811,11 @@ class _FrameListaTransacciones(ctk.CTkFrame):
                 left_f = ctk.CTkFrame(card, fg_color="transparent")
                 left_f.pack(side="left", padx=12, pady=8, fill="both", expand=True)
 
-                date_str = t.created_at.strftime('%d/%m %H:%M')
+                date_str = t.created_at.strftime("%d/%m %H:%M")
                 ctk.CTkLabel(
-                    left_f, text=f"{date_str} - {t.description}",
-                    font=ctk.CTkFont(weight="bold")
+                    left_f,
+                    text=f"{date_str} - {t.description}",
+                    font=ctk.CTkFont(weight="bold"),
                 ).pack(anchor="w")
 
                 acc_name = acc_map.get(t.account_id, "Cuenta eliminada")
@@ -828,7 +830,7 @@ class _FrameListaTransacciones(ctk.CTkFrame):
                     card,
                     text=f"{prefix}${t.amount:,.2f}",
                     text_color=color,
-                    font=ctk.CTkFont(size=15, weight="bold")
+                    font=ctk.CTkFont(size=15, weight="bold"),
                 ).pack(side="right", padx=15)
         except Exception as exc:
             ctk.CTkLabel(

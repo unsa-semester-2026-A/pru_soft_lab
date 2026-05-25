@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from decimal import Decimal
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 
@@ -16,10 +16,8 @@ from finance.adapters.outbound.db_memory.memory_repos import (
 from finance.core.domain.entities import (
     Account,
     Budget,
-    Category,
     Transaction,
     TransactionType,
-    User,
 )
 
 # ─────────────────────────────────────────────────────────────
@@ -60,19 +58,23 @@ def transaction_repo():
 class TestInMemoryAccountRepository:
     """Test suite for AccountRepository."""
 
-    def test_add_and_get_active(self, account_repo):
+    def test_add_and_get_active(self, account_repo: InMemoryAccountRepository) -> None:
         """PE: Active account retrieval."""
         account = Account(name="S", bank="B")
         account_repo.add(account)
         assert account_repo.get(account.id) == account
 
-    def test_get_inactive_returns_none(self, account_repo):
+    def test_get_inactive_returns_none(
+        self, account_repo: InMemoryAccountRepository
+    ) -> None:
         """PE: Inactive account (soft delete) should not be returned by get()."""
         account = Account(name="I", bank="B", is_active=False)
         account_repo.add(account)
         assert account_repo.get(account.id) is None
 
-    def test_list_all_includes_inactive(self, account_repo):
+    def test_list_all_includes_inactive(
+        self, account_repo: InMemoryAccountRepository
+    ) -> None:
         """PE: list_all should return everything regardless of is_active."""
         acc1 = Account(name="A", bank="B")
         acc2 = Account(name="I", bank="B", is_active=False)
@@ -87,14 +89,19 @@ class TestInMemoryTransactionRepository:
     @pytest.mark.parametrize(
         "txn_date, should_be_found",
         [
-            (datetime(2026, 5, 1), True),    # AVL: First day of target month
-            (datetime(2026, 5, 31), True),   # AVL: Last day of target month
+            (datetime(2026, 5, 1), True),  # AVL: First day of target month
+            (datetime(2026, 5, 31), True),  # AVL: Last day of target month
             (datetime(2026, 4, 30), False),  # AVL: Last day of previous month
-            (datetime(2026, 6, 1), False),   # AVL: First day of next month
-            (datetime(2025, 5, 1), False),   # AVL: Same month, wrong year
+            (datetime(2026, 6, 1), False),  # AVL: First day of next month
+            (datetime(2025, 5, 1), False),  # AVL: Same month, wrong year
         ],
     )
-    def test_list_by_category_and_period_boundaries(self, transaction_repo, txn_date, should_be_found):
+    def test_list_by_category_and_period_boundaries(
+        self,
+        transaction_repo: InMemoryTransactionRepository,
+        txn_date: datetime,
+        should_be_found: bool,
+    ) -> None:
         """AVL: Testing date boundaries for period-based listing."""
         cat_id = uuid4()
         acc_id = uuid4()
@@ -107,9 +114,9 @@ class TestInMemoryTransactionRepository:
             created_at=txn_date,
         )
         transaction_repo.add(txn)
-        
+
         results = transaction_repo.list_by_category_and_period(cat_id, 5, 2026)
-        
+
         if should_be_found:
             assert txn in results
         else:
@@ -119,23 +126,38 @@ class TestInMemoryTransactionRepository:
 class TestInMemoryBudgetRepository:
     """Test suite for BudgetRepository."""
 
-    def test_get_by_period_valid(self, budget_repo):
+    def test_get_by_period_valid(self, budget_repo: InMemoryBudgetRepository) -> None:
         cat_id = uuid4()
-        budget = Budget(category_id=cat_id, month=5, year=2026, limit_amount=Decimal("100"))
+        budget = Budget(
+            category_id=cat_id, month=5, year=2026, limit_amount=Decimal("100")
+        )
         budget_repo.add(budget)
         assert budget_repo.get_by_category_and_period(cat_id, 5, 2026) == budget
 
     @pytest.mark.parametrize(
         "search_cat, search_month, search_year",
         [
-            (uuid4(), 5, 2026), # PE: Wrong category
-            (uuid4(), 4, 2026), # PE: Wrong month
-            (uuid4(), 5, 2025), # PE: Wrong year
-        ]
+            (uuid4(), 5, 2026),  # PE: Wrong category
+            (uuid4(), 4, 2026),  # PE: Wrong month
+            (uuid4(), 5, 2025),  # PE: Wrong year
+        ],
     )
-    def test_get_by_period_missing(self, budget_repo, search_cat, search_month, search_year):
+    def test_get_by_period_missing(
+        self,
+        budget_repo: InMemoryBudgetRepository,
+        search_cat: UUID,
+        search_month: int,
+        search_year: int,
+    ) -> None:
         """PE: Búsqueda con parámetros incorrectos retorna None."""
         cat_id = uuid4()
-        budget = Budget(category_id=cat_id, month=5, year=2026, limit_amount=Decimal("100"))
+        budget = Budget(
+            category_id=cat_id, month=5, year=2026, limit_amount=Decimal("100")
+        )
         budget_repo.add(budget)
-        assert budget_repo.get_by_category_and_period(search_cat, search_month, search_year) is None
+        assert (
+            budget_repo.get_by_category_and_period(
+                search_cat, search_month, search_year
+            )
+            is None
+        )

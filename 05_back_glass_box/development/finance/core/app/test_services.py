@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Iterable
 from uuid import UUID, uuid4
 
 import pytest
@@ -17,7 +15,6 @@ from finance.core.domain.entities import (
     Category,
     InsufficientFundsError,
     Transaction,
-    TransactionType,
     User,
 )
 
@@ -45,10 +42,6 @@ class InMemoryAccountRepository:
 
     def get(self, account_id: UUID) -> Account | None:
         return self.items.get(account_id)
-
-    def update(self, account_id: UUID) -> None:
-        # Dummy implementation for tests
-        pass
 
     def list_all(self) -> list[Account]:
         return list(self.items.values())
@@ -162,12 +155,12 @@ def bundle() -> ServiceBundle:
 # ─────────────────────────────────────────────────────────────
 
 
-def test_create_user_persists_data(bundle):
+def test_create_user_persists_data(bundle: ServiceBundle) -> None:
     user = bundle.service.create_user(name="Ana", email="ana@example.com")
     assert bundle.users.get(user.id) == user
 
 
-def test_create_account_persists_data(bundle):
+def test_create_account_persists_data(bundle: ServiceBundle) -> None:
     account = bundle.service.create_account(name="Ahorros", bank="Cash")
     assert bundle.accounts.get(account.id) == account
 
@@ -181,26 +174,28 @@ def test_create_account_persists_data(bundle):
     "expense_amount, expected_exceeded",
     [
         (Decimal("99.99"), False),  # AVL: Slightly under limit
-        (Decimal("100.00"), False), # AVL: Exactly at limit
+        (Decimal("100.00"), False),  # AVL: Exactly at limit
         (Decimal("100.01"), True),  # AVL: Slightly over limit
     ],
 )
-def test_calculate_budget_status_boundaries(bundle, expense_amount, expected_exceeded):
+def test_calculate_budget_status_boundaries(
+    bundle: ServiceBundle, expense_amount: Decimal, expected_exceeded: bool
+) -> None:
     """AVL: Testing budget status exactly at the boundaries."""
     acc = bundle.service.create_account(name="C", bank="B")
     cat = bundle.service.create_category(name="T")
-    
+
     # Set limit to 100
     budget = bundle.service.assign_budget(cat.id, Decimal("100"), 5, 2026)
-    
+
     # Fund account
     bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("1000"), "Fund")
-    
+
     # Register expense
     bundle.service.register_transaction(acc.id, cat.id, "EXPENSE", expense_amount, "E")
-    
+
     spent, exceeded = bundle.service.calculate_budget_status(budget.id)
-    
+
     assert spent == expense_amount
     assert exceeded == expected_exceeded
 
@@ -210,25 +205,32 @@ def test_calculate_budget_status_boundaries(bundle, expense_amount, expected_exc
 # ─────────────────────────────────────────────────────────────
 
 
-def test_register_income_updates_balance(bundle):
+def test_register_income_updates_balance(bundle: ServiceBundle) -> None:
     account = bundle.service.create_account(name="Sueldo", bank="BCP")
     bundle.service.register_transaction(account.id, None, "INCOME", Decimal("500"), "P")
-    
+
     stored = bundle.accounts.get(account.id)
+    assert stored is not None
     assert stored.current_balance == Decimal("500")
 
 
-def test_register_expense_fails_insufficient_funds(bundle):
+def test_register_expense_fails_insufficient_funds(bundle: ServiceBundle) -> None:
     account = bundle.service.create_account(name="Cash", bank="Cash")
     with pytest.raises(InsufficientFundsError):
-        bundle.service.register_transaction(account.id, uuid4(), "EXPENSE", Decimal("10"), "E")
+        bundle.service.register_transaction(
+            account.id, uuid4(), "EXPENSE", Decimal("10"), "E"
+        )
 
 
 @pytest.mark.parametrize("invalid_type", ["TRANSFER", "LOAN", ""])
-def test_register_transaction_rejects_invalid_types(bundle, invalid_type):
+def test_register_transaction_rejects_invalid_types(
+    bundle: ServiceBundle, invalid_type: str
+) -> None:
     acc = bundle.service.create_account(name="C", bank="B")
     with pytest.raises(ValueError, match="Invalid transaction type"):
-        bundle.service.register_transaction(acc.id, None, invalid_type, Decimal("10"), "T")
+        bundle.service.register_transaction(
+            acc.id, None, invalid_type, Decimal("10"), "T"
+        )
 
 
 # ─────────────────────────────────────────────────────────────
@@ -236,7 +238,7 @@ def test_register_transaction_rejects_invalid_types(bundle, invalid_type):
 # ─────────────────────────────────────────────────────────────
 
 
-def test_list_active_accounts_filters_soft_deleted(bundle):
+def test_list_active_accounts_filters_soft_deleted(bundle: ServiceBundle) -> None:
     bundle.service.create_account(name="Active", bank="B1")
     inactive = bundle.service.create_account(name="Inactive", bank="B2")
     bundle.service.deactivate_account(inactive.id)
@@ -246,7 +248,7 @@ def test_list_active_accounts_filters_soft_deleted(bundle):
     assert active_accounts[0].name == "Active"
 
 
-def test_list_all_transactions_returns_full_history(bundle):
+def test_list_all_transactions_returns_full_history(bundle: ServiceBundle) -> None:
     acc = bundle.service.create_account(name="C", bank="B")
     bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("100"), "T1")
     bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("100"), "T2")
