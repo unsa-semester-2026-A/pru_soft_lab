@@ -15,10 +15,10 @@ import darkdetect
 
 from finance.adapters.inbound.ui_python.dummy_service import DummyFinanceService
 from finance.adapters.inbound.ui_python.views import (
-    validar_amount,
-    validar_anio,
-    validar_mes,
-    validar_nombre,
+    validate_amount,
+    validate_month,
+    validate_name,
+    validate_year,
 )
 
 
@@ -28,22 +28,18 @@ class FinanceApp(ctk.CTk):
     Manages navigation between views and holds a reference to the
     injected service. The UI never calls domain logic directly — all
     business operations go through the service.
-
-    Args:
-        servicio: Any object implementing FinanceInboundPort
-                  (real or dummy).
     """
 
-    def __init__(self, servicio: Any = None) -> None:
+    def __init__(self, service: Any = None) -> None:
         """Initialize the root window and build the main UI.
 
         Args:
-            servicio: The finance service to use for all operations.
+            service: The finance service to use for all operations.
                       If None, uses DummyFinanceService.
         """
         super().__init__()
         # If no service provided, use a dummy one for testing/non-blocking UI
-        self.servicio: Any = servicio if servicio is not None else DummyFinanceService()
+        self._service: Any = service if service is not None else DummyFinanceService()
         self.title("Finanzas Personales")
         self.geometry("780x560")
         self.resizable(False, False)
@@ -81,7 +77,7 @@ class FinanceApp(ctk.CTk):
         self._frames: dict[str, ctk.CTkFrame] = {}
 
         for row_idx, (label, frame_cls) in enumerate(nav_items, start=1):
-            frame = frame_cls(self, self.servicio)
+            frame = frame_cls(self, self._service)
             frame.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
             self._frames[label] = frame
 
@@ -132,22 +128,17 @@ def _set_status(label: ctk.CTkLabel, text: str, ok: bool) -> None:
 
 
 class _FrameCuenta(ctk.CTkFrame):
-    """Form for creating a new financial account.
+    """Form for creating a new financial account."""
 
-    Args:
-        parent: The parent widget.
-        servicio: The finance service instance.
-    """
-
-    def __init__(self, parent: ctk.CTk, servicio: Any) -> None:
+    def __init__(self, parent: ctk.CTk, service: Any) -> None:
         """Initialize the account creation form.
 
         Args:
             parent: Root window.
-            servicio: Finance service for account operations.
+            service: Finance service for account operations.
         """
         super().__init__(parent, fg_color="transparent")
-        self._servicio = servicio
+        self._service = service
         self._build()
 
     def _build(self) -> None:
@@ -156,15 +147,15 @@ class _FrameCuenta(ctk.CTkFrame):
             self, text="Nueva cuenta", font=ctk.CTkFont(size=16, weight="bold")
         ).pack(anchor="w", pady=(0, 12))
 
-        self._entry_nombre = ctk.CTkEntry(
+        self._entry_name = ctk.CTkEntry(
             self, placeholder_text="Nombre (ej. Sueldo)", width=320
         )
-        self._entry_nombre.pack(pady=6, anchor="w")
+        self._entry_name.pack(pady=6, anchor="w")
 
-        self._entry_banco = ctk.CTkEntry(
+        self._entry_bank = ctk.CTkEntry(
             self, placeholder_text="Banco (ej. BCP)", width=320
         )
-        self._entry_banco.pack(pady=6, anchor="w")
+        self._entry_bank.pack(pady=6, anchor="w")
 
         ctk.CTkButton(self, text="Crear cuenta", command=self._submit).pack(
             pady=12, anchor="w"
@@ -176,10 +167,10 @@ class _FrameCuenta(ctk.CTkFrame):
     def _submit(self) -> None:
         """Validate inputs and call the service."""
         try:
-            nombre = validar_nombre(self._entry_nombre.get())
-            banco = validar_nombre(self._entry_banco.get())
-            cuenta = self._servicio.create_account(name=nombre, bank=banco)
-            _set_status(self._status, f"Cuenta '{cuenta.name}' creada.", ok=True)
+            name = validate_name(self._entry_name.get())
+            bank = validate_name(self._entry_bank.get())
+            account = self._service.create_account(name=name, bank=bank)
+            _set_status(self._status, f"Cuenta '{account.name}' creada.", ok=True)
         except Exception as exc:
             _set_status(self._status, str(exc), ok=False)
 
@@ -190,22 +181,17 @@ class _FrameCuenta(ctk.CTkFrame):
 
 
 class _FrameCategoria(ctk.CTkFrame):
-    """Form for creating a spending category.
+    """Form for creating a spending category."""
 
-    Args:
-        parent: The parent widget.
-        servicio: The finance service instance.
-    """
-
-    def __init__(self, parent: ctk.CTk, servicio: Any) -> None:
+    def __init__(self, parent: ctk.CTk, service: Any) -> None:
         """Initialize the category form.
 
         Args:
             parent: Root window.
-            servicio: Finance service for category operations.
+            service: Finance service for category operations.
         """
         super().__init__(parent, fg_color="transparent")
-        self._servicio = servicio
+        self._service = service
         self._build()
 
     def _build(self) -> None:
@@ -214,10 +200,10 @@ class _FrameCategoria(ctk.CTkFrame):
             self, text="Nueva categoría", font=ctk.CTkFont(size=16, weight="bold")
         ).pack(anchor="w", pady=(0, 12))
 
-        self._entry_nombre = ctk.CTkEntry(
+        self._entry_name = ctk.CTkEntry(
             self, placeholder_text="Nombre (ej. Transporte)", width=320
         )
-        self._entry_nombre.pack(pady=6, anchor="w")
+        self._entry_name.pack(pady=6, anchor="w")
 
         ctk.CTkButton(self, text="Crear categoría", command=self._submit).pack(
             pady=12, anchor="w"
@@ -229,8 +215,8 @@ class _FrameCategoria(ctk.CTkFrame):
     def _submit(self) -> None:
         """Validate input and call the service."""
         try:
-            nombre = validar_nombre(self._entry_nombre.get())
-            cat = self._servicio.create_category(name=nombre)
+            name = validate_name(self._entry_name.get())
+            cat = self._service.create_category(name=name)
             _set_status(self._status, f"Categoría '{cat.name}' creada.", ok=True)
         except Exception as exc:
             _set_status(self._status, str(exc), ok=False)
@@ -242,22 +228,17 @@ class _FrameCategoria(ctk.CTkFrame):
 
 
 class _FramePresupuesto(ctk.CTkFrame):
-    """Form for assigning a monthly budget to a category.
+    """Form for assigning a monthly budget to a category."""
 
-    Args:
-        parent: The parent widget.
-        servicio: The finance service instance.
-    """
-
-    def __init__(self, parent: ctk.CTk, servicio: Any) -> None:
+    def __init__(self, parent: ctk.CTk, service: Any) -> None:
         """Initialize the budget form.
 
         Args:
             parent: Root window.
-            servicio: Finance service for budget operations.
+            service: Finance service for budget operations.
         """
         super().__init__(parent, fg_color="transparent")
-        self._servicio = servicio
+        self._service = service
         self._build()
 
     def _build(self) -> None:
@@ -271,18 +252,18 @@ class _FramePresupuesto(ctk.CTkFrame):
         )
         self._entry_cat_id.pack(pady=6, anchor="w")
 
-        self._entry_limite = ctk.CTkEntry(
+        self._entry_limit = ctk.CTkEntry(
             self, placeholder_text="Límite (ej. 150.00)", width=320
         )
-        self._entry_limite.pack(pady=6, anchor="w")
+        self._entry_limit.pack(pady=6, anchor="w")
 
-        self._entry_mes = ctk.CTkEntry(self, placeholder_text="Mes (1-12)", width=150)
-        self._entry_mes.pack(pady=6, anchor="w")
+        self._entry_month = ctk.CTkEntry(self, placeholder_text="Mes (1-12)", width=150)
+        self._entry_month.pack(pady=6, anchor="w")
 
-        self._entry_anio = ctk.CTkEntry(
+        self._entry_year = ctk.CTkEntry(
             self, placeholder_text="Año (ej. 2026)", width=150
         )
-        self._entry_anio.pack(pady=6, anchor="w")
+        self._entry_year.pack(pady=6, anchor="w")
 
         ctk.CTkButton(self, text="Asignar presupuesto", command=self._submit).pack(
             pady=12, anchor="w"
@@ -295,14 +276,14 @@ class _FramePresupuesto(ctk.CTkFrame):
         """Validate inputs and call the service."""
         try:
             cat_id = UUID(self._entry_cat_id.get().strip())
-            limite = validar_amount(self._entry_limite.get())
-            mes = validar_mes(self._entry_mes.get())
-            anio = validar_anio(self._entry_anio.get())
-            self._servicio.assign_budget(
+            limit = validate_amount(self._entry_limit.get())
+            month = validate_month(self._entry_month.get())
+            year = validate_year(self._entry_year.get())
+            self._service.assign_budget(
                 category_id=cat_id,
-                limit_amount=limite,
-                month=mes,
-                year=anio,
+                limit_amount=limit,
+                month=month,
+                year=year,
             )
             _set_status(self._status, "Presupuesto asignado correctamente.", ok=True)
         except Exception as exc:
@@ -315,22 +296,17 @@ class _FramePresupuesto(ctk.CTkFrame):
 
 
 class _FrameTransaccion(ctk.CTkFrame):
-    """Form for registering an income or expense transaction.
+    """Form for registering an income or expense transaction."""
 
-    Args:
-        parent: The parent widget.
-        servicio: The finance service instance.
-    """
-
-    def __init__(self, parent: ctk.CTk, servicio: Any) -> None:
+    def __init__(self, parent: ctk.CTk, service: Any) -> None:
         """Initialize the transaction form.
 
         Args:
             parent: Root window.
-            servicio: Finance service for transaction operations.
+            service: Finance service for transaction operations.
         """
         super().__init__(parent, fg_color="transparent")
-        self._servicio = servicio
+        self._service = service
         self._build()
 
     def _build(self) -> None:
@@ -353,20 +329,20 @@ class _FrameTransaccion(ctk.CTkFrame):
         )
         self._entry_cat_id.pack(pady=6, anchor="w")
 
-        self._tipo_var = ctk.StringVar(value="INCOME")
-        frame_tipo = ctk.CTkFrame(self, fg_color="transparent")
-        frame_tipo.pack(anchor="w", pady=6)
+        self._type_var = ctk.StringVar(value="INCOME")
+        frame_type = ctk.CTkFrame(self, fg_color="transparent")
+        frame_type.pack(anchor="w", pady=6)
         ctk.CTkRadioButton(
-            frame_tipo, text="INCOME", variable=self._tipo_var, value="INCOME"
+            frame_type, text="INCOME", variable=self._type_var, value="INCOME"
         ).pack(side="left", padx=(0, 16))
         ctk.CTkRadioButton(
-            frame_tipo, text="EXPENSE", variable=self._tipo_var, value="EXPENSE"
+            frame_type, text="EXPENSE", variable=self._type_var, value="EXPENSE"
         ).pack(side="left")
 
-        self._entry_monto = ctk.CTkEntry(
+        self._entry_amount = ctk.CTkEntry(
             self, placeholder_text="Monto (ej. 40.00)", width=320
         )
-        self._entry_monto.pack(pady=6, anchor="w")
+        self._entry_amount.pack(pady=6, anchor="w")
 
         self._entry_desc = ctk.CTkEntry(self, placeholder_text="Descripción", width=320)
         self._entry_desc.pack(pady=6, anchor="w")
@@ -384,15 +360,15 @@ class _FrameTransaccion(ctk.CTkFrame):
             account_id = UUID(self._entry_account_id.get().strip())
             cat_raw = self._entry_cat_id.get().strip()
             cat_id: UUID | None = UUID(cat_raw) if cat_raw else None
-            tipo = self._tipo_var.get()
-            monto = validar_amount(self._entry_monto.get())
-            desc = validar_nombre(self._entry_desc.get())
+            tipo = self._type_var.get()
+            amount = validate_amount(self._entry_amount.get())
+            desc = validate_name(self._entry_desc.get())
 
-            _, exceeded = self._servicio.register_transaction(
+            _, exceeded = self._service.register_transaction(
                 account_id=account_id,
                 category_id=cat_id,
                 transaction_type=tipo,
-                amount=monto,
+                amount=amount,
                 description=desc,
             )
             msg = "Transacción registrada."

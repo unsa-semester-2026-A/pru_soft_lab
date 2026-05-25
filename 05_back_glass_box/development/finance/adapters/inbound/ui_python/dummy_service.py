@@ -27,7 +27,13 @@ class InsufficientFundsError(ValueError):
 
 @dataclass
 class User:
-    """Minimal user DTO for UI tests."""
+    """Minimal user DTO for UI tests.
+
+    Attributes:
+        name: Full name of the user.
+        email: Email address of the user.
+        id: Unique identifier for the user.
+    """
 
     name: str
     email: str
@@ -36,7 +42,15 @@ class User:
 
 @dataclass
 class Account:
-    """Minimal account DTO for UI tests."""
+    """Minimal account DTO for UI tests.
+
+    Attributes:
+        name: Name of the account.
+        bank: Name of the bank.
+        current_balance: Current available funds.
+        is_active: Status of the account.
+        id: Unique identifier for the account.
+    """
 
     name: str
     bank: str
@@ -47,7 +61,13 @@ class Account:
 
 @dataclass
 class Category:
-    """Minimal category DTO for UI tests."""
+    """Minimal category DTO for UI tests.
+
+    Attributes:
+        name: Name of the category.
+        is_active: Status of the category.
+        id: Unique identifier for the category.
+    """
 
     name: str
     is_active: bool = True
@@ -56,7 +76,15 @@ class Category:
 
 @dataclass
 class Budget:
-    """Minimal budget DTO for UI tests."""
+    """Minimal budget DTO for UI tests.
+
+    Attributes:
+        category_id: ID of the linked category.
+        month: Month of the budget.
+        year: Year of the budget.
+        limit_amount: Spending limit.
+        id: Unique identifier for the budget.
+    """
 
     category_id: UUID
     month: int
@@ -67,7 +95,17 @@ class Budget:
 
 @dataclass
 class Transaction:
-    """Minimal transaction DTO for UI tests."""
+    """Minimal transaction DTO for UI tests.
+
+    Attributes:
+        account_id: ID of the linked account.
+        category_id: ID of the linked category.
+        transaction_type: INCOME or EXPENSE.
+        amount: Transaction amount.
+        description: Short description.
+        created_at: Date and time of the transaction.
+        id: Unique identifier for the transaction.
+    """
 
     account_id: UUID
     category_id: UUID | None

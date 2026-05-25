@@ -7,7 +7,7 @@ from finance.config.bootstrap import build_container
 def main() -> None:
     """Wire the real service and launch the UI."""
     container = build_container()
-    app = FinanceApp(servicio=container.finance_service)
+    app = FinanceApp(service=container.finance_service)
     app.mainloop()
 
 

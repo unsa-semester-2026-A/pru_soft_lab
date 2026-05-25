@@ -344,7 +344,7 @@ def test_sum_expenses_only_counts_expense_transactions() -> None:
     transactions: Iterable[Transaction] = [
         Transaction(
             account_id=account_id,
-            category_id=category_id,
+            category_id=None,
             transaction_type=TransactionType.INCOME,
             amount=Decimal("100"),
             description="Ingreso",

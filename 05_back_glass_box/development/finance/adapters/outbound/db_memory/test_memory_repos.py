@@ -147,7 +147,12 @@ class TestInMemoryBudgetRepository:
         """AVL: Cambiar el mes debe retornar None."""
         repo = InMemoryBudgetRepository()
         category_id = uuid4()
-        budget = Budget(category_id=category_id, month=5, year=2026)
+        budget = Budget(
+            category_id=category_id,
+            month=5,
+            year=2026,
+            limit_amount=Decimal("100.00"),
+        )
         repo.add(budget)
 
         result = repo.get_by_category_and_period(category_id, 6, 2026)
@@ -158,7 +163,12 @@ class TestInMemoryBudgetRepository:
         """AVL: Cambiar el año debe retornar None."""
         repo = InMemoryBudgetRepository()
         category_id = uuid4()
-        budget = Budget(category_id=category_id, month=5, year=2026)
+        budget = Budget(
+            category_id=category_id,
+            month=5,
+            year=2026,
+            limit_amount=Decimal("100.00"),
+        )
         repo.add(budget)
 
         result = repo.get_by_category_and_period(category_id, 5, 2025)

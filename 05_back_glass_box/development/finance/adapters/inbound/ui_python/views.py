@@ -10,11 +10,11 @@ from __future__ import annotations
 from decimal import Decimal, InvalidOperation
 
 
-def validar_amount(valor: str) -> Decimal:
+def validate_amount(value: str) -> Decimal:
     """Validate and convert a user-entered amount string.
 
     Args:
-        valor: Raw string from a UI entry widget.
+        value: Raw string from a UI entry widget.
 
     Returns:
         The amount as a Decimal if valid.
@@ -22,22 +22,22 @@ def validar_amount(valor: str) -> Decimal:
     Raises:
         ValueError: If empty, non-numeric, or not greater than zero.
     """
-    if not valor.strip():
+    if not value.strip():
         raise ValueError("El campo monto no puede estar vacío.")
     try:
-        monto = Decimal(valor.strip())
+        amount = Decimal(value.strip())
     except InvalidOperation:
         raise ValueError("Debe ingresar un número válido.")
-    if monto <= Decimal("0"):
+    if amount <= Decimal("0"):
         raise ValueError("El monto debe ser mayor a 0.")
-    return monto
+    return amount
 
 
-def validar_nombre(valor: str) -> str:
+def validate_name(value: str) -> str:
     """Validate that a name field is not empty or whitespace-only.
 
     Args:
-        valor: Raw string from a UI entry widget.
+        value: Raw string from a UI entry widget.
 
     Returns:
         The stripped name string if valid.
@@ -45,16 +45,16 @@ def validar_nombre(valor: str) -> str:
     Raises:
         ValueError: If the value is empty or whitespace-only.
     """
-    if not valor.strip():
+    if not value.strip():
         raise ValueError("El nombre no puede estar vacío.")
-    return valor.strip()
+    return value.strip()
 
 
-def validar_mes(valor: str) -> int:
+def validate_month(value: str) -> int:
     """Validate and convert a user-entered month string.
 
     Args:
-        valor: Raw string from a UI entry widget.
+        value: Raw string from a UI entry widget.
 
     Returns:
         The month as an integer between 1 and 12.
@@ -62,19 +62,19 @@ def validar_mes(valor: str) -> int:
     Raises:
         ValueError: If not an integer or outside the range 1-12.
     """
-    if not valor.strip().isdigit():
+    if not value.strip().isdigit():
         raise ValueError("El mes debe ser un número entero.")
-    mes = int(valor.strip())
-    if not 1 <= mes <= 12:
+    month = int(value.strip())
+    if not 1 <= month <= 12:
         raise ValueError("El mes debe estar entre 1 y 12.")
-    return mes
+    return month
 
 
-def validar_anio(valor: str) -> int:
+def validate_year(value: str) -> int:
     """Validate and convert a user-entered year string.
 
     Args:
-        valor: Raw string from a UI entry widget.
+        value: Raw string from a UI entry widget.
 
     Returns:
         The year as an integer >= 2000.
@@ -82,9 +82,9 @@ def validar_anio(valor: str) -> int:
     Raises:
         ValueError: If not numeric or unreasonably small.
     """
-    if not valor.strip().isdigit():
+    if not value.strip().isdigit():
         raise ValueError("El año debe ser un número entero.")
-    anio = int(valor.strip())
-    if anio < 2000:
+    year = int(value.strip())
+    if year < 2000:
         raise ValueError("El año debe ser 2000 o posterior.")
-    return anio
+    return year
