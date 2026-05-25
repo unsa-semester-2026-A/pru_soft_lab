@@ -1,7 +1,8 @@
 """Application services for the finance application."""
 
 from __future__ import annotations
-from datetime import datetime
+
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Iterable
 from uuid import UUID
@@ -14,7 +15,6 @@ from finance.core.domain.entities import (
     TransactionType,
     User,
 )
-
 from finance.core.ports.inbound import FinanceInboundPort
 from finance.core.ports.outbound import (
     AccountRepository,
@@ -23,9 +23,11 @@ from finance.core.ports.outbound import (
     TransactionRepository,
     UserRepository,
 )
+
+
 class FinanceService(FinanceInboundPort):
     """Orchestrates finance flows using outbound ports."""
-    
+
     def __init__(
         self,
         user_repository: UserRepository,
@@ -34,34 +36,34 @@ class FinanceService(FinanceInboundPort):
         budget_repository: BudgetRepository,
         transaction_repository: TransactionRepository,
     ) -> None:
+        """Initialize the service with required repositories."""
         self._user_repository = user_repository
         self._account_repository = account_repository
         self._category_repository = category_repository
         self._budget_repository = budget_repository
-        self._transaction_repository = transaction_repository 
-        
+        self._transaction_repository = transaction_repository
+
     def create_user(self, name: str, email: str) -> User:
         """Create and persist a user profile."""
         user = User(name=name, email=email)
         self._user_repository.add(user)
         return user
-    
+
     def create_account(self, name: str, bank: str) -> Account:
         """Create and persist an account."""
         account = Account(name=name, bank=bank)
         self._account_repository.add(account)
         return account
-    
+
     def create_category(self, name: str) -> Category:
         """Create and persist a category."""
         category = Category(name=name)
         self._category_repository.add(category)
         return category
-    
+
     def assign_budget(
         self, category_id: UUID, limit_amount: Decimal, month: int, year: int
     ) -> Budget:
-        
         """Assign a budget or update existing one for a period."""
         existing = self._budget_repository.get_by_category_and_period(
             category_id, month, year
@@ -84,7 +86,7 @@ class FinanceService(FinanceInboundPort):
         )
         self._budget_repository.update(updated)
         return updated
-    
+
     def register_transaction(
         self,
         account_id: UUID,
@@ -94,9 +96,8 @@ class FinanceService(FinanceInboundPort):
         description: str,
     ) -> tuple[Transaction, bool]:
         """Register a transaction and return budget status."""
-        
         account = self._account_repository.get(account_id)
-        
+
         if account is None:
             raise ValueError("Account not found.")
         parsed_type = self._parse_transaction_type(transaction_type)
@@ -106,27 +107,27 @@ class FinanceService(FinanceInboundPort):
             transaction_type=parsed_type,
             amount=amount,
             description=description,
-            created_at=datetime.utcnow(),
+            created_at=datetime.now(timezone.utc),
         )
         if parsed_type == TransactionType.INCOME:
             account.register_income(amount)
             self._account_repository.update(account)
             self._transaction_repository.add(transaction)
             return transaction, False
-        
+
         account.register_expense(amount)
         self._account_repository.update(account)
         self._transaction_repository.add(transaction)
         exceeded = self._is_budget_exceeded(transaction)
         return transaction, exceeded
-    
+
     def _parse_transaction_type(self, value: str) -> TransactionType:
         """Parse and validate transaction type input."""
         try:
             return TransactionType(value.upper())
         except ValueError as exc:
             raise ValueError("Invalid transaction type.") from exc
-    
+
     def _is_budget_exceeded(self, transaction: Transaction) -> bool:
         """Check whether the budget is exceeded after an expense."""
         if transaction.category_id is None:
@@ -142,7 +143,7 @@ class FinanceService(FinanceInboundPort):
         )
         total_expenses = self._sum_expenses(transactions)
         return total_expenses > budget.limit_amount
-    
+
     def _sum_expenses(self, transactions: Iterable[Transaction]) -> Decimal:
         """Sum expenses from a list of transactions."""
         total = Decimal("0")
