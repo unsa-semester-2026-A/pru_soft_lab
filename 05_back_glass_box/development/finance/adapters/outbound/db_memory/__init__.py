@@ -1,0 +1,1 @@
+"""In-memory database adapters for the finance application."""
