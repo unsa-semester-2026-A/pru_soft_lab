@@ -84,7 +84,7 @@
       #headerSmall[Guía de Práctica de Laboratorio / Talleres / Centros de Simulación]
     ],
     headerSmall(weight: "bold")[Aprobación: 2022/03/01],
-    headerSmall(weight: "bold")[Código: GUIA-PRLE-001],
+    headerSmall(weight: "bold")[Código: GUIA-PRLD-001],
     context headerSmall(weight: "bold", alignTo: right)[Página: #counter(page).display("1")],
   )
 ]
