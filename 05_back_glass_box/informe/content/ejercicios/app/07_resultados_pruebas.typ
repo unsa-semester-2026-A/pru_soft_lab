@@ -6,6 +6,7 @@ Las pruebas del dominio estan en `finance/core/domain/test_entities.py` y cubren
 las entidades User, Account, Budget y Transaction, incluyendo validaciones de
 formatos, limites y reglas de negocio.
 
+
 Evidencia: Fig 1. Pruebas de dominio (entities) en ejecucion.
 
 ==== Services
