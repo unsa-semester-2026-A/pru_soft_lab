@@ -1,5 +1,1 @@
-== Conclusiones del equipo
-#include "conclusiones/01_conclusiones_equipo.typ"
-
-== Trabajo futuro y mejoras
-#include "conclusiones/02_trabajo_futuro.typ"
+Esta práctica dejó en claro que confiar en un solo enfoque de pruebas no es suficiente. Al evaluar nuestra aplicación (FinanceApp) con técnicas de caja negra, pudimos comprobar de forma práctica que las reglas de negocio y los límites de entrada funcionaban. Sin embargo, el mayor contraste se dio al auditar el código fuente del equipo rival (Habitflow): entrar al detalle del código nos permitió detectar fallos graves, como condiciones de carrera y corrupción de memoria, que simplemente no se ven desde la interfaz gráfica. En resumen, someter el software a una revisión técnica por parte de un tercero es la única forma realista de romper con la ceguera del desarrollador y encontrar esos errores estructurales que uno mismo pasa por alto en su propio código.

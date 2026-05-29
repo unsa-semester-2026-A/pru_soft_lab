@@ -226,11 +226,9 @@
     #v(4em)
   ],
   tableContents[
-    #heading(level: 1)[\u{00A0}CONCLUSIONES] \ \
+    #heading(level: 1)[\u{00A0}CONCLUSIONES] 
     
     #include "informe/content/3_conclusiones.typ"
-    // Espacio reservado para las conclusiones
-    #v(4em)
   ]
 )
 
