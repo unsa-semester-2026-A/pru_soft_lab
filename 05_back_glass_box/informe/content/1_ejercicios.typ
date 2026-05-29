@@ -1,7 +1,7 @@
 == Aplicación propia (FinanceApp)
 #include "ejercicios/app/00_resumen.typ"
 
-=== Reglas de negocio y validaciones <sec:eje:app:reglas_negocio>
+=== Requerimientos y reglas de negocio y validaciones <sec:eje:app:reglas_negocio>
 #include "ejercicios/app/01_reglas_negocio.typ"
 
 === Diseño y arquitectura <sec:eje:app:design>
