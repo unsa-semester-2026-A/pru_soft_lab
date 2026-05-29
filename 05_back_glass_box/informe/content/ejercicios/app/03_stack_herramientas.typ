@@ -1,12 +1,13 @@
-Resumen del stack usado en el desarrollo y pruebas.
-
 #table(
-  columns: (1fr, 2fr),
-  [Elemento], [Detalle],
-  [Lenguaje], [Python 3.x],
-  [Framework UI], [(Tkinter / CLI / completar)],
-  [Testing], [pytest],
-  [Automatización], [Makefile y scripts],
+  columns: (1.5fr, 2.5fr),
+  [*Elemento*], [*Detalle*],
+  [Lenguaje], [Python == 3.12],
+  [Framework UI], [CustomTkinter (apoyado por `darkdetect`)],
+  [Testing], [pytest (v8.1.1)],
+  [Automatización], [Makefile, Git hooks (pre-push) y `uv` como gestor de paquetes],
 )
 
-- *Herramientas adicionales:* (linters, formateadores, control de versiones, etc.)
+- *Herramientas adicionales:*
+  - *Type Checker:* Pyright, configurado para requerir tipado estricto en parámetros y valores de retorno, previniendo errores en tiempo de ejecución.
+  - *Linter y Formateador:* Ruff, encargado de mantener el formato del código (88 caracteres por línea) y validar la documentación bajo la convención de Google.
+  - *Control de Versiones:* Git, apoyado por un hook `pre-push` en Shell que ejecuta `make check` para bloquear envíos de código que no superen las pruebas locales o el análisis estático.
