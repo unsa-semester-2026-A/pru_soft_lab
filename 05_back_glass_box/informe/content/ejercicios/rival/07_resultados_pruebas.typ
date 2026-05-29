@@ -24,6 +24,12 @@ Se identificaron 3 errores visuales en el sistema:
 === Error 1: Dependencia de la fecha del sistema
 
 *Descripción:* La fecha que utiliza el sistema es la de la computadora. Si esta está errónea, el sistema también lo estará.
+=== Fecha modificada en la computadora
+
+#figure(
+  image("../../../src/img/leonardo/modificacion_fecha.png", width: 100%),
+  caption: [Estado antes de editar: Historial con completaciones marcadas]
+)
 
 *Impacto:* Un usuario con la fecha del sistema incorrecta puede registrar hábitos en fechas equivocadas.
 
@@ -39,11 +45,21 @@ Se identificaron 3 errores visuales en el sistema:
 
 *Impacto:* El usuario pierde el registro de su progreso al modificar la fecha de inicio.
 
+
 == Evidencia
 
+=== Antes de editar
+
 #figure(
-  image("../../../src/img/leonardo/evidencia_bug_historial.png", width: 100%),
-  caption: [Bug visual: Al actualizar fecha de inicio, el historial se borra]
+  image("../../../src/img/leonardo/antes_editar_historial.png", width: 100%),
+  caption: [Estado antes de editar: Historial con completaciones marcadas]
+)
+
+=== Después de editar (cambiando fecha de inicio)
+
+#figure(
+  image("../../../src/img/leonardo/despues_editar_historial.png", width: 100%),
+  caption: [BUG: Al cambiar fecha de inicio, el historial se perdió]
 )
 
 == Conclusión
