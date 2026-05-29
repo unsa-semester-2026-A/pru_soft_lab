@@ -1,13 +1,13 @@
 == Aplicación propia (FinanceApp)
 #include "ejercicios/app/00_resumen.typ"
 
-=== Reglas de negocio y validaciones
+=== Reglas de negocio y validaciones <sec:eje:app:reglas_negocio>
 #include "ejercicios/app/01_reglas_negocio.typ"
 
-=== Diseño y arquitectura
+=== Diseño y arquitectura <sec:eje:app:design>
 #include "ejercicios/app/02_diseno.typ"
 
-=== Stack y herramientas
+=== Stack y herramientas <set:eje:app:stack>
 #include "ejercicios/app/03_stack_herramientas.typ"
 
 === Manual rápido de uso
