@@ -186,7 +186,10 @@ def test_calculate_budget_status_boundaries(
     cat = bundle.service.create_category(name="T")
 
     # Set limit to 100
-    budget = bundle.service.assign_budget(cat.id, Decimal("100"), 5, 2026)
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    budget = bundle.service.assign_budget(cat.id, Decimal("100"), now.month, now.year)
 
     # Fund account
     bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("1000"), "Fund")
