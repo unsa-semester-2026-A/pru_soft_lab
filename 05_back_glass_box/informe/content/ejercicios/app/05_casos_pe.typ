@@ -97,3 +97,39 @@ clase es suficiente para cubrir el comportamiento esperado.
   [Componente], [Clase], [Valor], [Resultado esperado],
   [\_sum_expenses], [Valida], [lista con INCOME y EXPENSE], [Suma solo gastos],
 )
+
+==== UI y Validaciones
+
+===== validate_amount
+#table(
+  columns: (1.2fr, 0.5fr, 1fr, 1.4fr),
+  [Componente], [Clase], [Valor], [Resultado esperado],
+  [validate_amount], [Valida], ["150.50"], [Decimal(150.50)],
+  [validate_amount], [Valida], ["200"], [Decimal(200)],
+  [validate_amount], [Invalida], ["abc"], [Rechazado: no es numero],
+  [validate_amount], [Invalida], ["   "], [Rechazado: vacio],
+  [validate_amount], [Invalida], ["-10"], [Rechazado: mayor a 0],
+)
+
+===== validate_month / validate_year
+#table(
+  columns: (1.2fr, 0.5fr, 1fr, 1.4fr),
+  [Componente], [Clase], [Valor], [Resultado esperado],
+  [validate_month], [Valida], ["6"], [Entero 6],
+  [validate_month], [Invalida], ["marzo"], [Rechazado: debe ser entero],
+  [validate_year], [Valida], ["2026"], [Entero 2026],
+  [validate_year], [Invalida], ["veinte"], [Rechazado: debe ser entero],
+)
+
+==== Persistencia en Memoria
+
+===== Repositorios (Account y Budget)
+#table(
+  columns: (1.2fr, 0.5fr, 1fr, 1.4fr),
+  [Componente], [Clase], [Valor], [Resultado esperado],
+  [AccountRepository.get], [Valida], [Cuenta activa], [Retorna cuenta],
+  [AccountRepository.get], [Invalida], [Cuenta inactiva], [Retorna None (soft delete)],
+  [AccountRepository.list], [Valida], [Mixtas activas/inactivas], [Retorna todas],
+  [BudgetRepository.get], [Valida], [Parametros correctos], [Retorna presupuesto],
+  [BudgetRepository.get], [Invalida], [Mes incorrecto], [Retorna None],
+)

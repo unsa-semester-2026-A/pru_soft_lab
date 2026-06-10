@@ -70,3 +70,39 @@ El AVL exige probar el limite, el valor inferior inmediato y el superior.
   [Componente], [Limite], [Valor], [Resultado esperado],
   [\_sum_expenses], [mezcla INCOME/EXPENSE], [lista con INCOME y EXPENSE], [Suma solo gastos],
 )
+
+==== UI y Validaciones (Anette)
+
+===== validate_amount y validate_name
+#table(
+  columns: (1.2fr, 1fr, 1fr, 1.4fr),
+  [Componente], [Limite], [Valor], [Resultado esperado],
+  [validate_amount], [Minimo valido], ["0.01"], [Decimal(0.01)],
+  [validate_amount], [amount=0], ["0"], [Rechazado: mayor a 0],
+  [validate_name], [Minima longitud], ["A"], [Aceptado: "A"],
+)
+
+===== validate_month y validate_year
+#table(
+  columns: (1.2fr, 1fr, 1fr, 1.4fr),
+  [Componente], [Limite], [Valor], [Resultado esperado],
+  [validate_month], [Minimo], ["1"], [1],
+  [validate_month], [Maximo], ["12"], [12],
+  [validate_month], [Debajo minimo], ["0"], [Rechazado: entre 1 y 12],
+  [validate_month], [Sobre maximo], ["13"], [Rechazado: entre 1 y 12],
+  [validate_year], [Minimo], ["2000"], [2000],
+  [validate_year], [Debajo minimo], ["1999"], [Rechazado: 2000 o posterior],
+)
+
+==== Persistencia en Memoria (Leonardo)
+
+===== TransactionRepository
+#table(
+  columns: (1.2fr, 1fr, 1fr, 1.4fr),
+  [Componente], [Limite], [Valor], [Resultado esperado],
+  [list_by_period], [Primer dia mes], [2026-05-01], [Retorna transaccion],
+  [list_by_period], [Ultimo dia mes], [2026-05-31], [Retorna transaccion],
+  [list_by_period], [Ultimo dia previo], [2026-04-30], [No encontrada],
+  [list_by_period], [Primer dia sig.], [2026-06-01], [No encontrada],
+  [list_by_period], [Mismo mes otro año],[2025-05-01], [No encontrada],
+)
