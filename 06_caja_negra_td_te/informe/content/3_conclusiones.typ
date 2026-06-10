@@ -1,1 +1,1 @@
-#lorem(100)
+#include "conclusiones/conclusiones.typ"

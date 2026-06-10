@@ -260,6 +260,12 @@
     #include "informe/content/3_conclusiones.typ"
     // Espacio reservado para las conclusiones
     #v(4em)
+  ],
+  tableContents[
+    = AUDITORÍA DE RÚBRICA
+    
+    #include "informe/content/4_auditoria.typ"
+    #v(4em)
   ]
 )
 

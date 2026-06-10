@@ -1,19 +1,3 @@
-#lorem(100)
-```py
-print("hola")
-```
-
-#figure(
-  image("../src/img/fixed/abet.png"),
-  caption: [hola mundo]
-) <fig:gaa>
-
-mira la @fig:gaa.
-
-== h2
-
-=== h3 primero
-
-=== h3 segundo
-
-==== h4
+#include "ejercicios/ejercicio1_leo.typ"
+#include "ejercicios/ejercicio1_alisson.typ"
+#include "ejercicios/ejercicio2_yo.typ"
