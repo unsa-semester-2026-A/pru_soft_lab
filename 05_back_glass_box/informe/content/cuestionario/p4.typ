@@ -1,1 +1,1 @@
-Respuesta breve con cita a [@myers2012].
+Según Myers, el objetivo de una prueba es encontrar errores, no demostrar que el software funciona correctamente @myers2012. Una prueba que no detecta ningún defecto no aporta evidencia de ausencia de errores; únicamente confirma que ese caso particular no los reveló. Dado que la prueba exhaustiva es computacionalmente imposible, un resultado sin hallazgos puede reflejar un diseño de casos deficiente o una cobertura insuficiente, por lo que no constituye un éxito sino una oportunidad de mejora en la estrategia de prueba.

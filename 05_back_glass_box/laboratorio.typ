@@ -16,7 +16,7 @@
   it
 }
 #show link: it => underline(
-  text(fill: rgb("#05A7F7"), it.body)
+  text(fill: rgb("#05A7F7"), it)
 )
 #let headerBig(content, weight: "regular", alignTo: none, color: black) = util.fontBuild(
   content,
