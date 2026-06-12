@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from decimal import Decimal
-from uuid import UUID
+from uuid import UUID, uuid4
 
 import pytest
 
@@ -219,10 +219,9 @@ def test_register_income_updates_balance(bundle: ServiceBundle) -> None:
 
 def test_register_expense_fails_insufficient_funds(bundle: ServiceBundle) -> None:
     account = bundle.service.create_account(name="Cash", bank="Cash")
-    category = bundle.service.create_category(name="Utilities")
     with pytest.raises(InsufficientFundsError):
         bundle.service.register_transaction(
-            account.id, category.id, "EXPENSE", Decimal("10"), "E"
+            account.id, uuid4(), "EXPENSE", Decimal("10"), "E"
         )
 
 

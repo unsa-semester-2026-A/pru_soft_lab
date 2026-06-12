@@ -54,7 +54,7 @@ done
 cat "$temp_output" | tee "${output_file}".log | freeze \
     --width 1000 \
     --theme catppuccin-mocha \
-    --font.family "CaskaydiaMono Nerd Font" \
+    --font.family "JetBrainsMono Nerd Font" \
     --output "${output_file}.svg" \
     --language ansi
 

@@ -150,27 +150,13 @@ class FinanceService(FinanceInboundPort):
             if the budget for that category has been exceeded.
 
         Raises:
-            ValueError: If the account is not found, inactive, or
-                transaction type is invalid.
+            ValueError: If the account is not found or transaction type is invalid.
         """
         account = self._account_repository.get(account_id)
 
         if account is None:
             raise ValueError("Account not found.")
-        if not account.is_active:
-            raise ValueError("Account is inactive.")
-
         parsed_type = self._parse_transaction_type(transaction_type)
-
-        if parsed_type == TransactionType.EXPENSE:
-            if category_id is None:
-                raise ValueError("An expense must have a category.")
-            category = self._category_repository.get(category_id)
-            if category is None:
-                raise ValueError("Category not found.")
-            if not category.is_active:
-                raise ValueError("Category is inactive.")
-
         transaction = Transaction(
             account_id=account_id,
             category_id=category_id,
