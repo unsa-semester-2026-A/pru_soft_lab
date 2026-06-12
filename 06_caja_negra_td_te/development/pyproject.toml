@@ -1,0 +1,52 @@
+[project]
+name = "finance-app"
+version = "0.1.0"
+description = "Personal finance system"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "customtkinter==5.2.2",
+  "darkdetect==0.8.0",
+  "ruff==0.15.14",
+]
+
+[project.scripts]
+finance = "finance.__main__:main"
+
+[dependency-groups]
+dev = [
+  "pytest==8.1.1",
+  "pyright==1.1.350",
+]
+
+[tool.uv]
+package = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["finance"]
+python_files = ["test_*.py"]
+
+[tool.pyright]
+include = ["finance"]
+extraPaths = ["."]
+typeCheckingMode = "basic"
+reportMissingParameterType = true
+reportUnknownParameterType = true
+reportUnknownReturnType = true
+reportMissingTypeStubs = false
+reportUntypedVariable = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"test_*.py" = ["D"]
