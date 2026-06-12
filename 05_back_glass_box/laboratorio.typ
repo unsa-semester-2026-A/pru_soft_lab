@@ -8,12 +8,16 @@
 // fonts
 #set text(
   font: "Lato",
+  lang: "es",
 )
-
+#set heading(numbering: "1.")
 #show heading: it => {
   set text(size: 8.5pt, weight: "bold")
-  it.body
+  it
 }
+#show link: it => underline(
+  text(fill: rgb("#05A7F7"), it)
+)
 #let headerBig(content, weight: "regular", alignTo: none, color: black) = util.fontBuild(
   content,
   weight,
@@ -207,7 +211,7 @@
     tableTitle(weight: "bold", color: white)[SOLUCIÓN Y RESULTADOS],
   ),
   tableContents[
-    #heading(level: 1)[I. SOLUCIÓN DE EJERCICIOS/PROBLEMAS]
+    #heading(level: 1)[SOLUCIÓN DE EJERCICIOS/PROBLEMAS]
 
     #include "informe/content/1_ejercicios.typ"
 
@@ -216,17 +220,15 @@
     #v(4em)
   ],
   tableContents[
-    #heading(level: 1)[II. \u{00A0}\u{00A0}SOLUCIÓN DEL CUESTIONARIO]
+    #heading(level: 1)[\u{00A0}\u{00A0}SOLUCIÓN DEL CUESTIONARIO]
     
     #include "informe/content/2_cuestionario.typ"
     #v(4em)
   ],
   tableContents[
-    #heading(level: 1)[III. \u{00A0}CONCLUSIONES] \ \
+    #heading(level: 1)[\u{00A0}CONCLUSIONES] 
     
     #include "informe/content/3_conclusiones.typ"
-    // Espacio reservado para las conclusiones
-    #v(4em)
   ]
 )
 

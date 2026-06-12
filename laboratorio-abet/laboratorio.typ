@@ -1,3 +1,10 @@
+// fonts
+#set text(
+  // font: "New Computer Modern",
+  font: "Lato",
+  lang: "es"
+)
+
 #import  "informe/util/util.typ" as util
 #import "informe/config.typ" as config
 // Constantes de diseño
@@ -5,15 +12,40 @@
 #let headerBorderColor = rgb("#808080")
 #let tbHeaderBgColor = rgb("#C8310E")
 #let codeBgColor = rgb("#F1F3F4")
-// fonts
-#set text(
-  font: "Lato",
-)
 
-#show heading: it => {
-  set text(size: 8.5pt, weight: "bold")
-  it.body
-}
+// Document formart
+#show raw.where(block: true): it => block(
+  fill: codeBgColor, // Slightly off-black for better contrast
+  width: auto,
+  inset: 2em,
+  radius: 8pt,
+  breakable: true,
+  // Ensure the text inside is white
+  text(fill: rgb("303030"), it) 
+)
+#show figure: set block(breakable: true)
+
+// IEEE like
+#set heading(numbering: "1.")
+// H1
+#show heading.where(level: 1): it => block(width: 100%, above: 1.2em, below: 1em)[
+  #set align(left)
+  #set text(weight: "regular", size: 10pt)
+  #smallcaps(it)
+]
+// H2
+#show heading.where(level: 2): it => block(above: 1em, below: 0.8em)[
+  #set align(left)
+  #set text(weight: "regular", style: "italic", size: 10pt)
+  #it
+]
+// H3
+#show heading.where(level: 3): it => block(above: 1em, below: 0.8em)[
+  #set align(left)
+  #set text(weight: "regular", style: "italic", size: 10pt)
+  #it
+]
+
 #let headerBig(content, weight: "regular", alignTo: none, color: black) = util.fontBuild(
   content,
   weight,
@@ -109,7 +141,7 @@
 )
 
 #align(center)[#mainTitle[INFORME DE LABORATORIO]]
-
+// General information table
 #table(
   align: left + horizon,
   stroke: black + 1pt,
@@ -120,25 +152,25 @@
     fill: tbHeaderBgColor,
     tableTitle(weight: "bold", alignTo: center, color: white)[INFORMACIÓN BÁSICA],
   ),
-  tableContents(weight: "bold")[ASIGNATURA:],
+  tableContents(weight: "bold")[Asignatura:],
   table.cell(
     colspan: 5,
     tableContents[#config.courseName],
   ),
-  tableContents(weight: "bold")[TÍTULO DE LA PRÁCTICA:],
+  tableContents(weight: "bold")[Título de la práctica:],
   table.cell(
     colspan: 5,
     tableContents[#config.labTitle],
   ),
-  tableContents(weight: "bold")[NÚMERO DE LA PRÁCTICA:],
+  tableContents(weight: "bold")[Número de la práctica:],
   tableContents[#config.labNumber],
-  tableContents(weight: "bold")[AÑO LECTIVO:],
+  tableContents(weight: "bold")[Año lectivo:],
   tableContents[#datetime.today().year()],
-  tableContents(weight: "bold")[NRO. SEMESTRE:],
+  tableContents(weight: "bold")[Nro. semestre:],
   tableContents[#config.semCode],
-  tableContents(weight: "bold")[FECHA DE PRESENTACIÓN:],
+  tableContents(weight: "bold")[Fecha de presentación:],
   tableContents[#config.presentationDate],
-  tableContents(weight: "bold")[HORA DE PRESENTACIÓN:],
+  tableContents(weight: "bold")[Hora de presentación:],
   table.cell(
     colspan: 3,
     tableContents[#config.presentationHour],
@@ -146,7 +178,7 @@
   table.cell(
     colspan: 4,
     [
-      #tableContents(weight: "bold")[INTEGRANTE(s):] \
+      #tableContents(weight: "bold")[Integrante(s):] \
       #tableContents[
         #set list(marker: "-")
         #for member in config.memberList [
@@ -161,7 +193,7 @@
   table.cell(
     colspan: 6,
     [
-      #tableContents(weight: "bold")[DOCENTE: ] \
+      #tableContents(weight: "bold")[Docente: ] \
       #tableContents[#config.instructorName]
     ],
   ),
@@ -195,6 +227,7 @@
 // )
 
 // CONTENIDO
+#set par(justify: true)
 #table(
   align: left + top,
   stroke: black + 0.5pt,
@@ -207,7 +240,7 @@
     tableTitle(weight: "bold", color: white)[SOLUCIÓN Y RESULTADOS],
   ),
   tableContents[
-    #heading(level: 1)[I. SOLUCIÓN DE EJERCICIOS/PROBLEMAS]
+    = SOLUCIÓN DE EJERCICIOS/PROBLEMAS
 
     #include "informe/content/1_ejercicios.typ"
 
@@ -216,13 +249,13 @@
     #v(4em)
   ],
   tableContents[
-    #heading(level: 1)[II. \u{00A0}\u{00A0}SOLUCIÓN DEL CUESTIONARIO]
+    = SOLUCIÓN DEL CUESTIONARIO
     
     #include "informe/content/2_cuestionario.typ"
     #v(4em)
   ],
   tableContents[
-    #heading(level: 1)[III. \u{00A0}CONCLUSIONES] \ \
+    = CONCLUSIONES
     
     #include "informe/content/3_conclusiones.typ"
     // Espacio reservado para las conclusiones
@@ -259,6 +292,3 @@
     #bibliography("informe/references.bib", title: none, style: "ieee")
   ]
 )
-
-#set par(justify: true)
-// #lorem(10000)
