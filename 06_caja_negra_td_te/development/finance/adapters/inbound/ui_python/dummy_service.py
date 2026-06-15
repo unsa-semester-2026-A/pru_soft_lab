@@ -7,6 +7,7 @@ Do NOT use in production.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from decimal import Decimal
@@ -150,29 +151,37 @@ class DummyFinanceService:
             ValueError: If name or email are empty.
         """
         if not name.strip():
-            raise ValueError("Name cannot be empty.")
+            raise ValueError("El nombre del usuario no puede estar vacio.")
         if not email.strip():
-            raise ValueError("Email cannot be empty.")
+            raise ValueError("El correo no puede estar vacio.")
         return User(name=name, email=email)
 
     def create_account(self, name: str, bank: str) -> Account:
         """Simulate account creation.
 
         Args:
-            name: Display name for the account.
-            bank: Bank or institution name.
+            name: Display name for the account (letters only, 2-128 chars).
+            bank: Bank or institution name (max 100 chars).
 
         Returns:
             An Account dataclass with zero balance.
 
         Raises:
-            ValueError: If name or bank are empty.
+            ValueError: If validation rules are violated.
         """
         if not name.strip():
-            raise ValueError("Account name cannot be empty.")
+            raise ValueError("El nombre de la cuenta no puede estar vacio.")
         if not bank.strip():
-            raise ValueError("Bank name cannot be empty.")
-        account = Account(name=name, bank=bank)
+            raise ValueError("El nombre del banco no puede estar vacio.")
+        if not re.match(r"^[A-Za-z\u00C0-\u024F\s]+$", name.strip()):
+            raise ValueError("El nombre de la cuenta solo debe contener letras.")
+        if len(name.strip()) < 2:
+            raise ValueError("El nombre de la cuenta debe tener al menos 2 letras.")
+        if len(name.strip()) > 128:
+            raise ValueError("El nombre de la cuenta debe tener maximo 128 caracteres.")
+        if len(bank.strip()) > 100:
+            raise ValueError("El nombre del banco debe tener maximo 100 caracteres.")
+        account = Account(name=name.strip(), bank=bank.strip())
         self._accounts.append(account)
         return account
 
@@ -180,17 +189,19 @@ class DummyFinanceService:
         """Simulate category creation.
 
         Args:
-            name: Display name for the category.
+            name: Display name for the category (max 100 chars).
 
         Returns:
             A Category dataclass.
 
         Raises:
-            ValueError: If name is empty.
+            ValueError: If validation rules are violated.
         """
         if not name.strip():
-            raise ValueError("Category name cannot be empty.")
-        category = Category(name=name)
+            raise ValueError("El nombre de la categoria no puede estar vacio.")
+        if len(name.strip()) > 100:
+            raise ValueError("El nombre de la categoria debe tener maximo 100 caracteres.")
+        category = Category(name=name.strip())
         self._categories.append(category)
         return category
 
@@ -216,7 +227,7 @@ class DummyFinanceService:
             ValueError: If limit_amount is not positive.
         """
         if limit_amount <= Decimal("0"):
-            raise ValueError("Limit amount must be greater than 0.")
+            raise ValueError("El monto del limite debe ser mayor a 0.")
         budget = Budget(
             category_id=category_id,
             limit_amount=limit_amount,
@@ -234,10 +245,7 @@ class DummyFinanceService:
         amount: Decimal,
         description: str,
     ) -> tuple[Transaction, bool]:
-        """Simulate transaction registration.
-
-        Returns a tuple of (Transaction, budget_exceeded).
-        budget_exceeded is True when simulated expenses surpass 800.
+        """Register a transaction and check budget status.
 
         Args:
             account_id: UUID of the account.
@@ -256,18 +264,16 @@ class DummyFinanceService:
         if amount <= Decimal("0"):
             raise ValueError("El monto debe ser mayor a 0.")
         if transaction_type.upper() not in ("INCOME", "EXPENSE"):
-            raise ValueError("Tipo de transacción inválido.")
+            raise ValueError("Tipo de transaccion invalido.")
 
         parsed_type = TransactionType(transaction_type.upper())
 
         if parsed_type == TransactionType.EXPENSE:
             if amount > self._balance:
-                raise InsufficientFundsError("Fondos insuficientes.")
+                raise InsufficientFundsError("Fondos insuficientes para esta operacion.")
             self._balance -= amount
-            budget_exceeded = self._balance < Decimal("200.00")
         else:
             self._balance += amount
-            budget_exceeded = False
 
         transaction = Transaction(
             account_id=account_id,
@@ -278,6 +284,21 @@ class DummyFinanceService:
             created_at=datetime.now(timezone.utc),
         )
         self._transactions.append(transaction)
+
+        budget_exceeded = False
+        if parsed_type == TransactionType.EXPENSE and category_id is not None:
+            now = transaction.created_at
+            for b in self._budgets:
+                if (
+                    b.category_id == category_id
+                    and b.month == now.month
+                    and b.year == now.year
+                ):
+                    spent, exceeded = self.calculate_budget_status(b.id)
+                    if exceeded:
+                        budget_exceeded = True
+                        break
+
         return transaction, budget_exceeded
 
     def list_active_accounts(self) -> list[Account]:
@@ -335,15 +356,28 @@ class DummyFinanceService:
         return self._transactions
 
     def calculate_budget_status(self, budget_id: UUID) -> tuple[Decimal, bool]:
-        """Return a fake status for UI simulation.
+        """Calculate real spent amount against a budget.
 
         Args:
             budget_id: The ID of the budget to check.
 
         Returns:
-            A tuple containing (fake_spent, fake_exceeded).
+            A tuple of (total_spent, exceeded).
         """
-        return Decimal("50.00"), False
+        budget = next((b for b in self._budgets if b.id == budget_id), None)
+        if budget is None:
+            return Decimal("0.00"), False
+        spent = Decimal("0.00")
+        for t in self._transactions:
+            if (
+                t.transaction_type == TransactionType.EXPENSE
+                and t.category_id == budget.category_id
+                and t.created_at.month == budget.month
+                and t.created_at.year == budget.year
+            ):
+                spent += t.amount
+        exceeded = spent > budget.limit_amount
+        return spent, exceeded
 
     def list_accounts(self) -> list[Account]:
         """Return active accounts (not in real inbound.py, mocked here).
@@ -360,3 +394,46 @@ class DummyFinanceService:
             List of active Category objects.
         """
         return [c for c in self._categories if c.is_active]
+
+    def load_seed_data(self, path: str) -> None:
+        """Load sample data from a JSON file.
+
+        Args:
+            path: Path to the JSON seed file.
+        """
+        import json
+
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        cat_map: dict[str, UUID] = {}
+        for cat_name in data.get("categories", []):
+            cat = self.create_category(cat_name)
+            cat_map[cat_name] = cat.id
+
+        acc_map: dict[str, UUID] = {}
+        for acc_data in data.get("accounts", []):
+            acc = self.create_account(acc_data["name"], acc_data["bank"])
+            acc_map[acc_data["name"]] = acc.id
+
+        for b_data in data.get("budgets", []):
+            cat_id = cat_map.get(b_data["category"])
+            if cat_id is not None:
+                self.assign_budget(
+                    category_id=cat_id,
+                    limit_amount=Decimal(str(b_data["limit"])),
+                    month=b_data["month"],
+                    year=b_data["year"],
+                )
+
+        for t_data in data.get("transactions", []):
+            acc_id = acc_map.get(t_data["account"])
+            cat_id = cat_map.get(t_data["category"]) if t_data.get("category") else None
+            if acc_id is not None:
+                self.register_transaction(
+                    account_id=acc_id,
+                    category_id=cat_id,
+                    transaction_type=t_data["type"],
+                    amount=Decimal(str(t_data["amount"])),
+                    description=t_data["description"],
+                )

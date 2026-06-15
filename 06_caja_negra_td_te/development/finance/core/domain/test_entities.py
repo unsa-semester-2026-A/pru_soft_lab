@@ -65,7 +65,7 @@ class TestAccount:
 
     def test_register_income_and_expense_valid(self) -> None:
         """PE: Registro de ingresos y gastos dentro del saldo."""
-        account = Account(name="S", bank="B")
+        account = Account(name="SA", bank="B")
         account.register_income(Decimal("100.00"))
         account.register_expense(Decimal("40.00"))
         assert account.current_balance == Decimal("60.00")
@@ -97,7 +97,7 @@ class TestAccount:
         self, amount: Decimal, expected_balance: Decimal
     ) -> None:
         """AVL/PE: Valid income amounts."""
-        account = Account(name="S", bank="B")
+        account = Account(name="SA", bank="B")
         account.register_income(amount)
         assert account.current_balance == expected_balance
 
@@ -111,13 +111,13 @@ class TestAccount:
     )
     def test_register_income_invalid(self, amount: Decimal) -> None:
         """AVL/PE: Invalid income amounts."""
-        account = Account(name="S", bank="B")
+        account = Account(name="SA", bank="B")
         with pytest.raises(ValueError, match="Income amount must be positive"):
             account.register_income(amount)
 
     def test_register_expense_valid_boundary(self) -> None:
         """AVL: Exact balance expense (leaves zero)."""
-        account = Account(name="S", bank="B", current_balance=Decimal("100.00"))
+        account = Account(name="SA", bank="B", current_balance=Decimal("100.00"))
         account.register_expense(Decimal("100.00"))
         assert account.current_balance == Decimal("0.00")
 
@@ -140,7 +140,7 @@ class TestAccount:
         self, initial_balance: Decimal, expense_amount: Decimal, error_match: str
     ) -> None:
         """AVL: Insufficient funds boundaries."""
-        account = Account(name="S", bank="B", current_balance=initial_balance)
+        account = Account(name="SA", bank="B", current_balance=initial_balance)
         with pytest.raises(InsufficientFundsError, match=error_match):
             account.register_expense(expense_amount)
 

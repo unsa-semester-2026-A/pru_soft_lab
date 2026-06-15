@@ -1,0 +1,28 @@
+{
+  "accounts": [
+    {"name": "Efectivo", "bank": "Billetera"},
+    {"name": "Ahorros", "bank": "BCP"}
+  ],
+  "categories": [
+    "Alimentos",
+    "Transporte",
+    "Servicios",
+    "Entretenimiento",
+    "Salud"
+  ],
+  "budgets": [
+    {"category": "Alimentos", "limit": 400, "month": 6, "year": 2026},
+    {"category": "Transporte", "limit": 150, "month": 6, "year": 2026},
+    {"category": "Servicios", "limit": 200, "month": 6, "year": 2026}
+  ],
+  "transactions": [
+    {"account": "Efectivo", "category": null, "type": "INCOME", "amount": 3000, "description": "Sueldo mensual"},
+    {"account": "Efectivo", "category": "Alimentos", "type": "EXPENSE", "amount": 85.50, "description": "Supermercado"},
+    {"account": "Efectivo", "category": "Alimentos", "type": "EXPENSE", "amount": 42.00, "description": "Almuerzo trabajo"},
+    {"account": "Efectivo", "category": "Transporte", "type": "EXPENSE", "amount": 30.00, "description": "Taxi aeropuerto"},
+    {"account": "Efectivo", "category": "Servicios", "type": "EXPENSE", "amount": 120.00, "description": "Electricidad"},
+    {"account": "Ahorros", "category": null, "type": "INCOME", "amount": 500, "description": "Transferencia BCP"},
+    {"account": "Efectivo", "category": "Entretenimiento", "type": "EXPENSE", "amount": 65.00, "description": "Cine y cena"},
+    {"account": "Efectivo", "category": "Alimentos", "type": "EXPENSE", "amount": 28.00, "description": "Cafe y snacks"}
+  ]
+}

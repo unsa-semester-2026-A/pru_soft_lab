@@ -60,7 +60,7 @@ class TestInMemoryAccountRepository:
 
     def test_add_and_get_active(self, account_repo: InMemoryAccountRepository) -> None:
         """PE: Active account retrieval."""
-        account = Account(name="S", bank="B")
+        account = Account(name="SA", bank="B")
         account_repo.add(account)
         assert account_repo.get(account.id) == account
 
@@ -68,7 +68,7 @@ class TestInMemoryAccountRepository:
         self, account_repo: InMemoryAccountRepository
     ) -> None:
         """PE: Inactive account (soft delete) should not be returned by get()."""
-        account = Account(name="I", bank="B", is_active=False)
+        account = Account(name="IA", bank="B", is_active=False)
         account_repo.add(account)
         assert account_repo.get(account.id) is None
 
@@ -76,8 +76,8 @@ class TestInMemoryAccountRepository:
         self, account_repo: InMemoryAccountRepository
     ) -> None:
         """PE: list_all should return everything regardless of is_active."""
-        acc1 = Account(name="A", bank="B")
-        acc2 = Account(name="I", bank="B", is_active=False)
+        acc1 = Account(name="AC", bank="B")
+        acc2 = Account(name="IA", bank="B", is_active=False)
         account_repo.add(acc1)
         account_repo.add(acc2)
         assert len(account_repo.list_all()) == 2
