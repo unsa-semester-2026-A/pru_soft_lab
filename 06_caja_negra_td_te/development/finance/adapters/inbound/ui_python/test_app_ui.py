@@ -12,9 +12,11 @@ from finance.adapters.inbound.ui_python.dummy_service import (
     InsufficientFundsError,
 )
 from finance.adapters.inbound.ui_python.views import (
+    validate_account_name,
     validate_amount,
+    validate_bank_name,
+    validate_category_name,
     validate_month,
-    validate_name,
     validate_year,
 )
 
@@ -66,16 +68,69 @@ class TestValidators:
         "value, expected",
         [
             ("  Ahorros  ", "Ahorros"),  # PE: Stripping
-            ("A", "A"),  # AVL: Min length
+            ("AB", "AB"),  # AVL: Min length
+            ("Ahorros Personales", "Ahorros Personales"),  # PE: With space
         ],
     )
-    def test_validate_name_valid(self, value: str, expected: str) -> None:
-        assert validate_name(value) == expected
+    def test_validate_account_name_valid(self, value: str, expected: str) -> None:
+        assert validate_account_name(value) == expected
 
-    @pytest.mark.parametrize("value", ["", "   "])
-    def test_validate_name_invalid(self, value: str) -> None:
-        with pytest.raises(ValueError, match="nombre"):
-            validate_name(value)
+    @pytest.mark.parametrize(
+        "value, match",
+        [
+            ("", "vacio"),  # PE: Empty
+            ("   ", "vacio"),  # PE: Whitespace
+            ("A", "al menos 2"),  # AVL: Too short
+            ("123", "solo debe contener letras"),  # PE: Numbers
+            ("Cuenta@BCP", "solo debe contener letras"),  # PE: Special chars
+        ],
+    )
+    def test_validate_account_name_invalid(self, value: str, match: str) -> None:
+        with pytest.raises(ValueError, match=match):
+            validate_account_name(value)
+
+    @pytest.mark.parametrize(
+        "value, expected",
+        [
+            ("  BCP  ", "BCP"),  # PE: Stripping
+            ("Interbank S.A.", "Interbank S.A."),  # PE: With dots
+            ("Banco 123", "Banco 123"),  # PE: With numbers
+        ],
+    )
+    def test_validate_bank_name_valid(self, value: str, expected: str) -> None:
+        assert validate_bank_name(value) == expected
+
+    @pytest.mark.parametrize(
+        "value, match",
+        [
+            ("", "vacio"),  # PE: Empty
+            ("   ", "vacio"),  # PE: Whitespace
+        ],
+    )
+    def test_validate_bank_name_invalid(self, value: str, match: str) -> None:
+        with pytest.raises(ValueError, match=match):
+            validate_bank_name(value)
+
+    @pytest.mark.parametrize(
+        "value, expected",
+        [
+            ("  Transporte  ", "Transporte"),  # PE: Stripping
+            ("Servicios Basicos", "Servicios Basicos"),  # PE: With space
+        ],
+    )
+    def test_validate_category_name_valid(self, value: str, expected: str) -> None:
+        assert validate_category_name(value) == expected
+
+    @pytest.mark.parametrize(
+        "value, match",
+        [
+            ("", "vacio"),  # PE: Empty
+            ("   ", "vacio"),  # PE: Whitespace
+        ],
+    )
+    def test_validate_category_name_invalid(self, value: str, match: str) -> None:
+        with pytest.raises(ValueError, match=match):
+            validate_category_name(value)
 
     @pytest.mark.parametrize(
         "value, expected",
@@ -150,6 +205,6 @@ class TestDummyService:
         self, service: DummyFinanceService
     ) -> None:
         """PE: List methods respect is_active."""
-        acc = service.create_account("A", "B")
+        acc = service.create_account("Ahorros", "BCP")
         service.deactivate_account(acc.id)
         assert len(service.list_active_accounts()) == 0
