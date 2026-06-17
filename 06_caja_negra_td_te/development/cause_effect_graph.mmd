@@ -1,0 +1,40 @@
+graph TD
+    C1[C1: Gasto] --> AND1[AND]
+    C3[C3: Category_id provisto] --> AND1
+    C4[C4: Cuenta activa y existe] --> AND1
+    C5[C5: Monto > 0] --> AND1
+    C6[C6: Categoría activa y existe] --> AND1
+    
+    AND1 --> AND_OK[AND]
+    C7[C7: Saldo suficiente] --> AND_OK
+    AND_OK --> E1[E1: Registro Exitoso]
+    AND_OK --> E2[E2: Actualizar Saldo -]
+    
+    AND1 --> AND_FAIL[AND]
+    NOT_C7[NOT C7: Saldo insuficiente] --> AND_FAIL
+    AND_FAIL --> E3[E3: InsufficientFundsError]
+    
+    C2[C2: Ingreso] --> AND_INC[AND]
+    NOT_C3[NOT C3: Category_id nulo] --> AND_INC
+    C4 --> AND_INC
+    C5 --> AND_INC
+    AND_INC --> E1
+    AND_INC --> E2_ADD[E2: Actualizar Saldo +]
+
+    %% Excepciones logicas
+    C1 --> AND_NO_CAT[AND]
+    NOT_C3 --> AND_NO_CAT
+    AND_NO_CAT --> E4[E4: ValueError]
+    
+    C2 --> AND_WITH_CAT[AND]
+    C3 --> AND_WITH_CAT
+    AND_WITH_CAT --> E4
+    
+    NOT_C5[NOT C5: Monto <= 0] --> E4
+    NOT_C4[NOT C4: Cuenta inactiva/inexistente] --> E4
+    
+    %% Alerta de presupuesto
+    E1 --> AND_BUD[AND]
+    C1 --> AND_BUD
+    EXPENSE_SUM[Suma de Gastos > Limite] --> AND_BUD
+    AND_BUD --> E5[E5: Presupuesto Excedido]
