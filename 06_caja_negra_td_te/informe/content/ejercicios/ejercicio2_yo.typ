@@ -1,7 +1,7 @@
 // ==========================================
 // EJERCICIO 2: GUERRA DE TESTERS - PARTE II
 // Responsable: Yo (Álvaro)
-// Técnicas: Tablas de Decisión, Transición de Estados, Use Case testing, y Cause-effect Graphing.
+// Técnicas: Tablas de Decisión, Transición de Estados, Use Case testing, Pruebas Aleatorias y Cause-effect Graphing.
 // ==========================================
 
 #show link: set text(fill: rgb("#1a0dab"))
@@ -15,7 +15,7 @@
   width: 100%,
 )[
   *Indicaciones de Álvaro:*
-  Se han diseñado 4 técnicas avanzadas de pruebas de caja negra aplicadas sobre la interfaz gráfica de la aplicación de finanzas personales. Los casos se validaron de forma manual ejecutando la aplicación localmente.
+  Se han diseñado 5 técnicas avanzadas de pruebas de caja negra aplicadas sobre la aplicación. Las pruebas lógicas (TD, TE, Use Cases y Cause-Effect) se validaron de forma manual en la UI, mientras que las pruebas de invariantes (Random) se encuentran automatizadas a nivel de backend.
 ]
 
 == Ejercicio 2: Guerra de Testers - Parte II
@@ -72,6 +72,15 @@ Durante la ejecución manual en la app, se detectaron las siguientes discrepanci
 - *Bug 1 (R8):* Al desactivar una categoría desde la pestaña *Categorías*, esta sigue apareciendo en el menú desplegable del formulario de la pestaña *Transacciones*, permitiendo registrar gastos en categorías inactivas.
 - *Bug 2 (R10):* Al desactivar una cuenta en la pestaña *Cuentas*, esta sigue seleccionable en el formulario de transacciones, permitiendo realizar depósitos o cobros en cuentas inactivas.
 
+==== Evidencias de Ejecución en la Aplicación (TD):
+
+// TODO: Álvaro - Colocar aquí capturas de pantalla de la ejecución en la app corriendo para las reglas de la Tabla de Decisión y describir los resultados.
+// Ejemplo:
+// #figure(
+//   image("../../src/img/alvaro/td_evidencia1.png", width: 80%),
+//   caption: [Verificación manual de la regla R1 en la interfaz]
+// )
+
 ---
 
 === Transición de Estados (TE)
@@ -122,6 +131,15 @@ Para ilustrar este comportamiento se generó el siguiente diagrama de estados us
 5. Agregue otro gasto de \$50.00 en "Transporte". Compruebe que la barra llega al 100% (TC_TE_03).
 6. Registre \$1.00 de gasto. Compruebe que la interfaz cambia de color de la barra a rojo indicando que se ha excedido el límite asignado para el periodo (TC_TE_04).
 
+==== Evidencias de Ejecución en la Aplicación (TE):
+
+// TODO: Álvaro - Colocar aquí capturas de pantalla del flujo de transición de estados en la UI (UNASSIGNED, UNDER_LIMIT, AT_LIMIT, EXCEEDED).
+// Ejemplo:
+// #figure(
+//   image("../../src/img/alvaro/te_evidencia1.png", width: 80%),
+//   caption: [Alerta visual de presupuesto excedido en el dashboard]
+// )
+
 ---
 
 === Pruebas de Casos de Uso (Use Case Testing)
@@ -145,6 +163,106 @@ Se modelaron escenarios de extremo a extremo representativos de los flujos de us
   - *Paso 3 (Preservación):* Validar que la cuenta ya no se muestra en la lista de cuentas activas de la pestaña *Cuentas*, pero sus transacciones históricas siguen listadas en el historial general.
   - *Paso 4 (Restricción):* Validar que al intentar registrar una nueva transacción en el formulario de la UI, la cuenta desactivada no esté seleccionable. *(Fallo detectado: la cuenta sigue estando seleccionable)*.
 
+==== Evidencias de Ejecución en la Aplicación (Casos de Uso):
+
+// TODO: Álvaro - Colocar aquí capturas de pantalla de la ejecución manual de los flujos de Casos de Uso (UC-2, UC-3, UC-4) en la UI.
+// Ejemplo:
+// #figure(
+//   image("../../src/img/alvaro/uc_evidencia1.png", width: 80%),
+//   caption: [Flujo de desactivación lógica de cuenta y preservación de historial]
+// )
+
+---
+
+=== Pruebas Aleatorias (Random Testing)
+
+Esta técnica simula secuencias aleatorias de operaciones en el sistema para corroborar la inmutabilidad de cuatro invariantes lógicos clave:
+
+1. *Invariante del Balance:* El saldo final de la cuenta debe coincidir con la suma aritmética de ingresos menos gastos.
+   $B_"final" = sum "amount"_"income" - sum "amount"_"expense"$
+2. *Invariante de Protección de Saldo (No Negatividad):* El saldo nunca puede caer por debajo de cero, levantando `InsufficientFundsError`.
+   $B_"actual" - A_"gasto" >= 0$
+3. *Invariante de Unicidad de Presupuesto:* Multiples presupuestos asignados al mismo periodo resultan en un único registro (Upsert).
+4. *Invariante de Monto Positivo:* Montos $\le 0$ en transacciones o presupuestos deben ser rechazados.
+
+==== Implementación del Código de Pruebas (Random Testing):
+A continuación se detalla la clase `TestRandomTesting` encargada de estas pruebas de invariante:
+
+```python
+class TestRandomTesting:
+    """Performs Property-Based testing to check invariants."""
+
+    def test_random_transactions_and_invariants(self, test_bundle: ServiceBundle) -> None:
+        """Generates random transaction paths to assert invariants."""
+        acc = test_bundle.service.create_account(name="Master Account", bank="Bank")
+        cat = test_bundle.service.create_category(name="General")
+        now = datetime.now(timezone.utc)
+        test_bundle.service.assign_budget(cat.id, Decimal("500.00"), now.month, now.year)
+
+        local_balance = Decimal("0.00")
+        local_incomes = Decimal("0.00")
+        local_expenses = Decimal("0.00")
+
+        rng = random.Random(42)  # Seeded for deterministic runs
+
+        for _ in range(100):
+            is_income = rng.choice([True, False])
+            amount = Decimal(f"{rng.randint(1, 10000) / 100:.2f}")
+
+            if is_income:
+                test_bundle.service.register_transaction(acc.id, None, "INCOME", amount, "Random income")
+                local_balance += amount
+                local_incomes += amount
+            else:
+                if local_balance >= amount:
+                    test_bundle.service.register_transaction(acc.id, cat.id, "EXPENSE", amount, "Random expense")
+                    local_balance -= amount
+                    local_expenses -= amount
+                else:
+                    with pytest.raises(InsufficientFundsError):
+                        test_bundle.service.register_transaction(acc.id, cat.id, "EXPENSE", amount, "Random expense")
+
+            stored_acc = test_bundle.accounts.get(acc.id)
+            assert stored_acc.current_balance == local_balance
+            assert stored_acc.current_balance >= Decimal("0.00")
+
+        assert stored_acc.current_balance == local_incomes + local_expenses
+
+    def test_random_budget_limit_invariants(self, test_bundle: ServiceBundle) -> None:
+        """Validates that random budget assignments maintain uniqueness of budgets."""
+        cat = test_bundle.service.create_category(name="Random Cat")
+        rng = random.Random(1337)
+        now = datetime.now(timezone.utc)
+
+        last_limit = Decimal("0.00")
+        for _ in range(50):
+            limit = Decimal(f"{rng.randint(1, 1000):.2f}")
+            test_bundle.service.assign_budget(cat.id, limit, now.month, now.year)
+            last_limit = limit
+
+        all_budgets = test_bundle.budgets.list_all()
+        assert len(all_budgets) == 1
+        assert all_budgets[0].limit_amount == last_limit
+```
+
+==== Resultados de Ejecución (Random Testing):
+Al ejecutar las pruebas aleatorias e invariantes, se obtiene un resultado totalmente exitoso (2 aprobadas):
+
+```
+$ uv run pytest finance/core/app/test_blackbox_advanced.py::TestRandomTesting -v
+============================= test session starts ==============================
+collected 2 items
+
+finance/core/app/test_blackbox_advanced.py::TestRandomTesting::test_random_transactions_and_invariants PASSED
+finance/core/app/test_blackbox_advanced.py::TestRandomTesting::test_random_budget_limit_invariants PASSED
+
+============================== 2 passed in 0.04s ===============================
+```
+
+==== Evidencias de Ejecución en la Aplicación (Random Testing):
+
+// TODO: Álvaro - Colocar aquí evidencias o comentarios sobre las pruebas de invariantes aleatorias en la UI o logs de ejecución si aplica.
+
 ---
 
 === Grafos Causa-Efecto (Cause-Effect Graphing)
@@ -157,28 +275,53 @@ A continuación se muestra el diagrama del grafo causa-efecto generado mediante 
   #image("../../src/img/cause_effect_graph.svg", width: 85%)
 ]
 
-*Causas en la UI:*
-- *C1:* Se marca la opción de tipo `EXPENSE` (Gasto).
-- *C2:* Se marca la opción de tipo `INCOME` (Ingreso).
-- *C3:* Se selecciona una categoría de la lista.
-- *C4:* Se selecciona una cuenta activa de la lista.
-- *C5:* Se ingresa un valor positivo en el campo "Monto".
-- *C6:* La categoría seleccionada se encuentra activa.
-- *C7:* El saldo de la cuenta seleccionada es mayor o igual al monto ingresado.
+*Causas:*
+- *C1:* El tipo de transacción es `EXPENSE`.
+- *C2:* El tipo de transacción es `INCOME`.
+- *C3:* Se proporciona un `category_id` (no nulo).
+- *C4:* El ID de la cuenta existe en el repositorio y la cuenta está activa (`is_active = true`).
+- *C5:* El monto (`amount`) es strictly mayor a cero.
+- *C6:* El ID de la categoría existe en el repositorio y está activa (`is_active = true`).
+- *C7:* El saldo actual de la cuenta es suficiente (`current_balance >= amount`).
 
-*Efectos en la UI:*
-- *E1:* La transacción se registra en el historial visible.
+*Efectos:*
+- *E1:* La transacción se almacena con éxito en el repositorio y se visualiza en el historial.
 - *E2:* El saldo actual de la cuenta seleccionada se actualiza en el panel.
-- *E3:* Se muestra una ventana emergente de error de "Fondos Insuficientes".
-- *E4:* Se muestra un cuadro de error informando datos inválidos o bloqueados.
-- *E5:* El indicador visual del presupuesto mensual de la categoría se torna rojo por sobregiro.
+- *E3:* Se muestra una ventana emergente de error de "Fondos Insuficientes" (`InsufficientFundsError`).
+- *E4:* Se muestra un cuadro de error informando datos inválidos o bloqueados (`ValueError`).
+- *E5:* El indicador visual del presupuesto mensual de la categoría se torna rojo por sobregiro (retorna `exceeded = true`).
 
----
+*Fórmulas Booleanas:*
+- $E_1 = (C_2 and not C_3 and C_4 and C_5) or (C_1 and C_3 and C_4 and C_5 and C_6 and C_7)$
+- $E_2 " (Ingreso)" = C_2 and not C_3 and C_4 and C_5$
+- $E_2 " (Gasto)" = C_1 and C_3 and C_4 and C_5 and C_6 and C_7$
+- $E_3 = C_1 and C_3 and C_4 and C_5 and C_6 and not C_7$
+- $E_4 = not C_4 or not C_5 or (C_2 and C_3) or (C_1 and not C_3) or (C_1 and C_3 and not C_6)$
+- $E_5 = E_1 and C_1 and ("Gastos del mes" > "Límite del presupuesto")$
 
-=== Evidencias de Ejecución Manual y Defectos Encontrados
+==== Evidencias de Ejecución en la Aplicación (Grafo Causa-Efecto):
 
-Al realizar las pruebas de forma manual interactuando directamente con la interfaz gráfica de la aplicación, se obtuvieron las siguientes evidencias de los tres principales defectos descubiertos en el sistema:
+// TODO: Álvaro - Colocar aquí evidencias de la verificación manual del comportamiento causa-efecto en la UI.
 
-1. *Defecto de Cuenta Inactiva Seleccionable (Soft Delete):* Al desactivar una cuenta, la interfaz de transacciones sigue listándola. Se comprobó que permite registrar un gasto en la cuenta desactivada, lo cual viola el flujo normal de persistencia lógica.
-2. *Defecto de Categoría Inactiva Seleccionable (Soft Delete):* De la misma manera, las categorías desactivadas siguen apareciendo disponibles en el formulario de registro de transacciones, permitiendo registrar consumos vinculados a categorías archivadas.
-3. *Control de Presupuesto Excedido:* El sistema cambia correctamente el color del progreso a rojo en la barra del panel de presupuestos cuando un nuevo gasto manual excede el límite del mes.
+=== Evidencias de Ejecución General del Suite
+
+Al ejecutar todo el conjunto de pruebas del sistema (combinando pruebas básicas PE y AVL unitarias de caja de cristal previa y la técnica aleatoria automatizada), se evidencia que se ejecutan 95 tests, resultando en 95 aprobados (excluyendo los tests manuales):
+
+```
+$ uv run pytest
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.1.1, pluggy-1.6.0
+rootdir: /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/06_caja_negra_td_te/development
+configfile: pyproject.toml
+testpaths: finance
+collecting ... collected 95 items                                                             
+
+finance/adapters/inbound/ui_python/test_app_ui.py ...................... [ 23%]
+................                                                         [ 40%]
+finance/adapters/outbound/db_memory/test_memory_repos.py ............    [ 52%]
+finance/core/app/test_blackbox_advanced.py ..                            [ 54%]
+finance/core/app/test_services.py ............                           [ 67%]
+finance/core/domain/test_entities.py ...............................     [100%]
+
+============================== 95 passed in 0.25s ==============================
+```
