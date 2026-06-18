@@ -18,7 +18,7 @@
   Se han diseñado 5 técnicas avanzadas de pruebas de caja negra aplicadas sobre la aplicación. Las pruebas lógicas (TD, TE, Use Cases y Cause-Effect) se validaron de forma manual en la UI, mientras que las pruebas de invariantes (Random) se encuentran automatizadas a nivel de backend.
 ]
 
-== Ejercicio 2: Guerra de Testers - Parte II
+== Guerra de Testers - Parte II
 
 === Tablas de Decisión (TD)
 

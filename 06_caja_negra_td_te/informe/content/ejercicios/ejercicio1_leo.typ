@@ -5,17 +5,17 @@
 // ==========================================
 
 
-= Pruebas Básicas de ParaBank (PE y AVL)
+== Pruebas Básicas de ParaBank (PE y AVL)
 
 La aplicación ParaBank es un simulador de banca en línea que permite realizar operaciones como registro de usuarios, inicio de sesión, transferencia de fondos y solicitud de préstamos. Para verificar su correcto funcionamiento se aplicaron técnicas de pruebas de caja negra basadas en especificación, específicamente Partición de Equivalencia y Análisis de Valor Límite.
 
-== Partición de Equivalencia (PE)
+=== Partición de Equivalencia (PE)
 
 La técnica de Partición de Equivalencia consiste en dividir los datos de entrada en grupos o clases que se espera tengan un comportamiento similar. De cada clase se selecciona uno o más valores representativos para reducir la cantidad de pruebas necesarias sin disminuir la cobertura.
 
-=== Funcionalidad 1: Inicio de Sesión
+==== Funcionalidad 1: Inicio de Sesión
 
-==== Clases de Equivalencia Identificadas
+===== Clases de Equivalencia Identificadas
 
 #table(
 	columns: 4,
@@ -30,7 +30,7 @@ La técnica de Partición de Equivalencia consiste en dividir los datos de entra
 	[Contraseña], [PE-LOGIN-06], [Inválida], [Campo vacío]
 )
 
-==== Casos de Prueba Derivados
+===== Casos de Prueba Derivados
 
 #table(
 	columns: 5,
@@ -43,9 +43,9 @@ La técnica de Partición de Equivalencia consiste en dividir los datos de entra
 	[PE-05], [Contraseña vacía], [Inválida], [Mensaje de validación], [Aprobado]
 )
 
-=== Funcionalidad 2: Registro de Usuario
+==== Funcionalidad 2: Registro de Usuario
 
-==== Clases de Equivalencia Identificadas
+===== Clases de Equivalencia Identificadas
 
 #table(
 	columns: 4,
@@ -60,7 +60,7 @@ La técnica de Partición de Equivalencia consiste en dividir los datos de entra
 	[Password], [PE-REG-06], [Inválida], [Campo vacío]
 )
 
-==== Casos de Prueba Derivados
+===== Casos de Prueba Derivados
 
 #table(
 	columns: 5,
@@ -74,13 +74,13 @@ La técnica de Partición de Equivalencia consiste en dividir los datos de entra
 	[PE-11], [Contraseña vacía], [Inválida], [Error de validación], [Aprobado]
 )
 
-== Análisis de Valor Límite (AVL)
+=== Análisis de Valor Límite (AVL)
 
 La técnica de Análisis de Valor Límite se enfoca en probar los valores cercanos a los límites de entrada, ya que es donde suelen encontrarse defectos de software.
 
-=== Funcionalidad: Transferencia de Fondos
+==== Funcionalidad: Transferencia de Fondos
 
-==== Límites Identificados
+===== Límites Identificados
 
 Se utilizó el saldo disponible de la cuenta como referencia para definir los valores límite, considerando el mínimo de la cuenta como 500 y el caso de transferencia total cuando el monto equivale al saldo actual.
 
@@ -93,7 +93,7 @@ Se utilizó el saldo disponible de la cuenta como referencia para definir los va
 	[Máximo válido], [Saldo disponible], [Transferencia de todos los fondos]
 )
 
-==== Casos de Prueba Derivados
+===== Casos de Prueba Derivados
 
 #table(
 	columns: 5,
@@ -104,9 +104,9 @@ Se utilizó el saldo disponible de la cuenta como referencia para definir los va
 	[AVL-03], [Saldo disponible], [Máximo válido], [Transferencia de todos los fondos], [Aprobado]
 )
 
-== Evidencias de Ejecución (PE y AVL)
+=== Evidencias de Ejecución (PE y AVL)
 
-=== Evidencias de Partición de Equivalencia
+==== Evidencias de Partición de Equivalencia
 
 #figure(
 	image("../../src/img/leonardo/figure1.jpg", width: 80%),
@@ -133,7 +133,7 @@ Se utilizó el saldo disponible de la cuenta como referencia para definir los va
 	caption: [PE-05: Validación de contraseña vacía]
 )
 
-=== Evidencias de Análisis de Valor Límite
+==== Evidencias de Análisis de Valor Límite
 
 #figure(
 	image("../../src/img/leonardo/figure6.jpg", width: 80%),
@@ -150,7 +150,7 @@ Se utilizó el saldo disponible de la cuenta como referencia para definir los va
 	caption: [AVL-03: Transferencia del saldo total disponible]
 )
 
-== Resumen de Resultados
+=== Resumen de Resultados
 
 #table(
 	columns: 4,

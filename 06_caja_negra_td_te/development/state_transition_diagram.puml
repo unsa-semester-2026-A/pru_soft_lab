@@ -1,0 +1,62 @@
+@startuml
+!theme plain
+skinparam BackgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Lato"
+skinparam defaultFontSize 12
+
+' Estilo de los estados
+skinparam state {
+  BackgroundColor #ECEFF1
+  BorderColor #90A4AE
+  FontColor #263238
+  BorderThickness 1.5
+  
+  BackgroundColor<<Unassigned>> #EEEEEE
+  BorderColor<<Unassigned>> #9E9E9E
+  FontColor<<Unassigned>> #616161
+  
+  BackgroundColor<<UnderLimit>> #E8F5E9
+  BorderColor<<UnderLimit>> #4CAF50
+  FontColor<<UnderLimit>> #1B5E20
+  
+  BackgroundColor<<AtLimit>> #FFF3E0
+  BorderColor<<AtLimit>> #FF9800
+  FontColor<<AtLimit>> #E65100
+  
+  BackgroundColor<<Exceeded>> #FFEBEE
+  BorderColor<<Exceeded>> #F44336
+  FontColor<<Exceeded>> #B71C1C
+}
+
+' Estilo de las transiciones (flechas)
+skinparam ArrowColor #37474F
+skinparam ArrowThickness 1.5
+skinparam ArrowFontColor #263238
+skinparam ArrowFontName "Lato"
+skinparam ArrowFontSize 11
+
+title Diagrama de Transición de Estados del Presupuesto
+
+state UNASSIGNED <<Unassigned>>
+state UNDER_LIMIT <<UnderLimit>>
+state AT_LIMIT <<AtLimit>>
+state EXCEEDED <<Exceeded>>
+
+[*] --> UNASSIGNED : Iniciar periodo
+
+UNASSIGNED --> UNDER_LIMIT : assign_budget(limit_amount > 0)
+
+UNDER_LIMIT --> UNDER_LIMIT : register_expense() [total < limite]
+UNDER_LIMIT --> AT_LIMIT : register_expense() [total == limite]
+UNDER_LIMIT --> EXCEEDED : register_expense() [total > limite]
+
+AT_LIMIT --> EXCEEDED : register_expense() [monto > 0]
+
+EXCEEDED --> EXCEEDED : register_expense() [monto > 0]
+EXCEEDED --> EXCEEDED : assign_budget() [nuevo_limite <= total]
+
+EXCEEDED --> UNDER_LIMIT : assign_budget() [nuevo_limite > total]
+AT_LIMIT --> UNDER_LIMIT : assign_budget() [nuevo_limite > total]
+
+@enduml
