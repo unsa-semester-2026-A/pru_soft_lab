@@ -109,7 +109,6 @@ Adicionalmente, se identificó un comportamiento de advertencia visual en la UI 
   )
 ]
 
----
 
 === Transición de Estados (TE)
 
@@ -190,31 +189,67 @@ Se ejecutaron de forma manual todas las transiciones de estado válidas y soport
   )
 ]
 
----
 
 === Pruebas de Casos de Uso (Use Case Testing)
 
 Se modelaron escenarios de extremo a extremo representativos de los flujos de usuario en la aplicación:
 
-- *UC-2: Configuración del Entorno Financiero*
+- *UC-1: Configuración del Entorno Financiero*
   - *Paso 1:* Crear una cuenta llamada "Cartera BBVA".
   - *Paso 2:* Crear una categoría llamada "Suscripciones".
   - *Paso 3:* Asignar un presupuesto de \$30.00 a la categoría "Suscripciones".
-  - *Paso 4 (Modificación):* Actualizar el presupuesto de "Suscripciones" a \$45.00 en el mismo periodo. Comprobar que en la UI solo se muestra un registro con el nuevo límite (comportamiento de Upsert).
 
-- *UC-3: Registro de Gastos y Control de Fondos*
+- *UC-2: Registro de Gastos y Control de Fondos*
   - *Paso 1:* Registrar un ingreso de \$100.00 en la cuenta "Cartera BBVA".
   - *Paso 2:* Registrar un gasto de \$20.00 en la categoría "Suscripciones". Comprobar que el saldo de la cuenta baja a \$80.00.
   - *Paso 3 (Intento de sobregiro):* Intentar registrar un gasto de \$90.00. Verificar que la aplicación muestra un mensaje de error por "Fondos Insuficientes" y no permite guardar la transacción, manteniendo el saldo en \$80.00.
 
-- *UC-4: Desactivación Lógica (Soft Delete) y Preservación*
+- *UC-3: Desactivación Lógica (Soft Delete) y Preservación*
   - *Paso 1:* Crear una cuenta e ingresar \$100.00, luego registrar un gasto de \$40.00.
   - *Paso 2:* Desactivar la cuenta en el panel de gestión de cuentas.
   - *Paso 3 (Preservación):* Validar que la cuenta ya no se muestra en la lista de cuentas activas de la pestaña *Cuentas*, pero sus transacciones históricas siguen listadas en el historial general.
-  - *Paso 4 (Restricción):* Validar que al intentar registrar una nueva transacción en el formulario de la UI, la cuenta desactivada no esté seleccionable. *(Fallo detectado: la cuenta sigue estando seleccionable)*.
+  - *Paso 4 (Restricción):* Validar que al intentar registrar una nueva transacción en el formulario de la UI, la cuenta desactivada no se encuentre seleccionable en las opciones disponibles (Comportamiento correcto).
 
 ==== Evidencias de Ejecución en la Aplicación (Casos de Uso):
-Las evidencias gráficas del flujo completo de extremo a extremo para el registro de transacciones, presupuestos, control de fondos e inactividad (soft-delete) de cuentas de estos Casos de Uso (UC-2, UC-3 y UC-4) se corresponden directamente y están respaldadas por las capturas de pantalla integradas en las tablas de evidencias de las secciones de Tablas de Decisión (TD) y Transición de Estados (TE) de este mismo informe, donde se valida visualmente cada uno de estos flujos lógicos.
+
+A continuación se presentan las evidencias de la ejecución manual en la interfaz de usuario para cada uno de los Casos de Uso modelados, agrupando las capturas de pantalla secuenciales por cada caso:
+
+#align(center)[
+  #table(
+    columns: (1.5fr, 1fr),
+    align: center + horizon,
+    stroke: 0.5pt + luma(150),
+    [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
+    
+    grid(
+      columns: 3,
+      gutter: 5pt,
+      image("../../src/img/alvaro/uc/01/01.png", width: 100%),
+      image("../../src/img/alvaro/uc/01/02.png", width: 100%),
+      image("../../src/img/alvaro/uc/01/03.png", width: 100%),
+    ),
+    [UC-1: Configuración de entorno. Se crea la cuenta "Cartera BBVA", se crea la categoría "Suscripciones" y se le asigna un presupuesto inicial de \$30.00.],
+    
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/uc/02/01.png", width: 100%),
+      image("../../src/img/alvaro/uc/02/02.png", width: 100%),
+      image("../../src/img/alvaro/uc/02/03.png", width: 100%),
+      image("../../src/img/alvaro/uc/02/03.1.png", width: 100%),
+    ),
+    [UC-2: Registro de gastos. Se deposita \$100.00, se realiza un gasto de \$20.00, y finalmente se rechaza una transacción por fondos insuficientes (\$90.00) mostrando la alerta y preservando el saldo anterior de \$80.00.],
+    
+    grid(
+      columns: 3,
+      gutter: 5pt,
+      image("../../src/img/alvaro/uc/03/01.png", width: 100%),
+      image("../../src/img/alvaro/uc/03/01.1.png", width: 100%),
+      image("../../src/img/alvaro/uc/03/02.png", width: 100%),
+    ),
+    [UC-3: Soft Delete. Se elimina lógicamente la cuenta BBVA. El historial general preserva sus transacciones, y el formulario de transacciones restringe su uso al no mostrarla entre las opciones seleccionables.]
+  )
+]
 
 ---
 
