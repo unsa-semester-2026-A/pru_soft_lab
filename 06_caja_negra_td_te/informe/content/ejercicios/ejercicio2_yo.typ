@@ -55,9 +55,9 @@ Esta técnica modela la combinatoria lógica de la interfaz gráfica al registra
 - *TC_DT_05 (R5):* Registrar un gasto sin sobrepasar el presupuesto de la categoría seleccionada.
 - *TC_DT_06 (R6):* Registrar un gasto que excede el presupuesto y verificar que la UI muestre la advertencia visual.
 - *TC_DT_07 (R7):* Intentar registrar un gasto omitiendo seleccionar una categoría.
-- *TC_DT_08 (R8):* Intentar registrar un gasto seleccionando una categoría inactiva (Soft Deleted). *(Detecta error: la UI permite seleccionarla/usarla)*.
+- *TC_DT_08 (R8):* Intentar registrar un gasto seleccionando una categoría inactiva (Soft Deleted).
 - *TC_DT_09 (R9):* Intentar registrar un gasto mayor al saldo de la cuenta activa.
-- *TC_DT_10 (R10):* Intentar registrar un gasto en una cuenta desactivada (Soft Deleted). *(Detecta error: la UI permite seleccionarla/usarla)*.
+- *TC_DT_10 (R10):* Intentar registrar un gasto en una cuenta desactivada (Soft Deleted).
 - *TC_DT_11 (R11):* Intentar registrar un gasto con monto menor o igual a cero.
 
 ==== Resultados de la Validación Manual (TD):
@@ -138,8 +138,7 @@ _Leyenda de estados en el sistema:_
 - *TC_TE_02 (S2 -> S2):* Registrar un gasto por un monto menor al límite (ej. \$50.00). El estado se mantiene en `UNDER_LIMIT` y la barra de progreso en la UI avanza al 50%.
 - *TC_TE_03 (S2 -> S3):* Registrar otro gasto por \$50.00 (gasto acumulado = \$100.00). El estado pasa a `AT_LIMIT` (100% de la barra consumida).
 - *TC_TE_04 (S3 -> S4):* Registrar un gasto adicional de \$0.01 (gasto acumulado = \$100.01). El estado pasa a `EXCEEDED` (barra cambia de color indicando sobregiro de presupuesto).
-- *TC_TE_05 (S4 -> S2):* Editar el límite del presupuesto incrementándolo a \$150.00 (No aplicable: La aplicación no permite modificar el presupuesto de una categoría una vez asignado en la UI).
-- *TC_TE_06 (S2 -> S4):* Reducir el límite del presupuesto a \$80.00 (No aplicable: La aplicación no permite modificar el presupuesto de una categoría una vez asignado en la UI).
+
 
 Para ilustrar este comportamiento se generó el siguiente diagrama de estados usando PlantUML:
 
@@ -149,35 +148,41 @@ Para ilustrar este comportamiento se generó el siguiente diagrama de estados us
 
 ==== Evidencias de Ejecución en la Aplicación (TE):
 
-Se ejecutaron manualmente las transiciones de estado de la aplicación. Cabe destacar que los casos de prueba TC_TE_05 y TC_TE_06 no se pudieron validar en la interfaz gráfica debido a que la aplicación actual no soporta la modificación de presupuestos ya establecidos. A continuación se presentan las evidencias de las transiciones ejecutadas con éxito:
+Se ejecutaron de forma manual todas las transiciones de estado válidas y soportadas por la interfaz gráfica (UI) de la aplicación. Cabe mencionar que no se incluyeron transiciones de modificación de límites (como la edición de un presupuesto ya asignado) dado que la interfaz actual no provee controles para alterar los presupuestos ya establecidos. A continuación se presentan las evidencias agrupadas de los casos de prueba ejecutados con éxito:
 
 #align(center)[
   #table(
-    columns: (1.2fr, 1fr),
+    columns: (1.4fr, 1fr),
     align: center + horizon,
     stroke: 0.5pt + luma(150),
     [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
     
-    image("../../src/img/alvaro/te/01/se crea la categoría de forma exitosa.png", width: 90%),
-    [TC_TE_01 (S1 -> S2): Creación exitosa de la categoría para asignación de presupuesto.],
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/te/01/se crea la categoría de forma exitosa.png", width: 100%),
+      image("../../src/img/alvaro/te/01/02.png", width: 100%),
+    ),
+    [TC_TE_01 (S1 -> S2): Creación de la categoría y posterior asignación exitosa de un presupuesto inicial de \$1000.00 en el panel correspondiente.],
     
-    image("../../src/img/alvaro/te/01/02.png", width: 90%),
-    [TC_TE_01 (S1 -> S2): Asignación de un presupuesto inicial de \$1000.00 de forma exitosa.],
-    
-    image("../../src/img/alvaro/te/02/01.png", width: 90%),
-    [TC_TE_02 (S2 -> S2): Registro de una transacción de gasto por \$500.00 dentro del presupuesto.],
-    
-    image("../../src/img/alvaro/te/02/02.png", width: 90%),
-    [TC_TE_02 (S2 -> S2): Visualización de la barra de progreso en la UI avanzando al 50% de consumo.],
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/te/02/01.png", width: 100%),
+      image("../../src/img/alvaro/te/02/02.png", width: 100%),
+    ),
+    [TC_TE_02 (S2 -> S2): Registro de una transacción de gasto por \$500.00, y consecuente avance de la barra de progreso en la UI al 50% de consumo.],
     
     image("../../src/img/alvaro/te/03/01.png", width: 90%),
-    [TC_TE_03 (S2 -> S3): Registro de un gasto adicional por \$500.00, alcanzando el 100% de consumo (límite exacto).],
+    [TC_TE_03 (S2 -> S3): Registro de un gasto adicional por \$500.00, alcanzando exactamente el 100% de la barra de presupuesto mensual.],
     
-    image("../../src/img/alvaro/te/04/01.png", width: 90%),
-    [TC_TE_04 (S3 -> S4): Intento de realizar un gasto de \$100.00 adicional. El sistema arroja un cuadro de advertencia de presupuesto excedido.],
-    
-    image("../../src/img/alvaro/te/04/02.png", width: 90%),
-    [TC_TE_04 (S3 -> S4): Visualización de la barra de progreso en color rojo, confirmando el estado de sobregiro del presupuesto.]
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/te/04/01.png", width: 100%),
+      image("../../src/img/alvaro/te/04/02.png", width: 100%),
+    ),
+    [TC_TE_04 (S3 -> S4): Registro de un gasto adicional de \$100.00 que desencadena un aviso emergente en pantalla y tiñe la barra de progreso de color rojo indicando sobregiro.]
   )
 ]
 
