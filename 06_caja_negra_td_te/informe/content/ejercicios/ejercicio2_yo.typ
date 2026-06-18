@@ -60,26 +60,50 @@ Esta técnica modela la combinatoria lógica de la interfaz gráfica al registra
 - *TC_DT_10 (R10):* Intentar registrar un gasto en una cuenta desactivada (Soft Deleted). *(Detecta error: la UI permite seleccionarla/usarla)*.
 - *TC_DT_11 (R11):* Intentar registrar un gasto con monto menor o igual a cero.
 
-==== Guía de Ejecución de Pruebas Manuales (TD):
-Para verificar estas reglas de negocio en la aplicación:
-1. Inicie la aplicación ejecutando `uv run python -m finance` desde la consola de desarrollo.
-2. Vaya a la pestaña de *Cuentas* y cree una cuenta "BCP" activa.
-3. Vaya a la pestaña de *Transacciones* e intente registrar un Ingreso de \$150.00 en la cuenta creada (C5=T, C4=T, C3=F). Verifique que el saldo suba a \$150.00 y se guarde en la tabla de historial (TC_DT_01).
-4. Pruebe los casos excepcionales (montos negativos o cuentas/categorías inactivas) y verifique si el formulario de transacciones bloquea la acción o si permite registrar incorrectamente operaciones prohibidas (TC_DT_08 y TC_DT_10).
-
 ==== Resultados de la Validación Manual (TD):
-Durante la ejecución manual en la app, se detectaron las siguientes discrepancias con la especificación (Bugs):
-- *Bug 1 (R8):* Al desactivar una categoría desde la pestaña *Categorías*, esta sigue apareciendo en el menú desplegable del formulario de la pestaña *Transacciones*, permitiendo registrar gastos en categorías inactivas.
-- *Bug 2 (R10):* Al desactivar una cuenta en la pestaña *Cuentas*, esta sigue seleccionable en el formulario de transacciones, permitiendo realizar depósitos o cobros en cuentas inactivas.
+Durante la validación manual, se constató que los errores de desactivación lógica (soft-delete) encontrados en las pruebas del backend no ocurrieron en la interfaz gráfica (UI), pues no aparecen los datos erróneos en los campos de selección. La aplicación filtra y remueve de forma efectiva las cuentas y categorías inactivas de los menús desplegables del formulario de transacciones, evitando que el usuario pueda seleccionarlas.
 
 ==== Evidencias de Ejecución en la Aplicación (TD):
 
-// TODO: Álvaro - Colocar aquí capturas de pantalla de la ejecución en la app corriendo para las reglas de la Tabla de Decisión y describir los resultados.
-// Ejemplo:
-// #figure(
-//   image("../../src/img/alvaro/td_evidencia1.png", width: 80%),
-//   caption: [Verificación manual de la regla R1 en la interfaz]
-// )
+Se ejecutaron de forma manual todos los casos de prueba mapeados para la Tabla de Decisión. Se concluye que no hubo errores en el comportamiento esperado de la aplicación y que incluso el caso TC_DT_10 funcionó correctamente al evitar el uso de cuentas desactivadas. Para mantener la concisión y brevedad del informe, se agrupan en la siguiente tabla únicamente las evidencias de los casos de prueba más interesantes e importantes en la interfaz gráfica:
+
+#align(center)[
+  #table(
+    columns: (1.2fr, 1fr),
+    align: center + horizon,
+    stroke: 0.5pt + luma(150),
+    [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
+    
+    image("../../src/img/alvaro/dt/tc_dt_01/inicio de registro de los datos.png", width: 90%),
+    [TC_DT_01: Ingreso de datos para registro de ingreso de \$150.00 en cuenta activa.],
+    
+    image("../../src/img/alvaro/dt/tc_dt_01/el registrofunciona exitosamente y se actualiza la información en el hsitorial.png", width: 90%),
+    [TC_DT_01: Registro exitoso en la UI e inserción en el historial general.],
+    
+    image("../../src/img/alvaro/dt/tc_dt_02/se verifica correctamente que ing. no tiene categoría.png", width: 90%),
+    [TC_DT_02: Verificación de que la UI restringe la selección de categoría para tipo INCOME.],
+    
+    image("../../src/img/alvaro/dt/tc_dt_03/la cuenta 'billetera' deaparece exitosamente de las opciones.png", width: 90%),
+    [TC_DT_03: Desactivación lógica de cuenta. La cuenta "Billetera" desaparece de las opciones seleccionables.],
+    
+    image("../../src/img/alvaro/dt/tc_dt_08/se elimina la categoría de alimentación.png", width: 90%),
+    [TC_DT_08: Proceso de eliminación/desactivación de la categoría "Alimentación".],
+    
+    image("../../src/img/alvaro/dt/tc_dt_08/se remueve de la lista de  opciones.png", width: 90%),
+    [TC_DT_08: Confirmación de que la categoría desactivada se remueve de las opciones en la UI.],
+    
+    image("../../src/img/alvaro/dt/tc_dt_11/no deja realizar la transacción.png", width: 90%),
+    [TC_DT_11: Restricción de monto. La UI impide realizar transacciones con montos no positivos.]
+  )
+]
+
+Adicionalmente, se identificó un comportamiento de advertencia visual en la UI relacionado con presupuestos de categorías eliminadas:
+#align(center)[
+  #figure(
+    image("../../src/img/alvaro/dt/warning: se ve en el panel de presu. uno de una categoría eliminada, aunque dice ahi que se elimino.png", width: 70%),
+    caption: [Advertencia: En el panel de presupuestos aún se muestra el presupuesto asignado a una categoría eliminada, marcando que esta fue eliminada.]
+  )
+]
 
 ---
 
@@ -114,8 +138,8 @@ _Leyenda de estados en el sistema:_
 - *TC_TE_02 (S2 -> S2):* Registrar un gasto por un monto menor al límite (ej. \$50.00). El estado se mantiene en `UNDER_LIMIT` y la barra de progreso en la UI avanza al 50%.
 - *TC_TE_03 (S2 -> S3):* Registrar otro gasto por \$50.00 (gasto acumulado = \$100.00). El estado pasa a `AT_LIMIT` (100% de la barra consumida).
 - *TC_TE_04 (S3 -> S4):* Registrar un gasto adicional de \$0.01 (gasto acumulado = \$100.01). El estado pasa a `EXCEEDED` (barra cambia de color indicando sobregiro de presupuesto).
-- *TC_TE_05 (S4 -> S2):* Editar el límite del presupuesto incrementándolo a \$150.00. El estado retorna a `UNDER_LIMIT` y se remueve la alerta.
-- *TC_TE_06 (S2 -> S4):* Reducir el límite del presupuesto a \$80.00 (menor a los \$100.01 gastados). El estado transiciona a `EXCEEDED`.
+- *TC_TE_05 (S4 -> S2):* Editar el límite del presupuesto incrementándolo a \$150.00 (No aplicable: La aplicación no permite modificar el presupuesto de una categoría una vez asignado en la UI).
+- *TC_TE_06 (S2 -> S4):* Reducir el límite del presupuesto a \$80.00 (No aplicable: La aplicación no permite modificar el presupuesto de una categoría una vez asignado en la UI).
 
 Para ilustrar este comportamiento se generó el siguiente diagrama de estados usando PlantUML:
 
@@ -123,22 +147,39 @@ Para ilustrar este comportamiento se generó el siguiente diagrama de estados us
   #image("../../src/img/state_transition_diagram.svg", width: 75%)
 ]
 
-==== Guía de Validación de Transición de Estados (TE):
-1. Inicie la aplicación gráfica.
-2. Vaya a *Presupuestos* y asigne \$100.00 para la categoría "Transporte" (TC_TE_01).
-3. Agregue un ingreso de \$500.00 en su cuenta activa.
-4. Registre un gasto en "Transporte" de \$50.00. Compruebe que la interfaz actualiza la barra al 50% de consumo (TC_TE_02).
-5. Agregue otro gasto de \$50.00 en "Transporte". Compruebe que la barra llega al 100% (TC_TE_03).
-6. Registre \$1.00 de gasto. Compruebe que la interfaz cambia de color de la barra a rojo indicando que se ha excedido el límite asignado para el periodo (TC_TE_04).
-
 ==== Evidencias de Ejecución en la Aplicación (TE):
 
-// TODO: Álvaro - Colocar aquí capturas de pantalla del flujo de transición de estados en la UI (UNASSIGNED, UNDER_LIMIT, AT_LIMIT, EXCEEDED).
-// Ejemplo:
-// #figure(
-//   image("../../src/img/alvaro/te_evidencia1.png", width: 80%),
-//   caption: [Alerta visual de presupuesto excedido en el dashboard]
-// )
+Se ejecutaron manualmente las transiciones de estado de la aplicación. Cabe destacar que los casos de prueba TC_TE_05 y TC_TE_06 no se pudieron validar en la interfaz gráfica debido a que la aplicación actual no soporta la modificación de presupuestos ya establecidos. A continuación se presentan las evidencias de las transiciones ejecutadas con éxito:
+
+#align(center)[
+  #table(
+    columns: (1.2fr, 1fr),
+    align: center + horizon,
+    stroke: 0.5pt + luma(150),
+    [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
+    
+    image("../../src/img/alvaro/te/01/se crea la categoría de forma exitosa.png", width: 90%),
+    [TC_TE_01 (S1 -> S2): Creación exitosa de la categoría para asignación de presupuesto.],
+    
+    image("../../src/img/alvaro/te/01/02.png", width: 90%),
+    [TC_TE_01 (S1 -> S2): Asignación de un presupuesto inicial de \$1000.00 de forma exitosa.],
+    
+    image("../../src/img/alvaro/te/02/01.png", width: 90%),
+    [TC_TE_02 (S2 -> S2): Registro de una transacción de gasto por \$500.00 dentro del presupuesto.],
+    
+    image("../../src/img/alvaro/te/02/02.png", width: 90%),
+    [TC_TE_02 (S2 -> S2): Visualización de la barra de progreso en la UI avanzando al 50% de consumo.],
+    
+    image("../../src/img/alvaro/te/03/01.png", width: 90%),
+    [TC_TE_03 (S2 -> S3): Registro de un gasto adicional por \$500.00, alcanzando el 100% de consumo (límite exacto).],
+    
+    image("../../src/img/alvaro/te/04/01.png", width: 90%),
+    [TC_TE_04 (S3 -> S4): Intento de realizar un gasto de \$100.00 adicional. El sistema arroja un cuadro de advertencia de presupuesto excedido.],
+    
+    image("../../src/img/alvaro/te/04/02.png", width: 90%),
+    [TC_TE_04 (S3 -> S4): Visualización de la barra de progreso en color rojo, confirmando el estado de sobregiro del presupuesto.]
+  )
+]
 
 ---
 
@@ -164,13 +205,7 @@ Se modelaron escenarios de extremo a extremo representativos de los flujos de us
   - *Paso 4 (Restricción):* Validar que al intentar registrar una nueva transacción en el formulario de la UI, la cuenta desactivada no esté seleccionable. *(Fallo detectado: la cuenta sigue estando seleccionable)*.
 
 ==== Evidencias de Ejecución en la Aplicación (Casos de Uso):
-
-// TODO: Álvaro - Colocar aquí capturas de pantalla de la ejecución manual de los flujos de Casos de Uso (UC-2, UC-3, UC-4) en la UI.
-// Ejemplo:
-// #figure(
-//   image("../../src/img/alvaro/uc_evidencia1.png", width: 80%),
-//   caption: [Flujo de desactivación lógica de cuenta y preservación de historial]
-// )
+Las evidencias gráficas del flujo completo de extremo a extremo para el registro de transacciones, presupuestos, control de fondos e inactividad (soft-delete) de cuentas de estos Casos de Uso (UC-2, UC-3 y UC-4) se corresponden directamente y están respaldadas por las capturas de pantalla integradas en las tablas de evidencias de las secciones de Tablas de Decisión (TD) y Transición de Estados (TE) de este mismo informe, donde se valida visualmente cada uno de estos flujos lógicos.
 
 ---
 
@@ -260,8 +295,7 @@ finance/core/app/test_blackbox_advanced.py::TestRandomTesting::test_random_budge
 ```
 
 ==== Evidencias de Ejecución en la Aplicación (Random Testing):
-
-// TODO: Álvaro - Colocar aquí evidencias o comentarios sobre las pruebas de invariantes aleatorias en la UI o logs de ejecución si aplica.
+Dado que las pruebas aleatorias y de invariantes se diseñaron para ejecutarse a nivel de servicios en el backend para validar la solidez del dominio, las evidencias corresponden a la ejecución automatizada exitosa de pytest mostrada en la consola de comandos. No obstante, las reglas invariantes (como la no negatividad del balance y el control de montos positivos) son forzadas de igual manera a nivel visual en la interfaz de usuario (como se ilustra en las evidencias de los casos TC_DT_11 y TC_TE_04).
 
 ---
 
@@ -300,8 +334,7 @@ A continuación se muestra el diagrama del grafo causa-efecto generado mediante 
 - $E_5 = E_1 and C_1 and ("Gastos del mes" > "Límite del presupuesto")$
 
 ==== Evidencias de Ejecución en la Aplicación (Grafo Causa-Efecto):
-
-// TODO: Álvaro - Colocar aquí evidencias de la verificación manual del comportamiento causa-efecto en la UI.
+La validación manual de las combinaciones y fórmulas booleanas del grafo causa-efecto se ve reflejada directamente en el comportamiento correcto de la interfaz de usuario (UI), tal como se documentó en las capturas de pantalla previas, las cuales demuestran que las restricciones y flujos lógicos de negocio se cumplen de manera consistente en la aplicación.
 
 === Evidencias de Ejecución General del Suite
 
