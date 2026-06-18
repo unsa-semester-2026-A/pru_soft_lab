@@ -182,7 +182,7 @@ def test_calculate_budget_status_boundaries(
     bundle: ServiceBundle, expense_amount: Decimal, expected_exceeded: bool
 ) -> None:
     """AVL: Testing budget status exactly at the boundaries."""
-    acc = bundle.service.create_account(name="C", bank="B")
+    acc = bundle.service.create_account(name="CA", bank="B")
     cat = bundle.service.create_category(name="T")
 
     # Set limit to 100
@@ -229,7 +229,7 @@ def test_register_expense_fails_insufficient_funds(bundle: ServiceBundle) -> Non
 def test_register_transaction_rejects_invalid_types(
     bundle: ServiceBundle, invalid_type: str
 ) -> None:
-    acc = bundle.service.create_account(name="C", bank="B")
+    acc = bundle.service.create_account(name="CA", bank="B")
     with pytest.raises(ValueError, match="Invalid transaction type"):
         bundle.service.register_transaction(
             acc.id, None, invalid_type, Decimal("10"), "T"
@@ -252,7 +252,7 @@ def test_list_active_accounts_filters_soft_deleted(bundle: ServiceBundle) -> Non
 
 
 def test_list_all_transactions_returns_full_history(bundle: ServiceBundle) -> None:
-    acc = bundle.service.create_account(name="C", bank="B")
+    acc = bundle.service.create_account(name="CA", bank="B")
     bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("100"), "T1")
     bundle.service.register_transaction(acc.id, None, "INCOME", Decimal("100"), "T2")
 

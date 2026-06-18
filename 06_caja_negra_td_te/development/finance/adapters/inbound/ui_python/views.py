@@ -7,6 +7,7 @@ message suitable for display in the interface.
 
 from __future__ import annotations
 
+import re
 from decimal import Decimal, InvalidOperation
 
 
@@ -33,8 +34,8 @@ def validate_amount(value: str) -> Decimal:
     return amount
 
 
-def validate_name(value: str) -> str:
-    """Validate that a name field is not empty or whitespace-only.
+def validate_account_name(value: str) -> str:
+    """Validate account name: only letters, 2-128 characters.
 
     Args:
         value: Raw string from a UI entry widget.
@@ -43,27 +44,69 @@ def validate_name(value: str) -> str:
         The stripped name string if valid.
 
     Raises:
-        ValueError: If the value is empty or whitespace-only.
+        ValueError: If empty, contains non-letter characters, or wrong length.
     """
-    if not value.strip():
-        raise ValueError("El nombre no puede estar vacío.")
-    return value.strip()
+    v = value.strip()
+    if not v:
+        raise ValueError("El nombre de la cuenta no puede estar vacio.")
+    if not re.match(r"^[A-Za-z\u00C0-\u024F\s]+$", v):
+        raise ValueError("El nombre de la cuenta solo debe contener letras.")
+    if len(v) < 2:
+        raise ValueError("El nombre de la cuenta debe tener al menos 2 letras.")
+    if len(v) > 128:
+        raise ValueError("El nombre de la cuenta debe tener maximo 128 caracteres.")
+    return v
 
 
-def validate_description(value: str) -> str:
-    """Validate that a description is not empty or whitespace-only.
+def validate_bank_name(value: str) -> str:
+    """Validate bank name: max 100 characters, any characters allowed.
 
     Args:
         value: Raw string from a UI entry widget.
 
     Returns:
-        The stripped description string if valid.
+        The stripped bank name string if valid.
 
     Raises:
-        ValueError: If the value is empty or whitespace-only.
+        ValueError: If empty or exceeds 100 characters.
     """
-    if not value.strip():
-        raise ValueError("La descripción no puede estar vacía.")
+    v = value.strip()
+    if not v:
+        raise ValueError("El nombre del banco no puede estar vacio.")
+    if len(v) > 100:
+        raise ValueError("El nombre del banco debe tener maximo 100 caracteres.")
+    return v
+
+
+def validate_category_name(value: str) -> str:
+    """Validate category name: max 100 characters, any characters allowed.
+
+    Args:
+        value: Raw string from a UI entry widget.
+
+    Returns:
+        The stripped category name string if valid.
+
+    Raises:
+        ValueError: If empty or exceeds 100 characters.
+    """
+    v = value.strip()
+    if not v:
+        raise ValueError("El nombre de la categoria no puede estar vacio.")
+    if len(v) > 100:
+        raise ValueError("El nombre de la categoria debe tener maximo 100 caracteres.")
+    return v
+
+
+def validate_description(value: str) -> str:
+    """Validate and return a description, or empty string if blank.
+
+    Args:
+        value: Raw string from a UI entry widget.
+
+    Returns:
+        The stripped description string, or empty string if blank.
+    """
     return value.strip()
 
 

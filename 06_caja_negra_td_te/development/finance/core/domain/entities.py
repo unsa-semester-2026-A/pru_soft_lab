@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from decimal import Decimal
@@ -82,6 +83,14 @@ class Account:
         """Validate entity fields."""
         _validate_not_empty(self.name, "Account name")
         _validate_not_empty(self.bank, "Bank name")
+        if not re.match(r"^[A-Za-z\u00C0-\u024F\s]+$", self.name):
+            raise ValueError("Account name must contain only letters.")
+        if len(self.name) < 2:
+            raise ValueError("Account name must be at least 2 characters.")
+        if len(self.name) > 128:
+            raise ValueError("Account name must be at most 128 characters.")
+        if len(self.bank) > 100:
+            raise ValueError("Bank name must be at most 100 characters.")
 
     def register_income(self, amount: Decimal) -> None:
         """Increase the account balance with a positive amount.
@@ -130,6 +139,8 @@ class Category:
     def __post_init__(self) -> None:
         """Validate entity fields."""
         _validate_not_empty(self.name, "Category name")
+        if len(self.name) > 100:
+            raise ValueError("Category name must be at most 100 characters.")
 
 
 @dataclass(slots=True)
