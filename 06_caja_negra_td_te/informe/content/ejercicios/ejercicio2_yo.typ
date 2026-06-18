@@ -69,28 +69,32 @@ Se ejecutaron de forma manual todos los casos de prueba mapeados para la Tabla d
 
 #align(center)[
   #table(
-    columns: (1.2fr, 1fr),
+    columns: (1.4fr, 1fr),
     align: center + horizon,
     stroke: 0.5pt + luma(150),
     [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
     
-    image("../../src/img/alvaro/dt/tc_dt_01/inicio de registro de los datos.png", width: 90%),
-    [TC_DT_01: Ingreso de datos para registro de ingreso de \$150.00 en cuenta activa.],
-    
-    image("../../src/img/alvaro/dt/tc_dt_01/el registrofunciona exitosamente y se actualiza la información en el hsitorial.png", width: 90%),
-    [TC_DT_01: Registro exitoso en la UI e inserción en el historial general.],
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/dt/tc_dt_01/inicio de registro de los datos.png", width: 100%),
+      image("../../src/img/alvaro/dt/tc_dt_01/el registrofunciona exitosamente y se actualiza la información en el hsitorial.png", width: 100%),
+    ),
+    [TC_DT_01: Ingreso de datos y posterior registro exitoso de un ingreso de \$150.00 en cuenta activa con actualización del historial.],
     
     image("../../src/img/alvaro/dt/tc_dt_02/se verifica correctamente que ing. no tiene categoría.png", width: 90%),
-    [TC_DT_02: Verificación de que la UI restringe la selección de categoría para tipo INCOME.],
+    [TC_DT_02: Verificación de que la UI restringe la selección de categoría para transacciones de tipo INCOME.],
     
     image("../../src/img/alvaro/dt/tc_dt_03/la cuenta 'billetera' deaparece exitosamente de las opciones.png", width: 90%),
-    [TC_DT_03: Desactivación lógica de cuenta. La cuenta "Billetera" desaparece de las opciones seleccionables.],
+    [TC_DT_03: Desactivación lógica de cuenta. La cuenta "Billetera" es removida de las opciones seleccionables.],
     
-    image("../../src/img/alvaro/dt/tc_dt_08/se elimina la categoría de alimentación.png", width: 90%),
-    [TC_DT_08: Proceso de eliminación/desactivación de la categoría "Alimentación".],
-    
-    image("../../src/img/alvaro/dt/tc_dt_08/se remueve de la lista de  opciones.png", width: 90%),
-    [TC_DT_08: Confirmación de que la categoría desactivada se remueve de las opciones en la UI.],
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/dt/tc_dt_08/se elimina la categoría de alimentación.png", width: 100%),
+      image("../../src/img/alvaro/dt/tc_dt_08/se remueve de la lista de  opciones.png", width: 100%),
+    ),
+    [TC_DT_08: Proceso de desactivación de la categoría "Alimentación" y confirmación de que se remueve de las opciones en el formulario de transacciones.],
     
     image("../../src/img/alvaro/dt/tc_dt_11/no deja realizar la transacción.png", width: 90%),
     [TC_DT_11: Restricción de monto. La UI impide realizar transacciones con montos no positivos.]
