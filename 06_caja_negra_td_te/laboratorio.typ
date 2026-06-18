@@ -46,6 +46,9 @@
   #it
 ]
 
+#show link: set text(fill: rgb("#1a0dab"))
+#show link: underline
+
 #let headerBig(content, weight: "regular", alignTo: none, color: black) = util.fontBuild(
   content,
   weight,

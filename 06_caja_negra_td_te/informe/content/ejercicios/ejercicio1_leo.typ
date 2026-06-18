@@ -109,44 +109,44 @@ Se utilizó el saldo disponible de la cuenta como referencia para definir los va
 === Evidencias de Partición de Equivalencia
 
 #figure(
-	image("../../src/img/fixed/leonardo/figure1.jpg", width: 80%),
+	image("../../src/img/leonardo/figure1.jpg", width: 80%),
 	caption: [PE-01: Inicio de sesión con credenciales válidas]
 )
 
 #figure(
-	image("../../src/img/fixed/leonardo/figure2.jpg", width: 80%),
+	image("../../src/img/leonardo/figure2.jpg", width: 80%),
 	caption: [PE-02: Intento de acceso con usuario inválido]
 )
 
 #figure(
-	image("../../src/img/fixed/leonardo/figure3.jpg", width: 80%),
+	image("../../src/img/leonardo/figure3.jpg", width: 80%),
 	caption: [PE-03: Intento de acceso con contraseña incorrecta]
 )
 
 #figure(
-	image("../../src/img/fixed/leonardo/figure4.jpg", width: 80%),
+	image("../../src/img/leonardo/figure4.jpg", width: 80%),
 	caption: [PE-04: Validación de usuario vacío]
 )
 
 #figure(
-	image("../../src/img/fixed/leonardo/figure5.jpg", width: 80%),
+	image("../../src/img/leonardo/figure5.jpg", width: 80%),
 	caption: [PE-05: Validación de contraseña vacía]
 )
 
 === Evidencias de Análisis de Valor Límite
 
 #figure(
-	image("../../src/img/fixed/leonardo/figure6.jpg", width: 80%),
+	image("../../src/img/leonardo/figure6.jpg", width: 80%),
 	caption: [AVL-01: Transferencia con 499 (justo debajo del mínimo)]
 )
 
 #figure(
-	image("../../src/img/fixed/leonardo/figure7.jpg", width: 80%),
+	image("../../src/img/leonardo/figure7.jpg", width: 80%),
 	caption: [AVL-02: Transferencia con 500 (mínimo permitido)]
 )
 
 #figure(
-	image("../../src/img/fixed/leonardo/figure8.jpg", width: 80%),
+	image("../../src/img/leonardo/figure8.jpg", width: 80%),
 	caption: [AVL-03: Transferencia del saldo total disponible]
 )
 
