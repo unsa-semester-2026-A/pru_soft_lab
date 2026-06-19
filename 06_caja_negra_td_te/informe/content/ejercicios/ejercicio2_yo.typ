@@ -4,6 +4,7 @@
 // Técnicas: Tablas de Decisión, Transición de Estados, Use Case testing, Random testing y Cause-effect Graphing.
 // ==========================================
 
+<<<<<<< Updated upstream
 #block(
   fill: rgb("#fff7e6"),
   stroke: rgb("#ffd591"),
@@ -16,6 +17,12 @@
 ]
 
 == Ejercicio 2: Guerra de Testers - Parte II
+=======
+#show link: set text(fill: rgb("#1a0dab"))
+#show link: underline
+
+== Guerra de Testers - Parte II
+>>>>>>> Stashed changes
 
 === Tablas de Decisión (TD)
 
@@ -24,6 +31,7 @@ Esta técnica modela la combinatoria lógica del comportamiento del método `reg
 #table(
   columns: (2.2fr, 0.6fr, 0.6fr, 0.6fr, 0.6fr, 0.6fr, 0.6fr, 0.6fr, 0.6fr, 0.6fr, 0.6fr, 0.6fr),
   align: center + horizon,
+<<<<<<< Updated upstream
   table.cell(fill: rgb("#f5f5f5"), [*Condiciones / Causas*]),
   [#strong("R1")], [#strong("R2")], [#strong("R3")], [#strong("R4")], [#strong("R5")], [#strong("R6")], [#strong("R7")], [#strong("R8")], [#strong("R9")], [#strong("R10")], [#strong("R11")],
   [C1: Tipo es EXPENSE (Gasto)], [F], [F], [F], [F], [T], [T], [T], [T], [T], [T], [T],
@@ -42,6 +50,36 @@ Esta técnica modela la combinatoria lógica del comportamiento del método `reg
   [E3: Lanzar InsufficientFundsError], [], [], [], [], [], [], [], [], [X], [], [],
   [E4: Lanzar ValueError], [], [X], [X], [X], [], [], [X], [X], [], [X], [X],
   [E5: Retornar Exceeded = True], [], [], [], [], [], [X], [], [], [], [], []
+=======
+  table.cell(fill: rgb("#f5f5f5"), [*Condiciones / Causas en la UI*]),
+  [#strong("R1")],
+  [#strong("R2")],
+  [#strong("R3")],
+  [#strong("R4")],
+  [#strong("R5")],
+  [#strong("R6")],
+  [#strong("R7")],
+  [#strong("R8")],
+  [#strong("R9")],
+  [#strong("R10")],
+  [#strong("R11")],
+  [C1: Tipo seleccionado es INCOME], [T], [T], [T], [T], [F], [F], [F], [F], [F], [F], [F],
+  [C2: Tipo seleccionado es EXPENSE], [F], [F], [F], [F], [T], [T], [T], [T], [T], [T], [T],
+  [C3: Categoría seleccionada (no nula)], [F], [T], [F], [F], [T], [T], [F], [T], [T], [T], [T],
+  [C4: Cuenta activa y seleccionada], [T], [T], [F], [T], [T], [T], [T], [T], [T], [F], [T],
+  [C5: Monto ingresado > 0], [T], [T], [T], [F], [T], [T], [T], [T], [T], [T], [F],
+  [C6: Categoría activa seleccionada], [-], [-], [-], [-], [T], [T], [-], [F], [T], [-], [-],
+  [C7: Saldo cuenta >= Monto], [-], [-], [-], [-], [T], [T], [-], [-], [F], [-], [-],
+  [C8: Gastos del mes > Límite], [-], [-], [-], [-], [F], [T], [-], [-], [-], [-], [-],
+
+  table.cell(fill: rgb("#f5f5f5"), [*Acciones / Efectos en la UI*]),
+  [], [], [], [], [], [], [], [], [], [], [],
+  [E1: Transacción guardada en historial], [X], [], [], [], [X], [X], [], [], [], [], [],
+  [E2: Actualizar saldo de cuenta], [X], [], [], [], [X], [X], [], [], [], [], [],
+  [E3: Mostrar Alerta "Fondos Insuficientes"], [], [], [], [], [], [], [], [], [X], [], [],
+  [E4: Mostrar Mensaje de Error / Rechazo], [], [X], [X], [X], [], [], [X], [X], [], [X], [X],
+  [E5: Mostrar Alerta de Presupuesto Excedido], [], [], [], [], [], [X], [], [], [], [], [],
+>>>>>>> Stashed changes
 )
 
 *Casos de Prueba Mapeados:*
@@ -78,6 +116,7 @@ class TestDecisionTable:
         assert not exceeded
         assert test_bundle.accounts.get(acc.id).current_balance == Decimal("150.00")
 
+<<<<<<< Updated upstream
     def test_r2_income_with_category_fails(self, test_bundle: ServiceBundle) -> None:
         """R2: Income transaction, category provided (must fail)."""
         acc = test_bundle.service.create_account(name="Active BCP", bank="BCP")
@@ -104,6 +143,58 @@ class TestDecisionTable:
                 amount=Decimal("100.00"),
                 description="Salary",
             )
+=======
+#align(center)[
+  #table(
+    columns: (1.4fr, 1fr),
+    align: center + horizon,
+    stroke: 0.5pt + luma(150),
+    [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
+
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/dt/tc_dt_01/inicio de registro de los datos.png", width: 100%),
+      image(
+        "../../src/img/alvaro/dt/tc_dt_01/el registrofunciona exitosamente y se actualiza la información en el hsitorial.png",
+        width: 100%,
+      ),
+    ),
+    [TC_DT_01: Ingreso de datos y posterior registro exitoso de un ingreso de \$150.00 en cuenta activa con actualización del historial.],
+
+    image("../../src/img/alvaro/dt/tc_dt_02/se verifica correctamente que ing. no tiene categoría.png", width: 90%),
+    [TC_DT_02: Verificación de que la UI restringe la selección de categoría para transacciones de tipo INCOME.],
+
+    image(
+      "../../src/img/alvaro/dt/tc_dt_03/la cuenta 'billetera' deaparece exitosamente de las opciones.png",
+      width: 90%,
+    ),
+    [TC_DT_03: Desactivación lógica de cuenta. La cuenta "Billetera" es removida de las opciones seleccionables.],
+
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/dt/tc_dt_08/se elimina la categoría de alimentación.png", width: 100%),
+      image("../../src/img/alvaro/dt/tc_dt_08/se remueve de la lista de  opciones.png", width: 100%),
+    ),
+    [TC_DT_08: Proceso de desactivación de la categoría "Alimentación" y confirmación de que se remueve de las opciones en el formulario de transacciones.],
+
+    image("../../src/img/alvaro/dt/tc_dt_11/no deja realizar la transacción.png", width: 90%),
+    [TC_DT_11: Restricción de monto. La UI impide realizar transacciones con montos no positivos.],
+  )
+]
+
+Adicionalmente, se identificó un comportamiento de advertencia visual en la UI relacionado con presupuestos de categorías eliminadas:
+#align(center)[
+  #figure(
+    image(
+      "../../src/img/alvaro/dt/warning: se ve en el panel de presu. uno de una categoría eliminada, aunque dice ahi que se elimino.png",
+      width: 70%,
+    ),
+    caption: [Advertencia: En el panel de presupuestos aún se muestra el presupuesto asignado a una categoría eliminada, marcando que esta fue eliminada.],
+  )
+]
+>>>>>>> Stashed changes
 
         # Inactive account
         acc = test_bundle.service.create_account(name="To Delete", bank="BCP")
@@ -251,6 +342,7 @@ Se validaron las máquinas de estado del Presupuesto (Consumo Mensual) y de la C
 
 *Tabla de Transición para el Presupuesto:*
 #table(
+<<<<<<< Updated upstream
   columns: (1.5fr, 2.2fr, 1.3fr, 2fr),
   align: left + horizon,
   table.cell(fill: rgb("#f5f5f5"), [*Estado Actual*]),
@@ -266,6 +358,26 @@ Se validaron las máquinas de estado del Presupuesto (Consumo Mensual) y de la C
   [EXCEEDED (S4)], [register_expense(amount > 0)], [EXCEEDED (S4)], [Registra gasto, retorna `exceeded = true`.],
   [EXCEEDED (S4)], [assign_budget() con limit > gastos], [UNDER_LIMIT (S2)], [Actualiza límite, presupuesto vuelve a normal.],
   [EXCEEDED (S4)], [assign_budget() con limit <= gastos], [EXCEEDED (S4)], [Actualiza límite, continúa excedido.]
+=======
+  columns: (1.3fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr, 1.1fr),
+  align: center + horizon,
+  table.cell(fill: rgb("#f5f5f5"), [*Estado / Acción*]),
+  table.cell(fill: rgb("#f5f5f5"), [*Asignar límite > gastos acumulados*]),
+  table.cell(fill: rgb("#f5f5f5"), [*Asignar límite <= gastos acumulados*]),
+  table.cell(fill: rgb("#f5f5f5"), [*Registrar gasto (total < límite)*]),
+  table.cell(fill: rgb("#f5f5f5"), [*Registrar gasto (total == límite)*]),
+  table.cell(fill: rgb("#f5f5f5"), [*Registrar gasto (total > límite)*]),
+
+  [*S1: UNASSIGNED*], [$S_1 arrow.r S_2$], [No aplica], [No aplica], [No aplica], [No aplica],
+  [*S2: UNDER_LIMIT*],
+  [$S_2 arrow.r S_2$],
+  [$S_2 arrow.r S_4$],
+  [$S_2 arrow.r S_2$],
+  [$S_2 arrow.r S_3$],
+  [$S_2 arrow.r S_4$],
+  [*S3: AT_LIMIT*], [$S_3 arrow.r S_2$], [$S_3 arrow.r S_4$], [No aplica], [No aplica], [$S_3 arrow.r S_4$],
+  [*S4: EXCEEDED*], [$S_4 arrow.r S_2$], [$S_4 arrow.r S_4$], [No aplica], [No aplica], [$S_4 arrow.r S_4$],
+>>>>>>> Stashed changes
 )
 
 ==== Implementación del Código de Pruebas (TE):
@@ -298,11 +410,47 @@ class TestStateTransition:
         _, exceeded = test_bundle.service.register_transaction(acc.id, cat.id, "EXPENSE", Decimal("50.00"), "Bus")
         assert not exceeded
 
+<<<<<<< Updated upstream
         # S2 -> S3 (AT_LIMIT): Spend another 50 (total spent = 100 == 100)
         _, exceeded = test_bundle.service.register_transaction(acc.id, cat.id, "EXPENSE", Decimal("50.00"), "Taxi")
         assert not exceeded
         spent, exceeded = test_bundle.service.calculate_budget_status(budget.id)
         assert spent == Decimal("100.00")
+=======
+#align(center)[
+  #table(
+    columns: (1.4fr, 1fr),
+    align: center + horizon,
+    stroke: 0.5pt + luma(150),
+    [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
+
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/te/01/se crea la categoría de forma exitosa.png", width: 100%),
+      image("../../src/img/alvaro/te/01/02.png", width: 100%),
+    ),
+    [TC_TE_01 (S1 -> S2): Creación de la categoría y posterior asignación exitosa de un presupuesto inicial de \$1000.00 en el panel correspondiente.],
+
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/te/02/01.png", width: 100%), image("../../src/img/alvaro/te/02/02.png", width: 100%),
+    ),
+    [TC_TE_02 (S2 -> S2): Registro de una transacción de gasto por \$500.00, y consecuente avance de la barra de progreso en la UI al 50% de consumo.],
+
+    image("../../src/img/alvaro/te/03/01.png", width: 90%),
+    [TC_TE_03 (S2 -> S3): Registro de un gasto adicional por \$500.00, alcanzando exactamente el 100% de la barra de presupuesto mensual.],
+
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/te/04/01.png", width: 100%), image("../../src/img/alvaro/te/04/02.png", width: 100%),
+    ),
+    [TC_TE_04 (S3 -> S4): Registro de un gasto adicional de \$100.00 que desencadena un aviso emergente en pantalla y tiñe la barra de progreso de color rojo indicando sobregiro.],
+  )
+]
+>>>>>>> Stashed changes
 
         # S3 -> S4 (EXCEEDED): Spend 0.01 (total spent = 100.01 > 100)
         _, exceeded = test_bundle.service.register_transaction(acc.id, cat.id, "EXPENSE", Decimal("0.01"), "Train")
@@ -360,6 +508,7 @@ A continuación se detalla la clase `TestUseCases` encargada de validar estos fl
 class TestUseCases:
     """Validates specific use case flows from end-to-end (excluding UC-1)."""
 
+<<<<<<< Updated upstream
     def test_uc2_setup_environment(self, test_bundle: ServiceBundle) -> None:
         """UC-2: Create account, category, and budget with Upsert."""
         acc = test_bundle.service.create_account(name="Wallet", bank="Cash")
@@ -427,15 +576,52 @@ E       Failed: DID NOT RAISE <class 'ValueError'>
 
 ========================= 1 failed, 2 passed in 0.06s ==========================
 ```
+=======
+#align(center)[
+  #table(
+    columns: (1.5fr, 1fr),
+    align: center + horizon,
+    stroke: 0.5pt + luma(150),
+    [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
+
+    grid(
+      columns: 3,
+      gutter: 5pt,
+      image("../../src/img/alvaro/uc/01/01.png", width: 100%),
+      image("../../src/img/alvaro/uc/01/02.png", width: 100%),
+      image("../../src/img/alvaro/uc/01/03.png", width: 100%),
+    ),
+    [UC-1: Configuración de entorno. Se crea la cuenta "Cartera BBVA", se crea la categoría "Suscripciones" y se le asigna un presupuesto inicial de \$30.00.],
+
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/uc/02/01.png", width: 100%), image("../../src/img/alvaro/uc/02/02.png", width: 100%),
+      image("../../src/img/alvaro/uc/02/03.png", width: 100%),
+      image("../../src/img/alvaro/uc/02/03.1.png", width: 100%),
+    ),
+    [UC-2: Registro de gastos. Se deposita \$100.00, se realiza un gasto de \$20.00, y finalmente se rechaza una transacción por fondos insuficientes (\$90.00) mostrando la alerta y preservando el saldo anterior de \$80.00.],
+
+    grid(
+      columns: 3,
+      gutter: 5pt,
+      image("../../src/img/alvaro/uc/03/01.png", width: 100%),
+      image("../../src/img/alvaro/uc/03/01.1.png", width: 100%),
+      image("../../src/img/alvaro/uc/03/02.png", width: 100%),
+    ),
+    [UC-3: Soft Delete. Se elimina lógicamente la cuenta BBVA. El historial general preserva sus transacciones, y el formulario de transacciones restringe su uso al no mostrarla entre las opciones seleccionables.],
+  )
+]
+>>>>>>> Stashed changes
 
 === Pruebas Aleatorias (Random Testing)
 
 Esta técnica simula secuencias aleatorias de operaciones en el sistema para corroborar la inmutabilidad de cuatro invariantes lógicos clave:
 
 1. *Invariante del Balance:* El saldo final de la cuenta debe coincidir con la suma aritmética de ingresos menos gastos.
-   $B_"final" = sum "amount"_"income" - sum "amount"_"expense"$
+  $B_"final" = sum "amount"_"income" - sum "amount"_"expense"$
 2. *Invariante de Protección de Saldo (No Negatividad):* El saldo nunca puede caer por debajo de cero, levantando `InsufficientFundsError`.
-   $B_"actual" - A_"gasto" >= 0$
+  $B_"actual" - A_"gasto" >= 0$
 3. *Invariante de Unicidad de Presupuesto:* Multiples presupuestos asignados al mismo periodo resultan en un único registro (Upsert).
 4. *Invariante de Monto Positivo:* Montos $\le 0$ en transacciones o presupuestos deben ser rechazados.
 
@@ -549,7 +735,79 @@ A continuación se muestra el diagrama del grafo causa-efecto generado para esta
 
 === Evidencias de Ejecución
 
+<<<<<<< Updated upstream
 Al ejecutar todo el conjunto de pruebas del sistema (combinando pruebas básicas PE y AVL unitarias de caja de cristal previa y las nuevas 5 técnicas de caja negra avanzada), se evidencia que se ejecutan 95 tests, resultando en 92 aprobados y 3 fallidos correspondientes exactamente a las tres fallas lógicas de Soft Delete descubiertas:
+=======
+Para traducir el modelo lógico del grafo en casos de prueba accionables, las fórmulas booleanas actúan como un filtro matemático. Esto evita la ejecución ineficiente de todas las combinaciones posibles ($2^7 = 128$ escenarios) y aísla los flujos exactos a verificar en la interfaz.
+
+A partir de las fórmulas definidas, se derivan los siguientes casos de prueba de validación y error:
+
+- CP-1: Registro de Gasto Exitoso (Sin sobregiro)
+  - Fórmula evaluada: $E_1 " y " E_2 " (Gasto)" = C_1 " and " C_3 " and " C_4 " and " C_5 " and " C_6 " and " C_7$
+  - Precondiciones: La cuenta y la categoría seleccionadas existen y están activas ($C_4 = "true"$, $C_6 = "true"$). El saldo actual de la cuenta es suficiente para cubrir el gasto ($C_7 = "true"$).
+  - Paso 1: Seleccionar el tipo de transacción `EXPENSE` ($C_1 = "true"$).
+  - Paso 2: Seleccionar la categoría activa en el formulario ($C_3 = "true"$).
+  - Paso 3: Ingresar un monto válido estrictamente mayor a cero ($C_5 = "true"$).
+  - Paso 4: Presionar el botón "Guardar".
+  - Resultado Esperado: La transacción se almacena correctamente en el historial ($E_1$) y el saldo de la cuenta seleccionada disminuye según el monto ingresado ($E_2$).
+
+- CP-2: Rechazo de Transacción por Monto Inválido
+  - Fórmula evaluada: $E_4 = "not " C_4 " or not " C_5 " or " ...$
+  - Precondiciones: La cuenta y la categoría seleccionadas son válidas y están activas.
+  - Paso 1: Seleccionar el tipo de transacción, ya sea `EXPENSE` o `INCOME`.
+  - Paso 2: Dejar el campo de monto en cero o ingresar un valor negativo ($C_5 = "false"$).
+  - Paso 3: Intentar guardar la transacción.
+  - Resultado Esperado: El sistema bloquea el procesamiento y despliega un cuadro de error informando que el monto de la transacción es inválido (`ValueError`) ($E_4$).
+
+- CP-3: Gasto Exitoso con Alerta de Presupuesto Excedido
+  - $E_5 = E_1 text(" and ") C_1 text(" and (") text("Gastos del mes") > text("Límite") text(")")$
+  // - Fórmula evaluada: $E_5 = E_1"and"C_1 "and(" "Gastos del mes" > "Límite" ")$
+  - Precondiciones: Cuenta y categoría activas y válidas. Saldo suficiente ($C_7 = "true"$). El acumulado de gastos en la categoría elegida está al límite.
+  - Paso 1: Seleccionar el tipo de transacción `EXPENSE` ($C_1 = "true"$).
+  - Paso 2: Ingresar un monto que provoque el exceso del presupuesto mensual configurado para la categoría.
+  - Paso 3: Presionar el botón "Guardar".
+  - Resultado Esperado: La transacción se guarda y el saldo se actualiza ($E_1, E_2$). Inmediatamente después, el indicador visual del presupuesto mensual de la categoría cambia a color rojo alertando del sobregiro ($E_5$).
+
+==== Evidencias de Ejecución en la Aplicación (Grafo Causa-Efecto):
+
+A continuación se presentan las evidencias de la verificación manual de la lógica causa-efecto en la interfaz de usuario para cada uno de los casos de prueba diseñados, agrupando las capturas de pantalla correspondientes de forma horizontal por cada caso:
+
+#align(center)[
+  #table(
+    columns: (1.5fr, 1fr),
+    align: center + horizon,
+    stroke: 0.5pt + luma(150),
+    [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
+
+    grid(
+      columns: 3,
+      gutter: 5pt,
+      image("../../src/img/alvaro/gce/01.png", width: 100%),
+      image("../../src/img/alvaro/gce/02.png", width: 100%),
+      image("../../src/img/alvaro/gce/03.png", width: 100%),
+    ),
+    [CP-1: Registro de Gasto Exitoso. Muestra las precondiciones (cuenta y categoría creadas), el ingreso de los datos de gasto, y la confirmación tras guardar la transacción de gasto dentro del presupuesto.],
+
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/gce/04.png", width: 100%), image("../../src/img/alvaro/gce/05.png", width: 100%),
+    ),
+    [CP-2: Rechazo por Monto Inválido. Muestra el estado inicial con el formulario, el intento de ingresar y guardar una transacción con monto no positivo (cero), y el aviso de error emergente en la interfaz.],
+
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/gce/06.png", width: 100%), image("../../src/img/alvaro/gce/07.png", width: 100%),
+    ),
+    [CP-3: Gasto con Alerta de Presupuesto Excedido. Muestra el formulario con precondiciones listas, y la posterior confirmación con el mensaje de advertencia flotante por sobrepasar el límite de la categoría.],
+  )
+]
+
+=== Evidencias de Ejecución General del Suite
+
+Al ejecutar todo el conjunto de pruebas del sistema (combinando pruebas básicas PE y AVL unitarias de caja de cristal previa y la técnica aleatoria automatizada), se evidencia que se ejecutan 95 tests, resultando en 95 aprobados (excluyendo los tests manuales):
+>>>>>>> Stashed changes
 
 ```
 $ uv run pytest
@@ -558,7 +816,11 @@ platform linux -- Python 3.12.3, pytest-8.1.1, pluggy-1.4.0
 rootdir: /home/alvaro9rqc/1_Pacha/1-unsa/7_S/ps/lab/06_caja_negra_td_te/development
 configfile: pyproject.toml
 testpaths: finance
+<<<<<<< Updated upstream
 collected 95 items
+=======
+collecting ... collected 95 items
+>>>>>>> Stashed changes
 
 finance/adapters/inbound/ui_python/test_app_ui.py ....                   [  4%]
 finance/adapters/outbound/db_memory/test_memory_repos.py ........       [ 12%]
