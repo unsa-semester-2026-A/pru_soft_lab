@@ -208,7 +208,7 @@ Se modelaron escenarios de extremo a extremo representativos de los flujos de us
   - *Paso 1:* Crear una cuenta e ingresar \$100.00, luego registrar un gasto de \$40.00.
   - *Paso 2:* Desactivar la cuenta en el panel de gestión de cuentas.
   - *Paso 3 (Preservación):* Validar que la cuenta ya no se muestra en la lista de cuentas activas de la pestaña *Cuentas*, pero sus transacciones históricas siguen listadas en el historial general.
-  - *Paso 4 (Restricción):* Validar que al intentar registrar una nueva transacción en el formulario de la UI, la cuenta desactivada no se encuentre seleccionable en las opciones disponibles (Comportamiento correcto).
+  - *Paso 4 (Restricción):* Validar que al intentar registrar una nueva transacción en el formulario de la UI, la cuenta desactivada no se encuentre seleccionable en las opciones disponibles.
 
 ==== Evidencias de Ejecución en la Aplicación (Casos de Uso):
 
@@ -250,8 +250,6 @@ A continuación se presentan las evidencias de la ejecución manual en la interf
     [UC-3: Soft Delete. Se elimina lógicamente la cuenta BBVA. El historial general preserva sus transacciones, y el formulario de transacciones restringe su uso al no mostrarla entre las opciones seleccionables.]
   )
 ]
-
----
 
 === Pruebas Aleatorias (Random Testing)
 
@@ -338,11 +336,6 @@ finance/core/app/test_blackbox_advanced.py::TestRandomTesting::test_random_budge
 ============================== 2 passed in 0.04s ===============================
 ```
 
-==== Evidencias de Ejecución en la Aplicación (Random Testing):
-Dado que las pruebas aleatorias y de invariantes se diseñaron para ejecutarse a nivel de servicios en el backend para validar la solidez del dominio, las evidencias corresponden a la ejecución automatizada exitosa de pytest mostrada en la consola de comandos. No obstante, las reglas invariantes (como la no negatividad del balance y el control de montos positivos) son forzadas de igual manera a nivel visual en la interfaz de usuario (como se ilustra en las evidencias de los casos TC_DT_11 y TC_TE_04).
-
----
-
 === Grafos Causa-Efecto (Cause-Effect Graphing)
 
 El diseño del Grafo Causa-Efecto representa la lógica de negocio detrás de la pantalla de transacciones, analizando cómo interactúan las causas (entradas de la UI) y efectos (reacciones de la interfaz).
@@ -377,8 +370,75 @@ A continuación se muestra el diagrama del grafo causa-efecto generado mediante 
 - $E_4 = not C_4 or not C_5 or (C_2 and C_3) or (C_1 and not C_3) or (C_1 and C_3 and not C_6)$
 - $E_5 = E_1 and C_1 and ("Gastos del mes" > "Límite del presupuesto")$
 
+==== Diseño de Casos de Prueba (Basado en Fórmulas Booleanas)
+
+Para traducir el modelo lógico del grafo en casos de prueba accionables, las fórmulas booleanas actúan como un filtro matemático. Esto evita la ejecución ineficiente de todas las combinaciones posibles ($2^7 = 128$ escenarios) y aísla los flujos exactos a verificar en la interfaz.
+
+A partir de las fórmulas definidas, se derivan los siguientes casos de prueba de validación y error:
+
+- CP-1: Registro de Gasto Exitoso (Sin sobregiro)
+  - Fórmula evaluada: $E_1 " y " E_2 " (Gasto)" = C_1 " and " C_3 " and " C_4 " and " C_5 " and " C_6 " and " C_7$
+  - Precondiciones: La cuenta y la categoría seleccionadas existen y están activas ($C_4 = "true"$, $C_6 = "true"$). El saldo actual de la cuenta es suficiente para cubrir el gasto ($C_7 = "true"$).
+  - Paso 1: Seleccionar el tipo de transacción `EXPENSE` ($C_1 = "true"$).
+  - Paso 2: Seleccionar la categoría activa en el formulario ($C_3 = "true"$).
+  - Paso 3: Ingresar un monto válido estrictamente mayor a cero ($C_5 = "true"$).
+  - Paso 4: Presionar el botón "Guardar".
+  - Resultado Esperado: La transacción se almacena correctamente en el historial ($E_1$) y el saldo de la cuenta seleccionada disminuye según el monto ingresado ($E_2$).
+
+- CP-2: Rechazo de Transacción por Monto Inválido
+  - Fórmula evaluada: $E_4 = "not " C_4 " or not " C_5 " or " ...$
+  - Precondiciones: La cuenta y la categoría seleccionadas son válidas y están activas.
+  - Paso 1: Seleccionar el tipo de transacción, ya sea `EXPENSE` o `INCOME`.
+  - Paso 2: Dejar el campo de monto en cero o ingresar un valor negativo ($C_5 = "false"$).
+  - Paso 3: Intentar guardar la transacción.
+  - Resultado Esperado: El sistema bloquea el procesamiento y despliega un cuadro de error informando que el monto de la transacción es inválido (`ValueError`) ($E_4$).
+
+- CP-3: Gasto Exitoso con Alerta de Presupuesto Excedido
+  - $E_5 = E_1 text(" and ") C_1 text(" and (") text("Gastos del mes") > text("Límite") text(")")$
+  // - Fórmula evaluada: $E_5 = E_1"and"C_1 "and(" "Gastos del mes" > "Límite" ")$
+  - Precondiciones: Cuenta y categoría activas y válidas. Saldo suficiente ($C_7 = "true"$). El acumulado de gastos en la categoría elegida está al límite.
+  - Paso 1: Seleccionar el tipo de transacción `EXPENSE` ($C_1 = "true"$).
+  - Paso 2: Ingresar un monto que provoque el exceso del presupuesto mensual configurado para la categoría.
+  - Paso 3: Presionar el botón "Guardar".
+  - Resultado Esperado: La transacción se guarda y el saldo se actualiza ($E_1, E_2$). Inmediatamente después, el indicador visual del presupuesto mensual de la categoría cambia a color rojo alertando del sobregiro ($E_5$).
+
 ==== Evidencias de Ejecución en la Aplicación (Grafo Causa-Efecto):
-La validación manual de las combinaciones y fórmulas booleanas del grafo causa-efecto se ve reflejada directamente en el comportamiento correcto de la interfaz de usuario (UI), tal como se documentó en las capturas de pantalla previas, las cuales demuestran que las restricciones y flujos lógicos de negocio se cumplen de manera consistente en la aplicación.
+
+A continuación se presentan las evidencias de la verificación manual de la lógica causa-efecto en la interfaz de usuario para cada uno de los casos de prueba diseñados, agrupando las capturas de pantalla correspondientes de forma horizontal por cada caso:
+
+#align(center)[
+  #table(
+    columns: (1.5fr, 1fr),
+    align: center + horizon,
+    stroke: 0.5pt + luma(150),
+    [*Evidencia Gráfica*], [*Descripción del Caso de Prueba*],
+    
+    grid(
+      columns: 3,
+      gutter: 5pt,
+      image("../../src/img/alvaro/gce/01.png", width: 100%),
+      image("../../src/img/alvaro/gce/02.png", width: 100%),
+      image("../../src/img/alvaro/gce/03.png", width: 100%),
+    ),
+    [CP-1: Registro de Gasto Exitoso. Muestra las precondiciones (cuenta y categoría creadas), el ingreso de los datos de gasto, y la confirmación tras guardar la transacción de gasto dentro del presupuesto.],
+    
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/gce/04.png", width: 100%),
+      image("../../src/img/alvaro/gce/05.png", width: 100%),
+    ),
+    [CP-2: Rechazo por Monto Inválido. Muestra el estado inicial con el formulario, el intento de ingresar y guardar una transacción con monto no positivo (cero), y el aviso de error emergente en la interfaz.],
+    
+    grid(
+      columns: 2,
+      gutter: 5pt,
+      image("../../src/img/alvaro/gce/06.png", width: 100%),
+      image("../../src/img/alvaro/gce/07.png", width: 100%),
+    ),
+    [CP-3: Gasto con Alerta de Presupuesto Excedido. Muestra el formulario con precondiciones listas, y la posterior confirmación con el mensaje de advertencia flotante por sobrepasar el límite de la categoría.]
+  )
+]
 
 === Evidencias de Ejecución General del Suite
 
