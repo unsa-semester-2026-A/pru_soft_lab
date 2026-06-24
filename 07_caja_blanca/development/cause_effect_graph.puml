@@ -1,0 +1,129 @@
+@startuml
+!theme plain
+skinparam BackgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Lato"
+skinparam defaultFontSize 12
+
+' Estilo de los rectangulos (Causas / Efectos)
+skinparam rectangle {
+  BackgroundColor<<Cause>> #E3F2FD
+  BorderColor<<Cause>> #2196F3
+  FontColor<<Cause>> #0D47A1
+  BorderThickness 1.5
+  
+  BackgroundColor<<EffectSuccess>> #E8F5E9
+  BorderColor<<EffectSuccess>> #4CAF50
+  FontColor<<EffectSuccess>> #1B5E20
+  BorderThickness 1.5
+  
+  BackgroundColor<<EffectError>> #FFEBEE
+  BorderColor<<EffectError>> #F44336
+  FontColor<<EffectError>> #B71C1C
+  BorderThickness 1.5
+  
+  BackgroundColor<<EffectWarning>> #FFF3E0
+  BorderColor<<EffectWarning>> #FF9800
+  FontColor<<EffectWarning>> #E65100
+  BorderThickness 1.5
+}
+
+' Estilo de los circulos (Compuertas)
+skinparam circle {
+  BackgroundColor #ECEFF1
+  BorderColor #546E7A
+  FontColor #37474F
+  FontSize 11
+}
+
+' Estilo de las flechas
+skinparam ArrowColor #37474F
+skinparam ArrowThickness 1.2
+
+title Grafo Causa-Efecto (Registro de Transacciones)
+
+' Causas (Entradas)
+rectangle "C1: Gasto (EXPENSE)" as C1 <<Cause>>
+rectangle "C2: Ingreso (INCOME)" as C2 <<Cause>>
+rectangle "C3: Category ID provisto" as C3 <<Cause>>
+rectangle "C4: Cuenta activa y existe" as C4 <<Cause>>
+rectangle "C5: Monto > 0" as C5 <<Cause>>
+rectangle "C6: Categoría activa y existe" as C6 <<Cause>>
+rectangle "C7: Saldo cuenta >= Monto" as C7 <<Cause>>
+
+' Compuertas Logicas
+circle "AND 1" as AND1
+circle "AND 2" as AND2
+circle "AND 3" as AND3
+circle "AND 4" as AND4
+circle "OR 1" as OR1
+circle "OR 2" as OR2
+circle "NOT 1" as NOT1
+circle "NOT 2" as NOT2
+circle "NOT 3" as NOT3
+circle "NOT 4" as NOT4
+circle "NOT 5" as NOT5
+circle "NOT 6" as NOT6
+circle "AND 5" as AND5
+
+' Efectos (Salidas)
+rectangle "E1: Registro Exitoso" as E1 <<EffectSuccess>>
+rectangle "E2: Actualizar Saldo" as E2 <<EffectSuccess>>
+rectangle "E3: InsufficientFundsError" as E3 <<EffectError>>
+rectangle "E4: ValueError" as E4 <<EffectError>>
+rectangle "E5: Alerta Presupuesto Excedido" as E5 <<EffectWarning>>
+
+' Conexiones de Gasto Exitoso (E1, E2)
+C1 --> AND1
+C3 --> AND1
+C4 --> AND1
+C5 --> AND1
+C6 --> AND1
+
+AND1 --> AND2
+C7 --> AND2
+AND2 --> E1
+AND2 --> E2
+
+' Conexiones de Fondos Insuficientes (E3)
+AND1 --> AND3
+C7 --> NOT1
+NOT1 --> AND3
+AND3 --> E3
+
+' Conexiones de Ingreso Exitoso (E1, E2)
+C2 --> AND4
+C3 --> NOT2 : nulo
+NOT2 --> AND4
+C4 --> AND4
+C5 --> AND4
+AND4 --> E1
+AND4 --> E2
+
+' Conexiones de Errores (E4)
+C2 --> OR1
+C3 --> OR1
+OR1 --> E4 : Ingreso con Cat
+
+C1 --> OR2
+C3 --> NOT3 : nulo
+NOT3 --> OR2
+OR2 --> E4 : Gasto sin Cat
+
+C5 --> NOT4 : <= 0
+NOT4 --> E4 : Monto Inv.
+
+C4 --> NOT5 : inactiva
+NOT5 --> E4 : Cuenta Inv.
+
+C6 --> NOT6 : inactiva
+NOT6 --> E4 : Cat Inv.
+
+' Conexiones de Alerta Presupuesto (E5)
+E1 --> AND5
+C1 --> AND5
+rectangle "Suma Gastos > Limite" as ExceedCond
+ExceedCond --> AND5
+AND5 --> E5
+
+@enduml
