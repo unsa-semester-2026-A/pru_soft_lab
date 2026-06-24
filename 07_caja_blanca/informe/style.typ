@@ -59,6 +59,10 @@
     lang: "es",
     size: 10pt,
   )
+  show link: it => {
+    set text(fill: blue, style: "italic")
+    underline(it)
+  }
   // raw
   show raw.where(block: true): it => block(
     fill: codeBgColor, // Slightly off-black for better contrast

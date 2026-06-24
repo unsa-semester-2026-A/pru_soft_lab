@@ -10,7 +10,7 @@ Este documento contiene la repartición de tareas, instrucciones y los espacios 
   fill: (col, row) => if row == 0 { rgb("#C8310E") } else if calc.even(row) { rgb("#f8f9fa") } else { none },
   inset: (x: 8pt, y: 7pt),
   align: (col, row) => if row == 0 { center + horizon } else { left + horizon },
-  
+
   // Headers
   table.cell(fill: rgb("#C8310E"))[*Ejercicio / Actividad*],
   table.cell(fill: rgb("#C8310E"))[*Responsable*],
@@ -57,7 +57,7 @@ Este documento contiene la repartición de tareas, instrucciones y los espacios 
   [Cuestionario (Preguntas 1, 2 y 3)],
   [Anette (Anette Gallegos)],
   [Desarrollo de las 3 preguntas de debate usando entre 3 y 5 referencias bibliográficas estructuradas en BibTeX.],
-  [`cuestionario.typ`]
+  [`cuestionario.typ`],
 )
 
 #v(1em)
@@ -73,96 +73,160 @@ Este documento contiene la repartición de tareas, instrucciones y los espacios 
     - *No modifiquen este archivo principal* (`ejercicios.typ`) a menos que sea estrictamente necesario para la estructura. Cada uno tiene asignado archivos independientes para evitar conflictos en Git.
     - *Código del Ejercicio 1:* Se utilizará la implementación del módulo `bisect` de CPython: #link("https://github.com/python/cpython/blob/main/Lib/bisect.py")[GitHub - bisect.py].
     - *Código del Ejercicio 2:* Debe evaluarse el código del directorio `development/` *de este laboratorio 07*. No consulten el repositorio o código del laboratorio anterior, utilicen la implementación que se encuentra directamente aquí.
-  ]
+  ],
 )
 
 #v(1em)
 
-= Ejercicio 1: Cobertura de Caja Blanca en `bisect.py`
+== Ejercicio 1: Cobertura de Caja Blanca en `bisect.py`
 
 El módulo `bisect.py` proporciona algoritmos de bisección en Python para mantener listas ordenadas sin tener que ordenarlas después de cada inserción. Se presenta el código fuente exacto para referencia de todos:
 
-```py
-"""Bisection algorithms."""
+#figure(
+  ```py
+  """Bisection algorithms."""
 
-def insort_right(a, x, lo=0, hi=None, *, key=None):
-    if key is None:
-        lo = bisect_right(a, x, lo, hi)
-    else:
-        lo = bisect_right(a, key(x), lo, hi, key=key)
-    a.insert(lo, x)
 
-def bisect_right(a, x, lo=0, hi=None, *, key=None):
-    if lo < 0:
-        raise ValueError('lo must be non-negative')
-    if hi is None:
-        hi = len(a)
-    if key is None:
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if x < a[mid]:
-                hi = mid
-            else:
-                lo = mid + 1
-    else:
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if x < key(a[mid]):
-                hi = mid
-            else:
-                lo = mid + 1
-    return lo
+  def insort_right(a, x, lo=0, hi=None, *, key=None):
+      """Insert item x in list a, and keep it sorted assuming a is sorted.
 
-def insort_left(a, x, lo=0, hi=None, *, key=None):
-    if key is None:
-        lo = bisect_left(a, x, lo, hi)
-    else:
-        lo = bisect_left(a, key(x), lo, hi, key=key)
-    a.insert(lo, x)
+      If x is already in a, insert it to the right of the rightmost x.
 
-def bisect_left(a, x, lo=0, hi=None, *, key=None):
-    if lo < 0:
-        raise ValueError('lo must be non-negative')
-    if hi is None:
-        hi = len(a)
-    if key is None:
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if a[mid] < x:
-                lo = mid + 1
-            else:
-                hi = mid
-    else:
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if key(a[mid]) < x:
-                lo = mid + 1
-            else:
-                hi = mid
-    return lo
-```
+      Optional args lo (default 0) and hi (default len(a)) bound the
+      slice of a to be searched.
 
-== Pruebas de Sentencia (Statement Testing) - Asignado a Leo
+      A custom key function can be supplied to customize the sort order.
+      """
+      if key is None:
+          lo = bisect_right(a, x, lo, hi)
+      else:
+          lo = bisect_right(a, key(x), lo, hi, key=key)
+      a.insert(lo, x)
+
+
+  def bisect_right(a, x, lo=0, hi=None, *, key=None):
+      """Return the index where to insert item x in list a, assuming a is sorted.
+
+      The return value i is such that all e in a[:i] have e <= x, and all e in
+      a[i:] have e > x.  So if x already appears in the list, a.insert(i, x) will
+      insert just after the rightmost x already there.
+
+      Optional args lo (default 0) and hi (default len(a)) bound the
+      slice of a to be searched.
+
+      A custom key function can be supplied to customize the sort order.
+      """
+
+      if lo < 0:
+          raise ValueError('lo must be non-negative')
+      if hi is None:
+          hi = len(a)
+      # Note, the comparison uses "<" to match the
+      # __lt__() logic in list.sort() and in heapq.
+      if key is None:
+          while lo < hi:
+              mid = (lo + hi) // 2
+              if x < a[mid]:
+                  hi = mid
+              else:
+                  lo = mid + 1
+      else:
+          while lo < hi:
+              mid = (lo + hi) // 2
+              if x < key(a[mid]):
+                  hi = mid
+              else:
+                  lo = mid + 1
+      return lo
+
+
+  def insort_left(a, x, lo=0, hi=None, *, key=None):
+      """Insert item x in list a, and keep it sorted assuming a is sorted.
+
+      If x is already in a, insert it to the left of the leftmost x.
+
+      Optional args lo (default 0) and hi (default len(a)) bound the
+      slice of a to be searched.
+
+      A custom key function can be supplied to customize the sort order.
+      """
+
+      if key is None:
+          lo = bisect_left(a, x, lo, hi)
+      else:
+          lo = bisect_left(a, key(x), lo, hi, key=key)
+      a.insert(lo, x)
+
+  def bisect_left(a, x, lo=0, hi=None, *, key=None):
+      """Return the index where to insert item x in list a, assuming a is sorted.
+
+      The return value i is such that all e in a[:i] have e < x, and all e in
+      a[i:] have e >= x.  So if x already appears in the list, a.insert(i, x) will
+      insert just before the leftmost x already there.
+
+      Optional args lo (default 0) and hi (default len(a)) bound the
+      slice of a to be searched.
+
+      A custom key function can be supplied to customize the sort order.
+      """
+
+      if lo < 0:
+          raise ValueError('lo must be non-negative')
+      if hi is None:
+          hi = len(a)
+      # Note, the comparison uses "<" to match the
+      # __lt__() logic in list.sort() and in heapq.
+      if key is None:
+          while lo < hi:
+              mid = (lo + hi) // 2
+              if a[mid] < x:
+                  lo = mid + 1
+              else:
+                  hi = mid
+      else:
+          while lo < hi:
+              mid = (lo + hi) // 2
+              if key(a[mid]) < x:
+                  lo = mid + 1
+              else:
+                  hi = mid
+      return lo
+
+
+  # Overwrite above definitions with a fast C implementation
+  try:
+      from _bisect import *
+  except ImportError:
+      pass
+
+  # Create aliases
+  bisect = bisect_right
+  insort = insort_right
+  ```,
+  caption: [Módulo `bisect.py` de la biblioteca estándar de Python (#link("https://github.com/python/cpython/blob/main/Lib/bisect.py")[url])]
+)
+
+=== Pruebas de Sentencia (Statement Testing)
 #include "ejercicio1_sentencias_leo.typ"
 
-== Pruebas de Ramas (Branch Testing) - Asignado a Alvaro
+=== Pruebas de Ramas (Branch Testing)
 #include "ejercicio1_ramas_alvaro.typ"
 
-== Pruebas de Combinación de Condiciones - Asignado a Alisson
+=== Pruebas de Combinación de Condiciones
 #include "ejercicio1_condiciones_alisson.typ"
 
-= Ejercicio 2: Complejidad Ciclomática (Guerra de Testers - Parte III)
+== Ejercicio 2: Complejidad Ciclomática (Guerra de Testers - Parte III)
 
 Para este ejercicio, evaluamos funciones del sistema *FinanceApp* que se encuentra en la carpeta `development/`.
 *Nota crítica del equipo:* Se debe analizar exclusivamente el código adjunto en este espacio de trabajo para evitar discrepancias.
 
 A continuación, cada integrante presenta el análisis detallado de la función asignada, incluyendo su Grafo de Flujo de Control (CFG), la matemática del cálculo de Complejidad Ciclomática (CC) por fórmulas, y la comparación del score obtenido mediante la herramienta `radon`.
 
-== Análisis de `Account.__post_init__` - Asignado a Alvaro
+=== Análisis de `Account.__post_init__`
 #include "ejercicio2_cc_alvaro.typ"
 
-== Análisis de `Transaction.__post_init__` - Asignado a Alisson
+=== Análisis de `Transaction.__post_init__`
 #include "ejercicio2_cc_alisson.typ"
 
-== Análisis de `FinanceService.register_transaction` - Asignado a Leo
+=== Análisis de `FinanceService.register_transaction`
 #include "ejercicio2_cc_leo.typ"
