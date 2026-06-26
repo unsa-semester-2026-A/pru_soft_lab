@@ -45,16 +45,28 @@ Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se dis
   fill: (col, row) => if row == 0 { rgb("#2c3e50") } else if calc.even(row) { rgb("#f8f9fa") } else { none },
   inset: (x: 6pt, y: 5pt),
   align: (col, row) => if row == 0 { center + horizon } else { left + horizon },
-  
+
   table.cell(fill: rgb("#2c3e50"))[*ID*],
   table.cell(fill: rgb("#2c3e50"))[*Entradas*],
   table.cell(fill: rgb("#2c3e50"))[*Decisiones / Ramas*],
   table.cell(fill: rgb("#2c3e50"))[*Resultado Esperado*],
   table.cell(fill: rgb("#2c3e50"))[*Camino*],
 
-  [TB-01], [a = [1, 2, 3] \ x = 2 \ lo = -1 \ hi = None \ key = None], [lo < 0 \ (True)], [Lanza `ValueError`], [1 -> 2 -> 15 \ (Error)],
-  [TB-02], [a = [10, 30, 50] \ x = 40 \ lo = 0 \ hi = None \ key = None], [lo < 0 (False) \ hi is None (True) \ key is None (True) \ while lo < hi (True/False) \ a[mid] < x (True/False)], [Retorna `2`], [1 -> 3 -> 4 -> 5 -> 6 \ -> 7 -> 8 -> 6 -> 7 \ -> 9 -> 6 -> 15],
-  [TB-03], [a = [10, 30, 50] \ x = 40 \ lo = 0 \ hi = 3 \ key = lambda x: x], [lo < 0 (False) \ hi is None (False) \ key is None (False) \ while lo < hi (True/False) \ key(a[mid]) < x (True/False)], [Retorna `2`], [1 -> 3 -> 5 -> 10 -> 11 \ -> 12 -> 13 -> 11 -> 12 \ -> 14 -> 11 -> 15],
+  [TB-01],
+  [a = [1, 2, 3] \ x = 2 \ lo = -1 \ hi = None \ key = None],
+  [lo < 0 \ (True)],
+  [Lanza `ValueError`],
+  [1 -> 2 -> 15 \ (Error)],
+  [TB-02],
+  [a = [10, 30, 50] \ x = 40 \ lo = 0 \ hi = None \ key = None],
+  [lo < 0 (False) \ hi is None (True) \ key is None (True) \ while lo < hi (True/False) \ a[mid] < x (True/False)],
+  [Retorna `2`],
+  [1 -> 3 -> 4 -> 5 -> 6 \ -> 7 -> 8 -> 6 -> 7 \ -> 9 -> 6 -> 15],
+  [TB-03],
+  [a = [10, 30, 50] \ x = 40 \ lo = 0 \ hi = 3 \ key = lambda x: x],
+  [lo < 0 (False) \ hi is None (False) \ key is None (False) \ while lo < hi (True/False) \ key(a[mid]) < x (True/False)],
+  [Retorna `2`],
+  [1 -> 3 -> 5 -> 10 -> 11 \ -> 12 -> 13 -> 11 -> 12 \ -> 14 -> 11 -> 15],
 )
 
 ====== 2. Función `bisect_right`
@@ -65,16 +77,28 @@ Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se dis
   fill: (col, row) => if row == 0 { rgb("#2c3e50") } else if calc.even(row) { rgb("#f8f9fa") } else { none },
   inset: (x: 6pt, y: 5pt),
   align: (col, row) => if row == 0 { center + horizon } else { left + horizon },
-  
+
   table.cell(fill: rgb("#2c3e50"))[*ID*],
   table.cell(fill: rgb("#2c3e50"))[*Entradas*],
   table.cell(fill: rgb("#2c3e50"))[*Decisiones / Ramas*],
   table.cell(fill: rgb("#2c3e50"))[*Resultado Esperado*],
   table.cell(fill: rgb("#2c3e50"))[*Camino*],
 
-  [TB-04], [a = [1, 2, 3] \ x = 2 \ lo = -1 \ hi = None \ key = None], [lo < 0 \ (True)], [Lanza `ValueError`], [1 -> 2 -> 15 \ (Error)],
-  [TB-05], [a = [10, 30, 50] \ x = 40 \ lo = 0 \ hi = None \ key = None], [lo < 0 (False) \ hi is None (True) \ key is None (True) \ while lo < hi (True/False) \ a[mid] <= x (True/False)], [Retorna `2`], [1 -> 3 -> 4 -> 5 -> 6 \ -> 7 -> 8 -> 6 -> 7 \ -> 9 -> 6 -> 15],
-  [TB-06], [a = [10, 30, 50] \ x = 40 \ lo = 0 \ hi = 3 \ key = lambda x: x], [lo < 0 (False) \ hi is None (False) \ key is None (False) \ while lo < hi (True/False) \ key(a[mid]) <= x (True/False)], [Retorna `2`], [1 -> 3 -> 5 -> 10 -> 11 \ -> 12 -> 13 -> 11 -> 12 \ -> 14 -> 11 -> 15],
+  [TB-04],
+  [a = [1, 2, 3] \ x = 2 \ lo = -1 \ hi = None \ key = None],
+  [lo < 0 \ (True)],
+  [Lanza `ValueError`],
+  [1 -> 2 -> 15 \ (Error)],
+  [TB-05],
+  [a = [10, 30, 50] \ x = 40 \ lo = 0 \ hi = None \ key = None],
+  [lo < 0 (False) \ hi is None (True) \ key is None (True) \ while lo < hi (True/False) \ a[mid] <= x (True/False)],
+  [Retorna `2`],
+  [1 -> 3 -> 4 -> 5 -> 6 \ -> 7 -> 8 -> 6 -> 7 \ -> 9 -> 6 -> 15],
+  [TB-06],
+  [a = [10, 30, 50] \ x = 40 \ lo = 0 \ hi = 3 \ key = lambda x: x],
+  [lo < 0 (False) \ hi is None (False) \ key is None (False) \ while lo < hi (True/False) \ key(a[mid]) <= x (True/False)],
+  [Retorna `2`],
+  [1 -> 3 -> 5 -> 10 -> 11 \ -> 12 -> 13 -> 11 -> 12 \ -> 14 -> 11 -> 15],
 )
 
 ====== 3. Función `insort_left`
@@ -85,15 +109,23 @@ Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se dis
   fill: (col, row) => if row == 0 { rgb("#2c3e50") } else if calc.even(row) { rgb("#f8f9fa") } else { none },
   inset: (x: 6pt, y: 5pt),
   align: (col, row) => if row == 0 { center + horizon } else { left + horizon },
-  
+
   table.cell(fill: rgb("#2c3e50"))[*ID*],
   table.cell(fill: rgb("#2c3e50"))[*Entradas*],
   table.cell(fill: rgb("#2c3e50"))[*Decisiones / Ramas*],
   table.cell(fill: rgb("#2c3e50"))[*Resultado Esperado*],
   table.cell(fill: rgb("#2c3e50"))[*Camino*],
 
-  [TB-07], [a = [10, 20, 30] \ x = 25 \ lo = 0 \ hi = None \ key = None], [key is None \ (True)], [Inserta `25` en `a` \ (a = [10, 20, 25, 30])], [1 -> 2 -> 4],
-  [TB-08], [a = [10, 20, 30] \ x = 25 \ lo = 0 \ hi = None \ key = lambda x: x], [key is None \ (False)], [Inserta `25` en `a` \ (a = [10, 20, 25, 30])], [1 -> 3 -> 4],
+  [TB-07],
+  [a = [10, 20, 30] \ x = 25 \ lo = 0 \ hi = None \ key = None],
+  [key is None \ (True)],
+  [Inserta `25` en `a` \ (a = [10, 20, 25, 30])],
+  [1 -> 2 -> 4],
+  [TB-08],
+  [a = [10, 20, 30] \ x = 25 \ lo = 0 \ hi = None \ key = lambda x: x],
+  [key is None \ (False)],
+  [Inserta `25` en `a` \ (a = [10, 20, 25, 30])],
+  [1 -> 3 -> 4],
 )
 
 ====== 4. Función `insort_right`
@@ -104,15 +136,23 @@ Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se dis
   fill: (col, row) => if row == 0 { rgb("#2c3e50") } else if calc.even(row) { rgb("#f8f9fa") } else { none },
   inset: (x: 6pt, y: 5pt),
   align: (col, row) => if row == 0 { center + horizon } else { left + horizon },
-  
+
   table.cell(fill: rgb("#2c3e50"))[*ID*],
   table.cell(fill: rgb("#2c3e50"))[*Entradas*],
   table.cell(fill: rgb("#2c3e50"))[*Decisiones / Ramas*],
   table.cell(fill: rgb("#2c3e50"))[*Resultado Esperado*],
   table.cell(fill: rgb("#2c3e50"))[*Camino*],
 
-  [TB-09], [a = [10, 20, 30] \ x = 25 \ lo = 0 \ hi = None \ key = None], [key is None \ (True)], [Inserta `25` en `a` \ (a = [10, 20, 25, 30])], [1 -> 2 -> 4],
-  [TB-10], [a = [10, 20, 30] \ x = 25 \ lo = 0 \ hi = None \ key = lambda x: x], [key is None \ (False)], [Inserta `25` en `a` \ (a = [10, 20, 25, 30])], [1 -> 3 -> 4],
+  [TB-09],
+  [a = [10, 20, 30] \ x = 25 \ lo = 0 \ hi = None \ key = None],
+  [key is None \ (True)],
+  [Inserta `25` en `a` \ (a = [10, 20, 25, 30])],
+  [1 -> 2 -> 4],
+  [TB-10],
+  [a = [10, 20, 30] \ x = 25 \ lo = 0 \ hi = None \ key = lambda x: x],
+  [key is None \ (False)],
+  [Inserta `25` en `a` \ (a = [10, 20, 25, 30])],
+  [1 -> 3 -> 4],
 )
 
 ===== Código de Pruebas de Ramas (Fragmento)
