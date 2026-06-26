@@ -1,0 +1,22 @@
+[38;5;114m❯ [38;5;111muv[0m [38;5;217mrun --project code radon cc development/finance/core/app/services.py -s -a[0m
+development/finance/core/app/services.py
+    M 284:4 FinanceService.calculate_budget_status - A (4)
+    C 28:0 FinanceService - A (3)
+    M 131:4 FinanceService.register_transaction - A (3)
+    M 197:4 FinanceService._is_budget_exceeded - A (3)
+    M 220:4 FinanceService.list_active_accounts - A (3)
+    M 229:4 FinanceService.list_active_categories - A (3)
+    M 308:4 FinanceService._sum_expenses - A (3)
+    M 95:4 FinanceService.assign_budget - A (2)
+    M 180:4 FinanceService._parse_transaction_type - A (2)
+    M 238:4 FinanceService.deactivate_account - A (2)
+    M 253:4 FinanceService.deactivate_category - A (2)
+    M 31:4 FinanceService.__init__ - A (1)
+    M 54:4 FinanceService.create_user - A (1)
+    M 68:4 FinanceService.create_account - A (1)
+    M 82:4 FinanceService.create_category - A (1)
+    M 268:4 FinanceService.list_all_budgets - A (1)
+    M 276:4 FinanceService.list_all_transactions - A (1)
+
+17 blocks (classes, functions, methods) analyzed.
+Average complexity: A (2.1176470588235294)

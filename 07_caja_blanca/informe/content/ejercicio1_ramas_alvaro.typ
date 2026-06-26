@@ -2,7 +2,7 @@
 
 *Objetivo:* Diseñar una suite de pruebas con `pytest` que logre el *100% de cobertura de ramas (Branch Coverage)* para el módulo `bisect.py`. Esto requiere transitar por todas las aristas (True y False) de las ramificaciones y bucles del programa.
 
-===== Grafos de Flujo de Control (CFG)
+==== Grafos de Flujo de Control (CFG)
 
 A continuación se presentan los Grafos de Flujo de Control (CFG) correspondientes a las cuatro funciones del módulo `bisect.py`, organizados en una tabla compacta para optimizar el espacio:
 
@@ -33,11 +33,11 @@ A continuación se presentan los Grafos de Flujo de Control (CFG) correspondient
   )
 ]
 
-===== Tabla de Casos de Prueba (Ramas)
+==== Tabla de Casos de Prueba (Ramas)
 
 Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se diseñaron casos de prueba individuales para cada una de sus funciones. A continuación se detallan las tablas de casos de prueba separadas por función:
 
-====== 1. Función `bisect_left`
+===== 1. Función `bisect_left`
 
 #table(
   columns: (0.6fr, 1.8fr, 2.2fr, 1.8fr, 1.2fr),
@@ -69,7 +69,7 @@ Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se dis
   [1 -> 3 -> 5 -> 10 -> 11 \ -> 12 -> 13 -> 11 -> 12 \ -> 14 -> 11 -> 15],
 )
 
-====== 2. Función `bisect_right`
+===== 2. Función `bisect_right`
 
 #table(
   columns: (0.6fr, 1.8fr, 2.2fr, 1.8fr, 1.2fr),
@@ -101,7 +101,7 @@ Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se dis
   [1 -> 3 -> 5 -> 10 -> 11 \ -> 12 -> 13 -> 11 -> 12 \ -> 14 -> 11 -> 15],
 )
 
-====== 3. Función `insort_left`
+===== 3. Función `insort_left`
 
 #table(
   columns: (0.6fr, 1.8fr, 2.2fr, 1.8fr, 1.2fr),
@@ -128,7 +128,7 @@ Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se dis
   [1 -> 3 -> 4],
 )
 
-====== 4. Función `insort_right`
+===== 4. Función `insort_right`
 
 #table(
   columns: (0.6fr, 1.8fr, 2.2fr, 1.8fr, 1.2fr),
@@ -155,7 +155,7 @@ Para lograr el 100% de cobertura de ramas en todo el módulo `bisect.py`, se dis
   [1 -> 3 -> 4],
 )
 
-===== Código de Pruebas de Ramas (Fragmento)
+==== Código de Pruebas de Ramas (Fragmento)
 
 El código de pruebas completo está disponible en el repositorio: #link("https://github.com/unsa-semester-2026-A/pru_soft_lab/blob/main/07_caja_blanca/code/test/test_bisect_ramas.py")[test_bisect_ramas.py]. A continuación se muestra un fragmento representativo que implementa los casos de prueba para `bisect_left`:
 
@@ -190,7 +190,7 @@ El código de pruebas completo está disponible en el repositorio: #link("https:
   ],
 )
 
-===== Reporte de Cobertura de Ramas (Terminal)
+==== Reporte de Cobertura de Ramas (Terminal)
 
 La ejecución de la suite de pruebas unitarias demuestra que se alcanzó el *100% de cobertura de ramas (Branch Coverage)* sobre el código en Python puro:
 
