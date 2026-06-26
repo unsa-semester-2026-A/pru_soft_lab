@@ -1,4 +1,4 @@
-=== Función Asignada: `FinanceService.register_transaction` (Leo)
+=== Complejidad Ciclomática en FinanceService.register_transaction (Responsable: Leonardo Arce)
 
 *Ubicación:* `finance/core/app/services.py` (Líneas 131 a 179).
 
@@ -39,7 +39,7 @@ def register_transaction(
     return transaction, exceeded
 ```
 
-==== 1. Grafo de Flujo de Control (CFG) - Leo
+==== Grafo de Flujo de Control (CFG)
 *Metodología de conteo de nodos:*
 
 Para el cálculo de la Complejidad Ciclomática, se contabilizan únicamente los *nodos predicado* (puntos de decisión) y los puntos de inicio/secuencia y fin de la función. Las sentencias de error (`raise`) y de retorno (`return`) no representan nodos predicado independientes, sino que son transiciones directas al nodo de salida (Fin). Las sentencias secuenciales se agrupan en el bloque de inicio o de transición correspondiente.
@@ -94,8 +94,9 @@ Análisis de nodos predicado en `FinanceService.register_transaction`:
   caption: [Grafo de Flujo de Control (CFG) para `FinanceService.register_transaction`],
 )
 
-==== 2. Cálculo Manual de la Complejidad Ciclomática (CC) - Leo
-Aplica las siguientes fórmulas para el cálculo:
+==== Cálculo Manual de la Complejidad Ciclomática (CC)
+
+Para la determinación de la complejidad ciclomática de la función, se aplican las siguientes fórmulas matemáticas:
 
 *Fórmula 1:* $C C = A - N + 2$
 
@@ -114,7 +115,7 @@ Análisis de nodos predicado (decisiones):
 
 *Resultado:* $C C = 3$
 
-==== 3. Verificación con la Herramienta Radon - Leo
+==== Verificación con la Herramienta Radon
 
 *Comando ejecutado:*
 ```bash
@@ -135,7 +136,7 @@ radon cc development/finance/core/app/services.py -s -a
     *Resultados de Radon:*
     - Score numérico de Radon: *3*
     - Categoría de riesgo (Rango A-F): *A* (Riesgo bajo, CC <= 5)
-    - ¿El resultado manual coincide con el de la herramienta?: *Sí*. El cálculo manual aplicando ambas fórmulas ($A - N + 2$ y $P + 1$) da como resultado exacto $C C = 3$, lo cual coincide con la salida de Radon que califica con complejidad 3 y nivel de riesgo A.
+    - *Comparación de Resultados:* El cálculo manual coincide plenamente con la herramienta Radon. Al aplicar ambas fórmulas ($A - N + 2$ y $P + 1$), se obtiene como resultado exacto $C C = 3$, lo cual es congruente con la salida de Radon que califica con complejidad 3 y nivel de riesgo A.
   ]
 )
 

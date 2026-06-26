@@ -1,8 +1,8 @@
-=== Función Asignada: `Account.__post_init__` (Alvaro)
+=== Complejidad Ciclomática en `Account.__post_init__` (Responsable: Álvaro Quispe)
 
 *Ubicación:* `finance/core/domain/entities.py` (Líneas 82 a 94).
 
-==== Código a Analizar:
+==== Código Fuente Analizado:
 ```py
 def __post_init__(self) -> None:
     """Validate entity fields."""
@@ -18,7 +18,7 @@ def __post_init__(self) -> None:
         raise ValueError("Bank name must be at most 100 characters.")
 ```
 
-==== 1. Grafo de Flujo de Control (CFG) - Álvaro
+==== Grafo de Flujo de Control (CFG)
 *Metodología de conteo de nodos:*
 
 Para el cálculo de la Complejidad Ciclomática, se contabilizan únicamente los *nodos predicado* (puntos de decisión) y los puntos de inicio/secuencia y fin de la función. Las sentencias de error (`raise`) no se modelan como nodos predicado independientes, sino que representan la terminación de una rama específica que va hacia el nodo de salida (Fin). Las llamadas a funciones secuenciales sin bifurcación (como `_validate_not_empty`) se asocian al nodo de inicio.
@@ -73,8 +73,9 @@ Análisis de nodos predicado en `Account.__post_init__`:
   caption: [Grafo de Flujo de Control (CFG) para `Account.__post_init__`],
 )
 
-==== 2. Cálculo Manual de la Complejidad Ciclomática (CC) - Álvaro
-Aplica las siguientes fórmulas para el cálculo:
+==== Cálculo Manual de la Complejidad Ciclomática (CC)
+
+Para determinar la complejidad ciclomática de la función, se aplican las siguientes ecuaciones:
 
 *Fórmula 1:* $C C = A - N + 2$
 
@@ -95,7 +96,7 @@ Análisis de nodos predicado (decisiones):
 
 *Resultado:* $C C = 5$
 
-==== 3. Verificación con la Herramienta Radon - Álvaro
+==== Verificación con la Herramienta Radon
 
 *Comando ejecutado:*
 ```bash
@@ -116,7 +117,7 @@ radon cc development/finance/core/domain/entities.py -s -a
     *Resultados de Radon:*
     - Score numérico de Radon: *5*
     - Categoría de riesgo (Rango A-F): *A* (Riesgo bajo, CC <= 5)
-    - ¿El resultado manual coincide con el de la herramienta?: *Sí*. El cálculo manual aplicando ambas fórmulas ($A - N + 2$ y $P + 1$) da como resultado exacto $C C = 5$, lo cual coincide con la salida de Radon que califica con complejidad 5 y nivel de riesgo A.
+    - *Comparación de resultados:* El resultado obtenido mediante el cálculo manual coincide exactamente con el reporte de la herramienta Radon. La aplicación de ambas fórmulas de cálculo ($A - N + 2$ y $P + 1$) arroja un valor de $C C = 5$, en concordancia con el nivel de complejidad y el riesgo bajo (Categoría A) indicados por Radon.
   ]
 )
 

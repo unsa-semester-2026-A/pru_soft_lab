@@ -1,21 +1,21 @@
-=== Instrucciones para Leo (Prueba de Sentencias)
+=== Pruebas de Sentencias (Statement Testing) (Responsable: Leonardo Arce)
 
-*Objetivo:* Diseñar una suite de pruebas con `pytest` que logre el *100% de cobertura de sentencias (Statement Coverage)* para el módulo `bisect.py`. Esto requiere transitar por todas las líneas ejecutables del programa.
+Para el análisis de cobertura de sentencias, se diseñó una suite de pruebas unitarias enfocada en transitar por cada una de las instrucciones ejecutables del módulo `bisect.py`, asegurando que ninguna línea de código quede sin verificar.
 
 ==== Módulo Analizado
 
 *Archivo:* `bisect.py`
 *Función seleccionada:* `bisect_left(a, x, lo=0, hi=None, *, key=None)`
 
-==== Objetivo
+==== Objetivo del Análisis de Cobertura
 
-Diseñar casos de prueba que permitan alcanzar una cobertura del 100% de sentencias en la función `bisect_left()` del módulo estándar `bisect.py`. La prueba debe ejecutar todas las instrucciones principales:
+El propósito del diseño de la suite de pruebas es alcanzar una cobertura de sentencias del $100\%$ en la función `bisect_left` del módulo estándar `bisect.py`. La suite de pruebas está estructurada para asegurar la ejecución de cada una de las instrucciones principales:
 
-- Validación del parámetro `lo`.
-- Asignación de `hi` cuando es `None`.
-- Búsqueda sin función `key`.
-- Búsqueda utilizando función `key`.
-- Retorno final del índice.
+- Validación de la precondición para el parámetro `lo` (debe ser no negativo).
+- Inicialización y asignación del límite superior por defecto `hi` en caso de ser omitido (`None`).
+- Flujo de búsqueda binaria en ausencia de una función de transformación `key`.
+- Flujo de búsqueda binaria con el uso de una función de transformación `key`.
+- Retorno final del índice calculado.
 
 ==== Análisis de Sentencias
 

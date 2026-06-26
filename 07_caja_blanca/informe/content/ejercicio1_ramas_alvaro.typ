@@ -1,6 +1,6 @@
-=== Pruebas de Ramas (Branch Testing)
+=== Cobertura de Ramas en bisect.py (Responsable: Álvaro Quispe)
 
-*Objetivo:* Diseñar una suite de pruebas con `pytest` que logre el *100% de cobertura de ramas (Branch Coverage)* para el módulo `bisect.py`. Esto requiere transitar por todas las aristas (True y False) de las ramificaciones y bucles del programa.
+En esta sección se detalla el diseño e implementación de la suite de pruebas unitarias orientada a cubrir el 100% de las ramas lógicas (Branch Coverage) en el módulo `bisect.py`, garantizando que todas las bifurcaciones y condiciones booleanas sean evaluadas tanto en su estado verdadero como falso.
 
 ==== Grafos de Flujo de Control (CFG)
 
