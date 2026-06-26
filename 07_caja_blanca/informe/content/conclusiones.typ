@@ -1,52 +1,17 @@
 = Conclusiones y Lecciones Aprendidas
 
-*Instrucciones:* Cada integrante del equipo debe redactar al menos una conclusión sobre el trabajo realizado, enfocándose en la técnica de caja blanca o la métrica que analizó.
+A continuación, se presentan las conclusiones individuales del equipo de desarrollo, enfocadas en las técnicas de caja blanca aplicadas y el análisis de la complejidad ciclomática de las funciones evaluadas:
 
 #v(1em)
 
-==== Conclusión de Alvaro (Prueba de Ramas y CC de Account)
-#block(
-  stroke: 0.5pt + rgb("#bdc3c7"),
-  inset: 12pt,
-  fill: rgb("#fcfcfc"),
-  width: 100%,
-  [
-    [Escribe aquí tu conclusión...]
-  ]
-)
+==== Conclusión de Álvaro Quispe (Pruebas de Ramas y CC de Account)
+La técnica de pruebas de cobertura de ramas (Branch Coverage) permitió verificar de forma sistemática los puntos de decisión en el módulo `bisect.py`, asegurando que tanto las bifurcaciones verdaderas como las falsas fueran transitadas al 100%. Por otro lado, el análisis de complejidad ciclomática para `Account.__post_init__` ($C C = 5$) evidenció una estructura de validaciones condicionales independientes de riesgo bajo, lo cual garantiza una alta mantenibilidad y simplifica el diseño de la suite de pruebas unitarias.
 
-==== Conclusión de Alisson / Mariel (Combinación de Condiciones, CC de Transaction y Radon)
-#block(
-  stroke: 0.5pt + rgb("#bdc3c7"),
-  inset: 12pt,
-  fill: rgb("#fcfcfc"),
-  width: 100%,
-  [
-    [Escribe aquí tu conclusión...]
-  ]
-)
+==== Conclusión de Alisson Jara (Combinación de Condiciones y CC de Transaction)
+El diseño de pruebas de combinación de condiciones (Branch Condition Combination Testing) permitió validar de forma exhaustiva el comportamiento del módulo `bisect.py`, asegurando que las decisiones atómicas no presentaran dependencias ocultas o comportamientos imprevistos. Asimismo, el cálculo de complejidad para `Transaction.__post_init__` ($C C = 6$) evidenció cómo el uso de decisiones compuestas y operadores de cortocircuito (`and`) eleva la densidad de caminos lógicos, requiriendo un diseño riguroso de casos de prueba.
 
-==== Conclusión de Leo (Prueba de Sentencias y CC de Services)
+==== Conclusión de Leonardo Arce (Pruebas de Sentencias y CC de Services)
+La elaboración de los casos de prueba permitió validar de manera sistemática el comportamiento de la función analizada, asegurando la ejecución de todas las sentencias relevantes tanto en escenarios normales como en casos de error. Se logró cubrir la validación de parámetros, la inicialización de valores por defecto, y las dos variantes del algoritmo de búsqueda (con y sin función key), lo que garantiza una cobertura del 100% de sentencias. Asimismo, el cálculo de complejidad para `FinanceService.register_transaction` ($C C = 3$) constató que su lógica posee un riesgo bajo y una excelente modularidad.
 
-#block(
-  stroke: 0.5pt + rgb("#bdc3c7"),
-  inset: 12pt,
-  fill: rgb("#fcfcfc"),
-  width: 100%,
-  [
-    La elaboración de los casos de prueba permitió validar de manera sistemática el comportamiento de la función analizada, asegurando la ejecución de todas las sentencias relevantes tanto en escenarios normales como en casos de error. Se logró cubrir la validación de parámetros, la inicialización de valores por defecto, y las dos variantes del algoritmo de búsqueda (con y sin función key), lo que garantiza una cobertura del 100% de sentencias.
-
-    Asimismo, el análisis de la complejidad ciclomática asociado a la función permite entender la existencia de múltiples rutas de ejecución, lo que justifica la necesidad de diseñar casos de prueba específicos para cada rama lógica. En conjunto, la estrategia aplicada demuestra la importancia de estructurar pruebas que no solo verifiquen resultados, sino que también aseguren la ejecución completa del flujo interno del código, mejorando la confiabilidad del módulo Services.
-  ]
-)
-
-==== Conclusión de Anette (Análisis Teórico y Cuestionario)
-#block(
-  stroke: 0.5pt + rgb("#bdc3c7"),
-  inset: 12pt,
-  fill: rgb("#fcfcfc"),
-  width: 100%,
-  [
-    [Escribe aquí tu conclusión...]
-  ]
-)
+==== Conclusión de Anette Gallegos (Análisis Teórico y Cuestionario)
+La resolución de las preguntas del cuestionario consolidó las bases teóricas de las pruebas de caja blanca, permitiendo contrastar la rigurosidad entre los criterios de cobertura de sentencias, ramas y múltiples condiciones. Además, la investigación de la métrica de complejidad ciclomática a través de Radon y la literatura científica demostró que mantener una baja complejidad en las entidades de dominio y servicios de aplicación es crucial para reducir la tasa de defectos y facilitar la refactorización continua del software.
