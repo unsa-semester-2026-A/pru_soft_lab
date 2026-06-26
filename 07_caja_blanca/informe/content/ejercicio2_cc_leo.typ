@@ -1,4 +1,4 @@
-=== Complejidad Ciclomática en FinanceService.register_transaction (Responsable: Leonardo Arce)
+=== Complejidad Ciclomática en FinanceService.register_transaction
 
 *Ubicación:* `finance/core/app/services.py` (Líneas 131 a 179).
 

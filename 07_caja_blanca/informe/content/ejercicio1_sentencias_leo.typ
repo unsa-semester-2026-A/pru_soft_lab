@@ -1,4 +1,4 @@
-=== Pruebas de Sentencias (Statement Testing) (Responsable: Leonardo Arce)
+=== Pruebas de Sentencias (Statement Testing)
 
 Para el análisis de cobertura de sentencias, se diseñó una suite de pruebas unitarias enfocada en transitar por cada una de las instrucciones ejecutables del módulo `bisect.py`, asegurando que ninguna línea de código quede sin verificar.
 

@@ -1,4 +1,4 @@
-=== Pruebas de Combinación de Condiciones (Responsable: Alisson Jara)
+=== Pruebas de Combinación de Condiciones
 
 El objetivo de esta sección es detallar el diseño e implementación de una suite de pruebas unitarias con `pytest` enfocada en la *Prueba de Combinación de Condiciones (Branch Condition Combination Testing / Multiple Condition Coverage)* para el módulo `bisect.py`.
 

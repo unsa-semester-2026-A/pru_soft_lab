@@ -1,4 +1,4 @@
-=== Complejidad Ciclomática en `Transaction.__post_init__` (Responsable: Alisson Jara)
+=== Complejidad Ciclomática en `Transaction.__post_init__`
 
 *Ubicación:* `finance/core/domain/entities.py` (Líneas 200 a 218).
 

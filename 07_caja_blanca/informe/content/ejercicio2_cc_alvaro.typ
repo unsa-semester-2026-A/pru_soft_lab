@@ -1,4 +1,4 @@
-=== Complejidad Ciclomática en `Account.__post_init__` (Responsable: Álvaro Quispe)
+=== Complejidad Ciclomática en `Account.__post_init__`
 
 *Ubicación:* `finance/core/domain/entities.py` (Líneas 82 a 94).
 

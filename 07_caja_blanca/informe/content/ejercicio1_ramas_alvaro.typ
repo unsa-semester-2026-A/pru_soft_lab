@@ -1,4 +1,4 @@
-=== Cobertura de Ramas en bisect.py (Responsable: Álvaro Quispe)
+=== Cobertura de Ramas en bisect.py
 
 En esta sección se detalla el diseño e implementación de la suite de pruebas unitarias orientada a cubrir el 100% de las ramas lógicas (Branch Coverage) en el módulo `bisect.py`, garantizando que todas las bifurcaciones y condiciones booleanas sean evaluadas tanto en su estado verdadero como falso.
 
