@@ -47,6 +47,6 @@
   fill: rgb("#fcfcfc"),
   width: 100%,
   [
-    [Escribe aquí tu conclusión...]
+    Las pruebas de caja blanca son una práctica de ingeniería y de ciberseguridad imprescindible que complementa, mas nunca reemplaza a las pruebas de caja negra. Su valor comercial reside en su capacidad única para auditar la estructura interna del código, lo que permite eliminar vulnerabilidades ocultas, código muerto y fallos de precisión matemática que son invisibles desde la interfaz de usuario, garantizando así la verdadera estabilidad, mantenibilidad y seguridad del sistema antes de su despliegue en producción.
   ]
 )
