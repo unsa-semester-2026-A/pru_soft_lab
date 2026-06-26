@@ -13,5 +13,13 @@ El diseño de pruebas de combinación de condiciones (Branch Condition Combinati
 ==== Conclusión de Leonardo Arce (Pruebas de Sentencias y CC de Services)
 La elaboración de los casos de prueba permitió validar de manera sistemática el comportamiento de la función analizada, asegurando la ejecución de todas las sentencias relevantes tanto en escenarios normales como en casos de error. Se logró cubrir la validación de parámetros, la inicialización de valores por defecto, y las dos variantes del algoritmo de búsqueda (con y sin función key), lo que garantiza una cobertura del 100% de sentencias. Asimismo, el cálculo de complejidad para `FinanceService.register_transaction` ($C C = 3$) constató que su lógica posee un riesgo bajo y una excelente modularidad.
 
-==== Conclusión de Anette Gallegos (Análisis Teórico y Cuestionario)
-La resolución de las preguntas del cuestionario consolidó las bases teóricas de las pruebas de caja blanca, permitiendo contrastar la rigurosidad entre los criterios de cobertura de sentencias, ramas y múltiples condiciones. Además, la investigación de la métrica de complejidad ciclomática a través de Radon y la literatura científica demostró que mantener una baja complejidad en las entidades de dominio y servicios de aplicación es crucial para reducir la tasa de defectos y facilitar la refactorización continua del software.
+==== Conclusión de Anette (Análisis Teórico y Cuestionario)
+#block(
+  stroke: 0.5pt + rgb("#bdc3c7"),
+  inset: 12pt,
+  fill: rgb("#fcfcfc"),
+  width: 100%,
+  [
+    [Escribe aquí tu conclusión...]
+  ]
+)
