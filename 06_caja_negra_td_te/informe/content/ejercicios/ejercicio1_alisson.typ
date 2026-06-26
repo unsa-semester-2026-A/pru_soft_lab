@@ -4,18 +4,6 @@
 // Técnicas: Tablas de Decisión (TD) y Transición de Estados (TE)
 // ==========================================
 
-#block(
-  fill: rgb("#f6ffed"),
-  stroke: rgb("#b7eb8f"),
-  inset: 10pt,
-  radius: 4pt,
-  width: 100%,
-)[
-  *Indicaciones para Alisson:*
-  - Aplica las técnicas de Tablas de Decisión y Transición de Estados para el sistema ParaBank.
-  - Diseña y ejecuta las matrices lógicas (Tablas de Decisión) y los diagramas/tablas de transición de estados.
-  - Adjunta evidencia de ejecución (capturas de pantalla de la interfaz de ParaBank o código de automatización si aplica).
-]
 
 = Pruebas Avanzadas de ParaBank (TD y TE)
 

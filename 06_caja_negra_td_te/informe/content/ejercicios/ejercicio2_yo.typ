@@ -20,6 +20,32 @@
 
 == Guerra de Testers - Parte II
 
+#block(
+  fill: rgb("#f9f9f9"),
+  stroke: rgb("#d9d9d9"),
+  inset: 12pt,
+  radius: 6pt,
+  width: 100%,
+)[
+  *Resumen Ejecutivo de la Evaluación (Parte II):*
+  
+  Para facilitar la revisión docente, se presenta la siguiente tabla que consolida las técnicas avanzadas de pruebas de caja negra aplicadas sobre nuestro sistema financiero, la cantidad de casos de prueba ejecutados y el resultado final obtenido:
+  
+  #v(0.5em)
+  #table(
+    columns: (1.5fr, 1.2fr, 1.2fr, 0.8fr, 2fr),
+    align: (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon),
+    stroke: 0.5pt + luma(180),
+    fill: (x, y) => if y == 0 { rgb("#f0f5ff") } else { none },
+    [*Técnica de Caja Negra*], [*Foco de Validación*], [*Tipo de Prueba*], [*Casos*], [*Resultado / Estado de Aceptación*],
+    [Tablas de Decisión (TD)], [Lógica combinatoria de transacciones], [Manual (UI)], [11], [Aprobado. La UI previene correctamente la selección de entidades inactivas.],
+    [Transición de Estados (TE)], [Ciclo de vida de los presupuestos], [Manual (UI)], [4], [Aprobado. Barra de progreso actualiza estado/color correctamente.],
+    [Casos de Uso (UC)], [Escenarios e2e de usuario en el sistema], [Manual (UI)], [3], [Aprobado. Flujos e2e y soft-delete funcionan según lo esperado.],
+    [Pruebas Aleatorias (Random)], [Invariantes matemáticas de negocio], [Automatizada (Backend)], [2 (150+ op.)], [Aprobado. El balance e invariantes del sistema se mantienen consistentes.],
+    [Grafo Causa-Efecto (GCE)], [Combinaciones y efectos en la UI], [Manual (UI)], [3], [Aprobado. Alertas y errores coherentes con fórmulas booleanas.]
+  )
+]
+
 === Tablas de Decisión (TD)
 
 Esta técnica modela la combinatoria lógica de la interfaz gráfica al registrar una transacción frente a combinaciones válidas e inválidas de entradas. Se consolidó la siguiente Tabla de Decisión de 11 reglas.
