@@ -1,21 +1,3 @@
 = Conclusiones y Lecciones Aprendidas
 
-A continuación, se presentan las conclusiones individuales del equipo de desarrollo, enfocadas en las técnicas de caja blanca aplicadas y el análisis de la complejidad ciclomática de las funciones evaluadas:
-
-#v(1em)
-
-La técnica de pruebas de cobertura de ramas (Branch Coverage) permitió verificar de forma sistemática los puntos de decisión en el módulo `bisect.py`, asegurando que tanto las bifurcaciones verdaderas como las falsas fueran transitadas al 100%. Por otro lado, el análisis de complejidad ciclomática para `Account.__post_init__` ($C C = 5$) evidenció una estructura de validaciones condicionales independientes de riesgo bajo, lo cual garantiza una alta mantenibilidad y simplifica el diseño de la suite de pruebas unitarias.
-
-El diseño de pruebas de combinación de condiciones (Branch Condition Combination Testing) permitió validar de forma exhaustiva el comportamiento del módulo `bisect.py`, asegurando que las decisiones atómicas no presentaran dependencias ocultas o comportamientos imprevistos. Asimismo, el cálculo de complejidad para `Transaction.__post_init__` ($C C = 6$) evidenció cómo el uso de decisiones compuestas y operadores de cortocircuito (`and`) eleva la densidad de caminos lógicos, requiriendo un diseño riguroso de casos de prueba.
-
-La elaboración de los casos de prueba permitió validar de manera sistemática el comportamiento de la función analizada, asegurando la ejecución de todas las sentencias relevantes tanto en escenarios normales como en casos de error. Se logró cubrir la validación de parámetros, la inicialización de valores por defecto, y las dos variantes del algoritmo de búsqueda (con y sin función key), lo que garantiza una cobertura del 100% de sentencias. Asimismo, el cálculo de complejidad para `FinanceService.register_transaction` ($C C = 3$) constató que su lógica posee un riesgo bajo y una excelente modularidad.
-
-#block(
-  stroke: 0.5pt + rgb("#bdc3c7"),
-  inset: 12pt,
-  fill: rgb("#fcfcfc"),
-  width: 100%,
-  [
-    Las pruebas de caja blanca son una práctica de ingeniería y de ciberseguridad imprescindible que complementa, mas nunca reemplaza a las pruebas de caja negra. Su valor comercial reside en su capacidad única para auditar la estructura interna del código, lo que permite eliminar vulnerabilidades ocultas, código muerto y fallos de precisión matemática que son invisibles desde la interfaz de usuario, garantizando así la verdadera estabilidad, mantenibilidad y seguridad del sistema antes de su despliegue en producción.
-  ]
-)
+La evaluación sistemática mediante pruebas de caja blanca (incluyendo cobertura de ramas, combinación de condiciones y validación de sentencias) garantizó el 100% de efectividad en la verificación de caminos lógicos, parámetros y escenarios de error en el módulo `bisect.py` y otras funciones clave. Este análisis estructural se complementó con el cálculo de la complejidad ciclomática en los componentes de `Account`, `Transaction` y `FinanceService` (con métricas de CC entre 3 y 6), demostrando que, aunque la lógica mantiene una alta modularidad y bajo riesgo general, las decisiones compuestas exigen un diseño de pruebas riguroso. En última instancia, el equipo resalta que estas técnicas son un pilar indispensable de ingeniería y ciberseguridad que complementa a las pruebas de caja negra, aportando un alto valor comercial al auditar la estructura interna para eliminar vulnerabilidades ocultas, código muerto y fallos matemáticos antes del despliegue en producción.
