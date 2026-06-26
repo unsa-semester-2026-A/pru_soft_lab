@@ -2,10 +2,10 @@
 #set text(
   // font: "New Computer Modern",
   font: "Lato",
-  lang: "es"
+  lang: "es",
 )
 
-#import  "informe/util/util.typ" as util
+#import "informe/util/util.typ" as util
 #import "informe/config.typ" as config
 // Constantes de diseño
 #let tableBorderWidth = 0.5pt
@@ -21,7 +21,7 @@
   radius: 8pt,
   breakable: true,
   // Ensure the text inside is white
-  text(fill: rgb("303030"), it) 
+  text(fill: rgb("303030"), it),
 )
 #show figure: set block(breakable: true)
 
@@ -247,45 +247,45 @@
 
     #include "informe/content/1_ejercicios.typ"
 
-    
+
     // Espacio reservado para las soluciones
     #v(4em)
   ],
   tableContents[
     = SOLUCIÓN DEL CUESTIONARIO
-    
+
     #include "informe/content/2_cuestionario.typ"
     #v(4em)
   ],
   tableContents[
     = CONCLUSIONES
-    
+
     #include "informe/content/3_conclusiones.typ"
     // Espacio reservado para las conclusiones
     #v(4em)
   ],
   tableContents[
     = AUDITORÍA DE RÚBRICA
-    
+
     #include "informe/content/4_auditoria.typ"
     #v(4em)
   ]
 )
 
-// RETROALIMENTACIÓN
-#grid(
-  align: left + horizon,
-  stroke: black + 1pt,
-  inset: 0.5em,
-  columns: 1fr,
-  grid.cell(
-    fill: tbHeaderBgColor,
-    tableTitle(weight: "bold", alignTo: center, color: white)[RETROALIMENTACIÓN GENERAL],
-  ),
-  tableContents[
-    #v(6em)
-  ]
-)
+// // RETROALIMENTACIÓN
+// #grid(
+//   align: left + horizon,
+//   stroke: black + 1pt,
+//   inset: 0.5em,
+//   columns: 1fr,
+//   grid.cell(
+//     fill: tbHeaderBgColor,
+//     tableTitle(weight: "bold", alignTo: center, color: white)[RETROALIMENTACIÓN GENERAL],
+//   ),
+//   tableContents[
+//     #v(6em)
+//   ]
+// )
 
 // REFERENCIAS
 #grid(
