@@ -11,8 +11,8 @@
 
 # Verificar que haya al menos 2 argumentos
 if [ "$#" -lt 2 ]; then
-    echo "Usage: capture.sh <output-file> <command1> [command2] [...]"
-    echo "Example: ./capture.sh out 'exa -lah' 'cat sample.c'"
+    echo "Usage: cap.sh <output-file> <command1> [command2] [...]"
+    echo "Example: ./cap.sh out 'exa -lah' 'cat sample.c'"
     exit 1
 fi
 
@@ -54,7 +54,7 @@ done
 cat "$temp_output" | tee "${output_file}".log | freeze \
     --width 1000 \
     --theme catppuccin-mocha \
-    --font.family "CaskaydiaMono Nerd Font" \
+    --font.family "Ubuntu mono" \
     --output "${output_file}.svg" \
     --language ansi
 

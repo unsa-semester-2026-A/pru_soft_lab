@@ -145,13 +145,10 @@ El módulo `bisect.py` proporciona algoritmos de bisección en Python para mante
   caption: [Módulo `bisect.py` de la biblioteca estándar de Python (#link("https://github.com/python/cpython/blob/main/Lib/bisect.py")[url])],
 )
 
-=== Pruebas de Sentencia (Statement Testing)
 #include "ejercicio1_sentencias_leo.typ"
 
-=== Pruebas de Ramas (Branch Testing)
 #include "ejercicio1_ramas_alvaro.typ"
 
-=== Pruebas de Combinación de Condiciones
 #include "ejercicio1_condiciones_alisson.typ"
 
 == Ejercicio 2: Complejidad Ciclomática (Guerra de Testers - Parte III)
@@ -161,11 +158,8 @@ Para este ejercicio, evaluamos funciones del sistema *FinanceApp* que se encuent
 
 A continuación, cada integrante presenta el análisis detallado de la función asignada, incluyendo su Grafo de Flujo de Control (CFG), la matemática del cálculo de Complejidad Ciclomática (CC) por fórmulas, y la comparación del score obtenido mediante la herramienta `radon`.
 
-=== Análisis de `Account.__post_init__`
 #include "ejercicio2_cc_alvaro.typ"
 
-=== Análisis de `Transaction.__post_init__`
 #include "ejercicio2_cc_alisson.typ"
 
-=== Análisis de `FinanceService.register_transaction`
 #include "ejercicio2_cc_leo.typ"

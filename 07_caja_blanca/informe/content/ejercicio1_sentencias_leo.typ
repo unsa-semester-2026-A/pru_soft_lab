@@ -1,4 +1,4 @@
-=== Instrucciones para Leo (Prueba de Sentencias)
+=== Pruebas de Sentencia (Statement Testing)
 
 *Objetivo:* Diseñar una suite de pruebas con `pytest` que logre el *100% de cobertura de sentencias (Statement Coverage)* para el módulo `bisect.py`. Esto significa que cada línea de instrucción ejecutable en el código provisto debe ser ejecutada al menos una vez.
 

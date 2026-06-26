@@ -111,10 +111,10 @@ def bisect_left(a, x, lo=0, hi=None, *, key=None):
 
 
 # Overwrite above definitions with a fast C implementation
-try:
-    from _bisect import *
-except ImportError:
-    pass
+#try:
+#    from _bisect import *
+#except ImportError:
+#    pass
 
 # Create aliases
 bisect = bisect_right

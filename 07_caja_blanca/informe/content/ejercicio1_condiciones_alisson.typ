@@ -1,4 +1,4 @@
-=== Instrucciones para Alisson (Prueba de Combinación de Condiciones)
+=== Pruebas de Combinación de Condiciones
 
 // *Objetivo:* Diseñar una suite de pruebas con `pytest` enfocada en la *Prueba de Combinación de Condiciones (Branch Condition Combination Testing / Multiple Condition Coverage)* para el módulo `bisect.py`.
 

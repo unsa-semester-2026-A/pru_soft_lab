@@ -77,21 +77,6 @@
   show figure: set block(breakable: true)
   // IEEE
   set heading(numbering: "1.")
-  show heading.where(level: 1): it => block(width: 100%, above: 1.2em, below: 1em)[
-    #set align(left)
-    #set text(weight: "regular", size: 10pt)
-    #smallcaps(it)
-  ]
-  show heading.where(level: 2): it => block(above: 1em, below: 0.8em)[
-    #set align(left)
-    #set text(weight: "regular", style: "italic", size: 10pt)
-    #it
-  ]
-  show heading.where(level: 3): it => block(above: 1em, below: 0.8em)[
-    #set align(left)
-    #set text(weight: "regular", style: "italic", size: 10pt)
-    #it
-  ]
   // set page
   set page(
     paper: "a4",

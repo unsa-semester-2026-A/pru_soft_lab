@@ -1,0 +1,38 @@
+graph TD
+    1["1: lo < 0"]
+    2["2: raise ValueError"]
+    3["3: hi is None"]
+    4["4: hi = len(a)"]
+    5(("5: Convergence"))
+    6{"6: while lo < hi"}
+    7["7: a[mid] < x"]
+    8["8: lo = mid + 1"]
+    9["9: hi = mid"]
+    10["10: else (key is present)"]
+    11{"11: while lo < hi (key)"}
+    12["12: key(a[mid]) < x"]
+    13["13: lo = mid + 1"]
+    14["14: hi = mid"]
+    15["15: return lo"]
+
+    1 -- "True" --> 2
+    1 -- "False" --> 3
+    3 -- "True" --> 4
+    3 -- "False" --> 5
+    4 --> 5
+    5 -- "True (key is None)" --> 6
+    6 -- "True" --> 7
+    7 -- "True" --> 8
+    7 -- "False" --> 9
+    8 --> 6
+    9 --> 6
+    6 -- "False" ----> 15
+    5 -- "False" --> 10
+    10 --> 11
+    11 -- "True" --> 12
+    12 -- "True" --> 13
+    12 -- "False" --> 14
+    13 --> 11
+    14 --> 11
+    11 -- "False" ---> 15
+    2 ----> 15

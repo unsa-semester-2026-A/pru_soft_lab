@@ -1,0 +1,20 @@
+[38;5;114m❯ [38;5;111muv[0m [38;5;217mrun --project code radon cc development/finance/core/domain/entities.py -s -a[0m
+development/finance/core/domain/entities.py
+    C 179:0 Transaction - B (7)
+    M 200:4 Transaction.__post_init__ - B (6)
+    M 82:4 Account.__post_init__ - A (5)
+    C 147:0 Budget - A (5)
+    C 65:0 Account - A (4)
+    M 164:4 Budget.__post_init__ - A (4)
+    F 24:0 _validate_not_empty - A (3)
+    C 39:0 User - A (3)
+    M 108:4 Account.register_expense - A (3)
+    C 126:0 Category - A (3)
+    M 52:4 User.__post_init__ - A (2)
+    M 95:4 Account.register_income - A (2)
+    M 139:4 Category.__post_init__ - A (2)
+    C 13:0 TransactionType - A (1)
+    C 20:0 InsufficientFundsError - A (1)
+
+15 blocks (classes, functions, methods) analyzed.
+Average complexity: A (3.4)
