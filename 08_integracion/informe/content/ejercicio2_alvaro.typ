@@ -65,19 +65,11 @@ assertThrows(MissingSpecialPriceTokenException.class, () ->
 ]
 
 === Reporte de Ejecución de Pruebas (Alvaro)
-A continuación se detalla el reporte del resultado de la ejecución en la terminal para los dos casos de prueba de integración desarrollados por Alvaro:
+A continuación se adjunta la captura del resultado de ejecución en la terminal obtenida para los dos casos de prueba de integración de Alvaro:
 
-```bash
-❯ ./gradlew test --tests "alfio.controller.api.v2.user.reservation.ReservationApiV2ControllerIntegrationTest"
-
-> Task :compileTestJava UP-TO-DATE
-> Task :processTestResources UP-TO-DATE
-> Task :testClasses UP-TO-DATE
-> Task :test
-
-alfio.controller.api.v2.user.reservation.ReservationApiV2ControllerIntegrationTest > testConfirmOverviewWithTermsNotAcceptedReturns422() PASSED [0.935s]
-alfio.controller.api.v2.user.reservation.ReservationApiV2ControllerIntegrationTest > testCreateReservationForHiddenCategoryWithoutCodeThrowsMissingSpecialPriceTokenException() PASSED [0.812s]
-
-BUILD SUCCESSFUL in 40s
-8 actionable tasks: 2 executed, 6 up-to-date
-```
+#align(center)[
+  #figure(
+    image("/informe/src/fig/ejercicio2/test_output.png", width: 95%),
+    caption: [Salida de terminal de la ejecución exitosa de las pruebas de integración de Alvaro en alf.io.],
+  ) <fig-test-output-alvaro>
+]
