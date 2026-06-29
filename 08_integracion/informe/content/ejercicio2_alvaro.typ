@@ -1,5 +1,20 @@
 === Inyección de Fallas de Interfaz
 
+#align(center)[
+  #table(
+    columns: (1.2fr, 2fr, 2fr),
+    fill: (x, y) => if y == 0 { rgb("1e1e24") } else { none },
+    stroke: 0.5pt + rgb("cccccc"),
+    table.cell(inset: 0.6em)[#set text(fill: white, weight: "bold"); Nivel / Frontera],
+    table.cell(inset: 0.6em)[#set text(fill: white, weight: "bold"); ¿Qué se hizo? (Acción)],
+    table.cell(inset: 0.6em)[#set text(fill: white, weight: "bold"); ¿Qué se encontró / Validó? (Resultado)],
+    
+    [Sintáctica (Caso 1)], [Inyección de payload incompleto (términos no aceptados) en `confirmOverview`.], [El controlador interceptó los datos y retornó HTTP 422 (Unprocessable Entity), cancelando el flujo.],
+    [Semántica (Caso 2)], [Intento de reserva de categoría restringida (`hidden`) sin código de acceso especial.], [El `TicketReservationManager` abortó la creación lanzando `MissingSpecialPriceTokenException` de forma segura.],
+    [Resiliencia (Caso 3)], [Simulación de timeout y alta latencia en webhook de Stripe (pago externo).], [La reserva se mantuvo bloqueada de forma segura y liberó los tickets al expirar el timeout.]
+  )
+]
+
 ==== Caso 1 (Sintáctico): Inyección de Datos Malformados (Alvaro)
 - *Diseño de la Prueba:* Enviar un payload al endpoint de confirmación de reserva (`confirmOverview`) con la propiedad `termAndConditionsAccepted` en `false`. Esto simula una solicitud sintácticamente válida pero incompleta de cara al contrato de aceptación de términos del sistema.
 - *Ejecución / Herramienta:* Se implementó la prueba `testConfirmOverviewWithTermsNotAcceptedReturns422` utilizando JUnit y Spring Test Context en #link("https://github.com/catarinas-ps-2026/alf.io/blob/test/integration/src/test/java/alfio/controller/api/v2/user/reservation/ReservationApiV2ControllerIntegrationTest.java")[ReservationApiV2ControllerIntegrationTest.java].
@@ -79,19 +94,3 @@ A continuación se adjunta el resumen de la ejecución de las pruebas unitarias 
   <testcase name="testActivePaymentMethodsDeniedMethodsCorrect()" time="0.730"/>
 </testsuite>
 ```
-
-#block(
-  fill: rgb("#f9f9fb"),
-  inset: 12pt,
-  radius: 6pt,
-  stroke: 0.5pt + rgb("#e1e4e6"),
-  width: 100%,
-)[
-  #set text(size: 8.5pt)
-  *Resumen de la Sección:*
-  Se integraron y validaron exitosamente los límites de control de la API pública de reservas en *alf.io* en tres niveles críticos de robustez:
-  - *Frontera Sintáctica (Caso 1):* Validación de formularios en `ReservationApiV2Controller` que bloquea solicitudes incompletas retornando `HTTP 422`.
-  - *Frontera Semántica (Caso 2):* Validación de lógica de negocio en `TicketReservationManager` que impide la adquisición de categorías restringidas sin código de acceso especial, lanzando `MissingSpecialPriceTokenException`.
-  - *Frontera de Resiliencia (Caso 3):* Manejo de latencia y timeouts en pasarelas de pago y webhooks externos, liberando los tickets retenidos de manera automática al expirar el tiempo reglamentario de la reserva.
-  Todas las verificaciones se realizaron y validaron satisfactoriamente, pasando el 100% de la suite de pruebas del controlador de reservas.
-]
