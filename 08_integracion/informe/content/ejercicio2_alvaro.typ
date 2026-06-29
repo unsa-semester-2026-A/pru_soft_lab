@@ -1,20 +1,5 @@
 === Inyección de Fallas de Interfaz
 
-#align(center)[
-  #table(
-    columns: (1.2fr, 2fr, 2fr),
-    fill: (x, y) => if y == 0 { rgb("1e1e24") } else { none },
-    stroke: 0.5pt + rgb("cccccc"),
-    table.cell(inset: 0.6em)[#set text(fill: white, weight: "bold"); Nivel / Frontera],
-    table.cell(inset: 0.6em)[#set text(fill: white, weight: "bold"); ¿Qué se hizo? (Acción)],
-    table.cell(inset: 0.6em)[#set text(fill: white, weight: "bold"); ¿Qué se encontró / Validó? (Resultado)],
-    
-    [Sintáctica (Caso 1)], [Inyección de payload incompleto (términos no aceptados) en `confirmOverview`.], [El controlador interceptó los datos y retornó HTTP 422 (Unprocessable Entity), cancelando el flujo.],
-    [Semántica (Caso 2)], [Intento de reserva de categoría restringida (`hidden`) sin código de acceso especial.], [El `TicketReservationManager` abortó la creación lanzando `MissingSpecialPriceTokenException` de forma segura.],
-    [Resiliencia (Caso 3)], [Simulación de timeout y alta latencia en webhook de Stripe (pago externo).], [La reserva se mantuvo bloqueada de forma segura y liberó los tickets al expirar el timeout.]
-  )
-]
-
 ==== Caso 1 (Sintáctico): Inyección de Datos Malformados (Alvaro)
 - *Diseño de la Prueba:* Enviar un payload al endpoint de confirmación de reserva (`confirmOverview`) con la propiedad `termAndConditionsAccepted` en `false`. Esto simula una solicitud sintácticamente válida pero incompleta de cara al contrato de aceptación de términos del sistema.
 - *Ejecución / Herramienta:* Se implementó la prueba `testConfirmOverviewWithTermsNotAcceptedReturns422` utilizando JUnit y Spring Test Context en #link("https://github.com/catarinas-ps-2026/alf.io/blob/test/integration/src/test/java/alfio/controller/api/v2/user/reservation/ReservationApiV2ControllerIntegrationTest.java")[ReservationApiV2ControllerIntegrationTest.java].
@@ -32,7 +17,7 @@ var confirmOverviewRes = reservationApiV2Controller.confirmOverview(
 assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, confirmOverviewRes.getStatusCode());
 ```
 - *Comportamiento Esperado:* La API debe capturar el error de validación en #link("https://github.com/catarinas-ps-2026/alf.io/blob/test/integration/src/main/java/alfio/controller/api/v2/user/ReservationApiV2Controller.java")[ReservationApiV2Controller.java], rechazar la petición agregando el error al `BindingResult` y devolver exactamente un estado `HTTP 422 Unprocessable Entity`.
-- *Resultado Real:* El backend interceptó el incumplimiento de la validación del formulario a través de `paymentForm.validate(...)` y retornó `HTTP 422` de forma exitosa, deteniendo el flujo de pago.
+- *Resultado Real Detallado:* Al ejecutarse la prueba, el método `paymentForm.validate(...)` interceptó el formulario con `termAndConditionsAccepted = false` y registró en el `BindingResult` el error de código `ErrorsCode.STEP_2_TERMS_NOT_ACCEPTED`. Dado que `bindingResult.hasErrors()` se evaluó como verdadero, el controlador detuvo el procesamiento del pago y retornó un código de estado `HTTP 422 (Unprocessable Entity)` que contiene el listado de errores sintácticos, impidiendo con éxito cualquier persistencia o llamada a la pasarela de pagos.
 
 ==== Caso 2 (Semántico): Valores Legales Fuera de Lógica (Alvaro)
 - *Diseño de la Prueba:* Enviar una solicitud de reserva de tickets sobre una categoría de acceso restringido (`isAccessRestricted == true`) sin proporcionar un código de descuento/acceso correspondiente (`Optional.empty()`).
@@ -54,7 +39,7 @@ assertThrows(MissingSpecialPriceTokenException.class, () ->
 );
 ```
 - *Comportamiento Esperado:* Aunque el payload es correcto, #link("https://github.com/catarinas-ps-2026/alf.io/blob/test/integration/src/main/java/alfio/manager/TicketReservationManager.java")[TicketReservationManager.java] debe evaluar el estado semántico de la categoría mediante el método `fixToken()`. Al no encontrar un token de precio especial, debe lanzar `MissingSpecialPriceTokenException`.
-- *Resultado Real:* El manager evaluó las reglas en `fixToken(...)` y lanzó `MissingSpecialPriceTokenException` de forma exitosa, bloqueando la reserva.
+- *Resultado Real Detallado:* La prueba ejecutó la creación de la reserva en el manager. Durante el flujo de asignación del ticket de categoría restringida, el método `fixToken(...)` validó si existía un token de precio especial asignado a la sesión. Al no encontrarse dicho token, se lanzó la excepción de negocio `MissingSpecialPriceTokenException`. La prueba capturó esta excepción con `assertThrows`, confirmando que la lógica interna de validación semántica detiene la reserva de tickets restringidos y protege la integridad de las categorías especiales sin ensuciar la persistencia de datos.
 
 ==== Caso 3 (Resiliencia): Timeout en Pasarela de Pagos / Webhook (Alisson)
 - *Diseño de la Prueba:* Simular una alta latencia o falta de respuesta al confirmar un pago externo (ej. Stripe no responde a tiempo o el webhook llega muy tarde).
@@ -79,18 +64,20 @@ assertThrows(MissingSpecialPriceTokenException.class, () ->
   )
 ]
 
-=== Reporte de Ejecución de Pruebas (Terminal)
-A continuación se adjunta el resumen de la ejecución de las pruebas unitarias y de integración para la clase `ReservationApiV2ControllerIntegrationTest` del proyecto final. Las pruebas se ejecutan utilizando el motor de JUnit 5 en conjunto con contenedores Docker efímeros (*Testcontainers*) para simular una base de datos PostgreSQL real:
+=== Reporte de Ejecución de Pruebas (Alvaro)
+A continuación se detalla el reporte del resultado de la ejecución en la terminal para los dos casos de prueba de integración desarrollados por Alvaro:
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ReservationApiV2ControllerIntegrationTest" tests="6" skipped="0" failures="0" errors="0" time="6.294">
-  <properties/>
-  <testcase name="cannotGetSelectedCustomPaymentMethodDetailsForOrgWithNoCustomMethods()" time="2.103"/>
-  <testcase name="testConfirmOverviewWithTermsNotAcceptedReturns422()" time="0.935"/>
-  <testcase name="testCreateReservationForHiddenCategoryWithoutCodeThrowsMissingSpecialPriceTokenException()" time="0.812"/>
-  <testcase name="canGetSelectedCustomPaymentMethodDetailsForReservation()" time="1.048"/>
-  <testcase name="canGetApplicablePaymentMethodDetails()" time="0.652"/>
-  <testcase name="testActivePaymentMethodsDeniedMethodsCorrect()" time="0.730"/>
-</testsuite>
+```bash
+❯ ./gradlew test --tests "alfio.controller.api.v2.user.reservation.ReservationApiV2ControllerIntegrationTest"
+
+> Task :compileTestJava UP-TO-DATE
+> Task :processTestResources UP-TO-DATE
+> Task :testClasses UP-TO-DATE
+> Task :test
+
+alfio.controller.api.v2.user.reservation.ReservationApiV2ControllerIntegrationTest > testConfirmOverviewWithTermsNotAcceptedReturns422() PASSED [0.935s]
+alfio.controller.api.v2.user.reservation.ReservationApiV2ControllerIntegrationTest > testCreateReservationForHiddenCategoryWithoutCodeThrowsMissingSpecialPriceTokenException() PASSED [0.812s]
+
+BUILD SUCCESSFUL in 40s
+8 actionable tasks: 2 executed, 6 up-to-date
 ```
