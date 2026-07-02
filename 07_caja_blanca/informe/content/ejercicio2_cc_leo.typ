@@ -3,7 +3,7 @@
 El flujo de `FinanceService.register_transaction` describe el proceso que se sigue para registrar una transacción financiera en una cuenta, asegurando validaciones, clasificación del tipo de operación y actualización del saldo.
 
 #figure(
-  image("../src/img/leonardo/Diagrama_Flujo.png", width: 80%),
+  image("../src/img/leonardo/Diagrama_Flujo.jpeg", width: 80%),
   caption: [Diagrama de Flujo]
 ) <fig:gaa>
 == 1. Obtención de la cuenta
