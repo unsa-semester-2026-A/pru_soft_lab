@@ -1,15 +1,15 @@
-=== Instrucciones para Alisson (Prueba de Combinación de Condiciones)
+=== Pruebas de Combinación de Condiciones
 
-// *Objetivo:* Diseñar una suite de pruebas con `pytest` enfocada en la *Prueba de Combinación de Condiciones (Branch Condition Combination Testing / Multiple Condition Coverage)* para el módulo `bisect.py`.
+El objetivo de esta sección es detallar el diseño e implementación de una suite de pruebas unitarias con `pytest` enfocada en la *Prueba de Combinación de Condiciones (Branch Condition Combination Testing / Multiple Condition Coverage)* para el módulo `bisect.py`.
 
-==== Consideraciones de Diseño:
+==== Consideraciones de Diseño
 
 La cobertura de combinación de condiciones requiere probar todas las combinaciones de verdad de las condiciones atómicas que conforman una decisión compuesta. Si una decisión consta de $N$ condiciones atómicas unidas por operadores lógicos (`and`, `or`), se requieren $2^N$ casos de prueba para esa decisión.
 
-En `bisect.py`, las decisiones son simples (constan de una sola condición atómica, como `if lo < 0` o `if key is None`). Sin embargo, para cumplir formalmente con esta técnica, debes:
-1. Mapear cada condición atómica e identificar sus combinaciones.
+En `bisect.py`, las decisiones son simples (constan de una sola condición atómica, como `if lo < 0` o `if key is None`). Para la aplicación formal de esta técnica, se procede a:
+1. Mapear cada condición atómica e identificar sus combinaciones correspondientes.
 2. Elaborar la tabla de verdad para las decisiones de control clave.
-3. Escribir la suite de pruebas unitarias en `test_bisect_condiciones.py` y ejecutarla:
+3. Desarrollar la suite de pruebas unitarias en `test_bisect_condiciones.py` y ejecutarla mediante el comando:
   ```bash
   pytest test_bisect_condiciones.py -v
   ```

@@ -1,0 +1,10 @@
+graph TD
+    1["1: if key is None"]
+    2["2: lo = bisect_left(a, x, lo, hi)"]
+    3["3: lo = bisect_left(a, key(x), lo, hi, key=key)"]
+    4["4: a.insert(lo, x)"]
+
+    1 -- "True" --> 2
+    1 -- "False" --> 3
+    2 --> 4
+    3 --> 4

@@ -59,10 +59,6 @@
     lang: "es",
     size: 10pt,
   )
-  show link: it => {
-    set text(fill: blue, style: "italic")
-    underline(it)
-  }
   // raw
   show raw.where(block: true): it => block(
     fill: codeBgColor, // Slightly off-black for better contrast
@@ -75,8 +71,25 @@
   )
   // figure
   show figure: set block(breakable: true)
+  // link styling
+  show link: it => underline(text(fill: blue, style: "italic", it))
   // IEEE
   set heading(numbering: "1.")
+  show heading.where(level: 1): it => block(width: 100%, above: 1.2em, below: 1em)[
+    #set align(left)
+    #set text(weight: "regular", size: 10pt)
+    #smallcaps(it)
+  ]
+  show heading.where(level: 2): it => block(above: 1em, below: 0.8em)[
+    #set align(left)
+    #set text(weight: "regular", style: "italic", size: 10pt)
+    #it
+  ]
+  show heading.where(level: 3): it => block(above: 1em, below: 0.8em)[
+    #set align(left)
+    #set text(weight: "regular", style: "italic", size: 10pt)
+    #it
+  ]
   // set page
   set page(
     paper: "a4",

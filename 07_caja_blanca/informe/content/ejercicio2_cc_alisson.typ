@@ -1,4 +1,4 @@
-=== Función Asignada: `Transaction.__post_init__` (Alisson)
+=== Complejidad Ciclomática en `Transaction.__post_init__`
 
 *Ubicación:* `finance/core/domain/entities.py` (Líneas 200 a 218).
 
@@ -25,7 +25,7 @@ def __post_init__(self) -> None:
     _validate_not_empty(self.description, "Description")
 ```
 
-==== 1. Grafo de Flujo de Control (CFG) - Alisson
+==== Grafo de Flujo de Control (CFG)
 *Metodología de conteo de nodos:*
 
 Para el cálculo de la Complejidad Ciclomática, solo se contabilizan los *nodos predicado* (puntos de decisión). Las sentencias de error (`raise`) y las sentencias de secuencia (asignaciones, llamadas a funciones) *no se cuentan* como nodos separados porque:
@@ -115,9 +115,9 @@ Análisis de nodos predicado en `Transaction.__post_init__`:
 //     4b -->|e11: False| 5
 //     linkStyle default stroke:#000000,stroke-width:2px,font-family:Arial;")
 
-==== 2. Cálculo Manual de la Complejidad Ciclomática (CC)
+==== Cálculo Manual de la Complejidad Ciclomática (CC)
 
-Aplica las siguientes fórmulas para el cálculo:
+Para el cálculo manual de la complejidad ciclomática de la función, se aplican las siguientes fórmulas convencionales:
 
 *Fórmula 1:* $C C = A - N + 2$
 
@@ -139,7 +139,7 @@ Análisis de nodos predicado (decisiones):
 
 
 
-==== 3. Verificación con la Herramienta Radon - Alisson
+==== Verificación con la Herramienta Radon
 
 *Comando ejecutado:*
 ```bash
@@ -162,7 +162,7 @@ radon cc development/finance/core/domain/entities.py -s -a
     *Resultados de Radon:*
     - Score numérico de Radon: *6*
     - Categoría de riesgo (Rango A-F): *B* (Riesgo moderado, CC entre 6-10)
-    - ¿El resultado manual coincide con el de la herramienta?: *Sí*. El cálculo manual con la fórmula $C C = P + 1 = 5 + 1 = 6$ coincide exactamente con el score reportado por Radon.
+    - *Coincidencia de resultados:* El cálculo manual con la fórmula $C C = P + 1 = 5 + 1 = 6$ coincide exactamente con el score de 6 reportado por Radon, validando la precisión del análisis.
   ],
 )
 

@@ -1,61 +1,42 @@
-= Ejercicio 1: Prueba de Sentencias
-== Responsable: Leo Arce
+=== Pruebas de Sentencias (Statement Testing)
 
-== Módulo Analizado
+Para el análisis de cobertura de sentencias, se diseñó una suite de pruebas unitarias enfocada en transitar por cada una de las instrucciones ejecutables del módulo `bisect.py`, asegurando que ninguna línea de código quede sin verificar.
 
-Archivo:
+==== Módulo Analizado
 
-`bisect.py`
+*Archivo:* `bisect.py`
+*Función seleccionada:* `bisect_left(a, x, lo=0, hi=None, *, key=None)`
 
-Función seleccionada:
+==== Objetivo del Análisis de Cobertura
 
-`bisect_left(a, x, lo=0, hi=None, *, key=None)`
+El propósito del diseño de la suite de pruebas es alcanzar una cobertura de sentencias del $100\%$ en la función `bisect_left` del módulo estándar `bisect.py`. La suite de pruebas está estructurada para asegurar la ejecución de cada una de las instrucciones principales:
 
+- Validación de la precondición para el parámetro `lo` (debe ser no negativo).
+- Inicialización y asignación del límite superior por defecto `hi` en caso de ser omitido (`None`).
+- Flujo de búsqueda binaria en ausencia de una función de transformación `key`.
+- Flujo de búsqueda binaria con el uso de una función de transformación `key`.
+- Retorno final del índice calculado.
 
-== Objetivo
+==== Análisis de Sentencias
 
-Diseñar casos de prueba que permitan alcanzar una cobertura del 100% de
-sentencias en la función `bisect_left()` del módulo estándar `bisect.py`.
-
-La prueba debe ejecutar todas las instrucciones principales:
-
-- Validación del parámetro `lo`.
-- Asignación de `hi` cuando es `None`.
-- Ejecución del algoritmo sin función `key`.
-- Ejecución del algoritmo utilizando función `key`.
-- Retorno final del índice.
-
-
-== Análisis de Sentencias
-
-=== 1. Validación del límite inferior
-
+===== 1. Validación del límite inferior
 Código:
-
 ```python
 if lo < 0:
     raise ValueError('lo must be non-negative')
 ```
-
 Se cubre enviando un valor negativo en `lo`.
 
-
-=== 2. Inicialización del límite superior
-
+===== 2. Inicialización del límite superior
 Código:
-
 ```python
 if hi is None:
     hi = len(a)
 ```
-
 Se ejecuta cuando no se proporciona `hi`.
 
-
-=== 3. Búsqueda sin función key
-
+===== 3. Búsqueda sin función key
 Código:
-
 ```python
 if key is None:
     while lo < hi:
@@ -66,11 +47,8 @@ if key is None:
             hi = mid
 ```
 
-
-=== 4. Búsqueda utilizando key
-
+===== 4. Búsqueda utilizando key
 Código:
-
 ```python
 else:
     while lo < hi:
@@ -81,97 +59,42 @@ else:
             hi = mid
 ```
 
+==== Casos de Prueba Diseñados
 
-== Casos de Prueba
-
-
-=== Caso 1: Error por límite negativo
-
-Entrada:
-
+===== Caso 1: Error por límite negativo
+*Entrada:*
 ```python
-a = [1,3,5,7]
+a = [1, 3, 5, 7]
 x = 4
 lo = -1
 ```
+*Resultado esperado:* Lanza `ValueError`
+*Sentencias cubiertas:* Validación `lo < 0` y lanzamiento de excepción.
 
-Resultado esperado:
-
+===== Caso 2: Búsqueda normal sin key
+*Entrada:*
 ```python
-ValueError
-```
-
-Sentencias cubiertas:
-
-- Validación `lo < 0`.
-- Lanzamiento de excepción.
-
-
-=== Caso 2: Búsqueda normal sin key
-
-Entrada:
-
-```python
-a = [1,3,5,7]
+a = [1, 3, 5, 7]
 x = 4
 ```
+*Resultado esperado:* Retorna `2`
+*Sentencias cubiertas:* `hi = len(a)`, ciclo `while`, cálculo de `mid`, comparación `a[mid] < x`, y actualización de límites.
 
-Resultado esperado:
-
+===== Caso 3: Uso de función key
+*Entrada:*
 ```python
-posición = 2
-```
-
-Sentencias cubiertas:
-
-- `hi = len(a)`
-- Ciclo `while`
-- Cálculo de `mid`
-- Comparación `a[mid] < x`
-- Actualización de límites.
-
-
-=== Caso 3: Uso de función key
-
-Entrada:
-
-```python
-a = [
-    {"valor":1},
-    {"valor":3},
-    {"valor":5}
-]
-
+a = [{"valor": 1}, {"valor": 3}, {"valor": 5}]
 x = 4
-
 key = lambda elemento: elemento["valor"]
 ```
+*Resultado esperado:* Retorna `2`
+*Sentencias cubiertas:* Rama alternativa `key`, comparación mediante `key(a[mid])`, y actualización de límites.
 
-Resultado esperado:
+==== Resultado de Cobertura
 
-```python
-posición = 2
-```
+Los casos de prueba ejecutan todas las sentencias relevantes de la función `bisect_left()`.
+*Cobertura obtenida:* $100\%$
 
-Sentencias cubiertas:
+==== Conclusión
 
-- Rama alternativa `key`.
-- Comparación mediante `key(a[mid])`.
-- Actualización de límites.
-
-
-== Resultado de Cobertura
-
-Los casos de prueba ejecutan todas las sentencias relevantes de la función
-`bisect_left()`.
-
-Cobertura obtenida:
-
-$100\%$
-
-
-== Conclusión
-
-Los casos diseñados permiten recorrer todas las instrucciones ejecutables del
-algoritmo, incluyendo validaciones, búsqueda estándar y búsqueda personalizada
-mediante la función `key`.
+Los casos diseñados permiten recorrer todas las instrucciones ejecutables del algoritmo, incluyendo validaciones, búsqueda estándar y búsqueda personalizada mediante la función `key`.
