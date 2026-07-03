@@ -65,7 +65,7 @@ assertThrows(MissingSpecialPriceTokenException.class, () ->
 - *Diseño de la Prueba:* Simular una alta latencia o falta de respuesta al confirmar un pago externo (ej. Stripe no responde a tiempo o el webhook llega muy tarde).
 - *Ejecución / Herramienta:* Simular una latencia alta en las pasarelas externas o diseñar una prueba asíncrona con `MockMvc` simulando un retardo en el controlador del webhook.
 - *Comportamiento Esperado:* El sistema debe mantener la reserva en estado `EXTERNAL_PROCESSING_PAYMENT` y, al expirar el tiempo de sesión, liberar los tickets bloqueados sin afectar otras transacciones.
-- *Resultado Real:* El sistema mantuvo la reserva en estado `EXTERNAL_PROCESSING_PAYMENT` durante el tiempo configurado para la sesión. Al no recibir una respuesta satisfactoria del webhook antes de que expirara la ventana de reserva (10 minutos), el cronjob de limpieza (`ExpiredReservationsHandler`) canceló automáticamente la transacción y liberó los tickets asignados, devolviéndolos al inventario general y garantizando la resiliencia en la disponibilidad de tickets del evento.
+- *Resultado Real:* TODO: Anotar el resultado real observado tras la prueba.
 
 === Documentación de Discrepancias (Casos 1, 2 y 3)
 #align(center)[
@@ -80,7 +80,7 @@ assertThrows(MissingSpecialPriceTokenException.class, () ->
     
     [INC-01 (Sintáctico)], [HTTP 422 (Unprocessable Entity) ante payload con términos no aceptados.], [Retornó HTTP 422 de forma exitosa y canceló la operación.], [Exitoso],
     [INC-02 (Semántico)], [Excepción MissingSpecialPriceTokenException al reservar categoría restringida sin código.], [Lanzó MissingSpecialPriceTokenException bloqueando la transacción.], [Exitoso],
-    [INC-03 (Resiliencia)], [La reserva no se confirma y los tickets se liberan tras expirar el timeout.], [La transacción permaneció en procesamiento externo y se canceló liberando los tickets al expirar el tiempo de sesión.], [Exitoso]
+    [INC-03 (Resiliencia)], [La reserva no se confirma y los tickets se liberan tras expirar el timeout.], [TODO: Anotar el resultado real observado tras la prueba], [En pruebas]
   )
 ]
 

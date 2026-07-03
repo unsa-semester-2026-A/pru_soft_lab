@@ -22,7 +22,7 @@ A continuación, se presenta un resumen consolidado de las pruebas de integraci�
     
     [Sintáctica (Caso 1)], [Inyección de payload incompleto (términos no aceptados) en `confirmOverview`.], [El controlador interceptó los datos y retornó HTTP 422 (Unprocessable Entity), cancelando el flujo.],
     [Semántica (Caso 2)], [Intento de reserva de categoría restringida (`hidden`) sin código de acceso especial.], [El `TicketReservationManager` abortó la creación lanzando `MissingSpecialPriceTokenException` de forma segura.],
-    [Resiliencia (Caso 3)], [Simulación de timeout y alta latencia en webhook de Stripe (pago externo).], [La reserva permaneció en procesamiento externo y fue liberada al expirar el tiempo de sesión.]
+    [Resiliencia (Caso 3)], [Simulación de timeout y alta latencia en webhook de Stripe (pago externo).], [Pendiente / En pruebas (el resultado real se registrará tras la ejecución).]
   )
 ]
 
