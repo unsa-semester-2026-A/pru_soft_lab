@@ -1,6 +1,6 @@
 = SOLUCIÓN DE EJERCICIOS/PROBLEMAS
 
-#include "ejercicio1.typ"
+#include "ejercicio1_leo.typ"
 == Ejercicio 2: Pruebas de Integración del Proyecto Final
 
 *Descripción de la actividad:*
@@ -26,4 +26,5 @@ A continuación, se presenta un resumen consolidado de las pruebas de integraci�
   )
 ]
 
-#include "ejercicio2.typ"
+#include "ejercicio2_alisson.typ"
+#include "ejercicio2_alvaro.typ"

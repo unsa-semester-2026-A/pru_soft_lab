@@ -1,11 +1,11 @@
-== Ejercicio 1: Automatización con Supertest (Leo)
+== Ejercicio 1: Automatización con Supertest
 
 *Descripción de la actividad:*
 Implementar una API REST básica en Node.js + Express (ej. catálogo de videojuegos, biblioteca musical, etc.) y diseñar una suite de pruebas de integración utilizando Supertest y Jest/Mocha. La suite debe validar persistencia cruzada, modificación de estado y robustez (edge cases).
 
 === Código de la API (`app.js`)
 #v(1em)
-// LEO: Reemplaza este bloque de código con la implementación real de tu API.
+
 ```javascript
 
 const express = require('express');
@@ -104,7 +104,7 @@ module.exports = app;
 
 === Código de las Pruebas (`tema_libre.test.js`)
 #v(1em)
-// LEO: Reemplaza este bloque de código con tus pruebas en Supertest.
+
 ```javascript
  
 const request = require('supertest');
@@ -260,12 +260,12 @@ describe('API Catálogo de Videojuegos', () => {
 ```
 
 === Captura de Pantalla / Reporte de Ejecución
-#v(1em)
+
 #figure(
   image("../src/fig/ejercicio1/Reporte_eje1.png", width: 80%),
   caption: [Ejecución de Jest/Mocha]
 ) <fig:gaa>
-*(Colocar reporte de ejecución de Jest/Mocha)*
+
 == Interpretación del Reporte de Ejecución (Jest)
 
 El comando `npx jest --verbose` ejecuta la suite de pruebas y muestra el detalle de cada caso individual. A continuación se explica cada sección del resultado obtenido:
