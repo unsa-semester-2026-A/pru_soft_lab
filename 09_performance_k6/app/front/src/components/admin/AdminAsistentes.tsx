@@ -142,7 +142,7 @@ export function AdminAsistentes() {
 											{asistente.documento}
 										</td>
 										<td className="px-4 py-3 text-sm text-card-foreground">
-											{asistente.evento_id}
+											{asistente.evento_nombre}
 										</td>
 										<td className="px-4 py-3">
 											<Badge variant="secondary">{asistente.zona}</Badge>

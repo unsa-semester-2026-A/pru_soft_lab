@@ -10,7 +10,7 @@ from redis import Redis
 
 from src.config import config
 from src.database import db
-from main import create_app
+from src.main import create_app
 from src.models.db_models import Asistente, Compra
 from src.services.redis_queue import get_redis
 
@@ -25,6 +25,7 @@ EVENTOS_SEED = [
             "fecha": "2026-08-15T21:00:00",
             "estado": "activo",
             "imagen_url": "https://www.wembleystadium.com/-/media/Project/WembleyStadium/events/2023/LDR/Updated-2nd-night/Lana-Del-Rey-LDN-1400x620---Main-headline-image.ashx",
+            "categoria": "conciertos",
         },
         "zonas": [
             {"id": "vip", "nombre": "VIP", "precio": 350.0, "stock_total": 50},
@@ -58,6 +59,7 @@ EVENTOS_SEED = [
             "fecha": "2026-10-05T21:30:00",
             "estado": "activo",
             "imagen_url": "https://industriamusical.com/wp-content/uploads/2023/09/Taylor_Swift_The_Eras_Tour.jpg",
+            "categoria": "conciertos",
         },
         "zonas": [
             {"id": "vip", "nombre": "VIP", "precio": 450.0, "stock_total": 60},
@@ -74,6 +76,7 @@ EVENTOS_SEED = [
             "fecha": "2026-11-21T20:30:00",
             "estado": "activo",
             "imagen_url": "https://newsroom.livenation.com/wp-content/uploads/2026/05/Static_LiveNation-PR_1720x720_HayleyWilliams_2026_National-1024x429.jpg",
+            "categoria": "conciertos",
         },
         "zonas": [
             {"id": "vip", "nombre": "VIP", "precio": 320.0, "stock_total": 30},
@@ -84,19 +87,19 @@ EVENTOS_SEED = [
     {
         "id": "conc-005",
         "info": {
-                "nombre": "Caifanes en Lima",
-                "artista": "Caifanes",
-                "venue": "Estadio Nacional, Lima",
-                "fecha": "2026-08-15T21:00:00",
-                "estado": "activo",
-                "url": "https://teleticket.com.pe/caifanes",
-                "imagen_url": "https://cdn.getcrowder.com/images/6716abbd-c0ba-455d-95cf-d362ad5372d5-caifanesfullbannerpagemanizales.gif"
-            },
-            "zonas": [
-                {"id": "vip", "nombre": "VIP", "precio": 350.0, "stock_total": 50},
-                {"id": "pref", "nombre": "Preferencial", "precio": 200.0, "stock_total": 150},
-                {"id": "gen", "nombre": "General", "precio": 100.0, "stock_total": 300}
-      ]
+            "nombre": "Caifanes en Lima",
+            "artista": "Caifanes",
+            "venue": "Estadio Nacional, Lima",
+            "fecha": "2026-08-15T21:00:00",
+            "estado": "activo",
+            "imagen_url": "https://cdn.getcrowder.com/images/6716abbd-c0ba-455d-95cf-d362ad5372d5-caifanesfullbannerpagemanizales.gif",
+            "categoria": "conciertos",
+        },
+        "zonas": [
+            {"id": "vip", "nombre": "VIP", "precio": 350.0, "stock_total": 50},
+            {"id": "pref", "nombre": "Preferencial", "precio": 200.0, "stock_total": 150},
+            {"id": "gen", "nombre": "General", "precio": 80.0, "stock_total": 300},
+        ],
     },
 ]
 
@@ -130,12 +133,10 @@ def seed_redis(r: Redis) -> None:
 def seed_postgres(app) -> None:
     """Siembra datos de ejemplo en PostgreSQL."""
     with app.app_context():
-        # Limpiar tablas
         db.session.query(Asistente).delete()
         db.session.query(Compra).delete()
         db.session.commit()
 
-        # Crear compras de ejemplo
         compras_ejemplo = [
             {
                 "reserva_id": str(uuid.uuid4()),

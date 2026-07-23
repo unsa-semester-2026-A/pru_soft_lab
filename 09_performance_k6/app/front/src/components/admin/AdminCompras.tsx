@@ -122,7 +122,7 @@ export function AdminCompras() {
 											{compra.id.slice(0, 8)}...
 										</td>
 										<td className="px-4 py-3 text-sm font-medium text-card-foreground">
-											{compra.evento_id}
+											{compra.evento_nombre}
 										</td>
 										<td className="px-4 py-3 text-sm text-card-foreground">
 											<div>
@@ -181,7 +181,7 @@ export function AdminCompras() {
 																<span className="text-muted-foreground">
 																	Evento:
 																</span>{" "}
-																{compra.evento_id}
+																{compra.evento_nombre}
 															</div>
 															<div>
 																<span className="text-muted-foreground">

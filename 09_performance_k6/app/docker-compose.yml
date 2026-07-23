@@ -1,0 +1,69 @@
+services:
+  # ── Redis (stock atómico + TTL + cola) ──────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── PostgreSQL (persistencia de compras y asistentes) ───────────────────────
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ticketpass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ticketpass"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── TicketPass API (Flask + Gunicorn) ────────────────────────────────────────
+  api:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_HOST: "0.0.0.0"
+      FLASK_PORT: "5000"
+      FLASK_DEBUG: "false"
+      GUNICORN_WORKERS: "4"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ticketpass
+      RESERVA_TTL_SEGUNDOS: "180"
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── TicketPass Frontend (Astro + Nginx) ──────────────────────────────────────
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "4321:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  postgres_data:
