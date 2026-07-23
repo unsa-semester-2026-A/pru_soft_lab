@@ -1,0 +1,90 @@
+---
+import { EventCard } from "../components/event/EventCard";
+import { EventCarousel } from "../components/event/EventCarousel";
+import { Footer } from "../components/layout/Footer";
+import { Header } from "../components/layout/Header";
+import { HeroSection } from "../components/layout/HeroSection";
+import Layout from "../layouts/Layout.astro";
+
+// Fetch eventos from API with fallback
+let eventos = [];
+try {
+  const res = await fetch("http://localhost:5000/api/v1/eventos", {
+    signal: AbortSignal.timeout(5000)
+  });
+  eventos = await res.json();
+} catch (e) {
+  // Fallback data if API is not available during build
+  eventos = [
+    { id: "conc-001", nombre: "Lana Del Rey: The Did You Know Tour", artista: "Lana Del Rey", venue: "Estadio Nacional", fecha: "2026-08-15T21:00:00", imagen_url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800", zonas: [{ precio: 100 }] },
+    { id: "conc-002", nombre: "Julian Casablancas Tour", artista: "Julian Casablancas", venue: "Arena Lima", fecha: "2026-09-20T20:00:00", imagen_url: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800", zonas: [{ precio: 80 }] },
+    { id: "conc-003", nombre: "Taylor Swift: The Eras Tour", artista: "Taylor Swift", venue: "Estadio San Marcos", fecha: "2026-10-05T21:30:00", imagen_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800", zonas: [{ precio: 150 }] },
+    { id: "conc-004", nombre: "Hayley Williams Tour", artista: "Hayley Williams", venue: "Jockey Club", fecha: "2026-11-12T20:30:00", imagen_url: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800", zonas: [{ precio: 100 }] },
+  ];
+}
+const eventosDestacados = eventos.slice(0, 4);
+---
+
+<Layout title="TicketPass - Tu entrada a los mejores eventos">
+  <Header client:load />
+
+  <main>
+    <EventCarousel client:load eventos={eventos} />
+
+    <section class="container mx-auto px-4 py-16 md:px-6">
+      <div class="mb-10">
+        <h2 class="font-heading text-3xl font-bold text-foreground md:text-4xl">Eventos Destacados</h2>
+        <p class="mt-2 text-muted-foreground">No te pierdas los eventos más populares</p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {eventosDestacados.map((evento) => (
+          <EventCard client:load evento={evento} />
+        ))}
+      </div>
+
+      <div class="mt-10 text-center">
+        <a href="/eventos" class="inline-flex items-center gap-2 rounded-lg bg-[var(--violet)] px-8 py-3 text-base font-semibold text-white shadow-lg transition-all hover:bg-[var(--violet)]/90 hover:shadow-xl hover:-translate-y-0.5">
+          Ver todos los eventos
+        </a>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="bg-muted py-16">
+      <div class="container mx-auto px-4 md:px-6">
+        <div class="mb-10 text-center">
+          <h2 class="font-heading text-3xl font-bold text-foreground md:text-4xl">¿Cómo funciona?</h2>
+          <p class="mt-2 text-muted-foreground">Comprar tus entradas nunca fue tan fácil</p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+          <div class="flex flex-col items-center text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--violet)] text-white">
+              <span class="text-2xl font-bold">1</span>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold text-foreground">Elige tu evento</h3>
+            <p class="text-sm text-muted-foreground">Explora nuestra selección de conciertos, teatro y eventos deportivos</p>
+          </div>
+
+          <div class="flex flex-col items-center text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--teal)] text-[var(--deep-purple)]">
+              <span class="text-2xl font-bold">2</span>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold text-foreground">Selecciona tus asientos</h3>
+            <p class="text-sm text-muted-foreground">Elige la zona y cantidad de entradas que deseas comprar</p>
+          </div>
+
+          <div class="flex flex-col items-center text-center">
+            <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--violet)] text-white">
+              <span class="text-2xl font-bold">3</span>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold text-foreground">¡Listo!</h3>
+            <p class="text-sm text-muted-foreground">Completa tus datos y recibe tus entradas al instante</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

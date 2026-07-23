@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/noto-sans";
+@import "@fontsource-variable/playfair-display";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+    /* TicketPass Brand Colors */
+    --deep-purple: #29253D;
+    --teal: #82E2DB;
+    --light-gray: #EDECEE;
+    --violet: #9577FF;
+
+    /* Shadcn/Tailwind Theme */
+    --background: #EDECEE;
+    --foreground: #29253D;
+    --card: #ffffff;
+    --card-foreground: #29253D;
+    --popover: #ffffff;
+    --popover-foreground: #29253D;
+    --primary: #9577FF;
+    --primary-foreground: #ffffff;
+    --secondary: #82E2DB;
+    --secondary-foreground: #29253D;
+    --muted: #f0f0f2;
+    --muted-foreground: #6b6b80;
+    --accent: #82E2DB;
+    --accent-foreground: #29253D;
+    --destructive: #ef4444;
+    --border: #d9d9e0;
+    --input: #d9d9e0;
+    --ring: #9577FF;
+    --radius: 0.75rem;
+}
+
+.dark {
+    --deep-purple: #1a1830;
+    --teal: #82E2DB;
+    --light-gray: #EDECEE;
+    --violet: #9577FF;
+
+    --background: #1a1830;
+    --foreground: #EDECEE;
+    --card: #29253D;
+    --card-foreground: #EDECEE;
+    --popover: #29253D;
+    --popover-foreground: #EDECEE;
+    --primary: #9577FF;
+    --primary-foreground: #ffffff;
+    --secondary: #82E2DB;
+    --secondary-foreground: #1a1830;
+    --muted: #352f4e;
+    --muted-foreground: #a0a0b0;
+    --accent: #82E2DB;
+    --accent-foreground: #1a1830;
+    --destructive: #ef4444;
+    --border: #403c5a;
+    --input: #403c5a;
+    --ring: #9577FF;
+}
+
+@theme inline {
+    --font-sans: 'Noto Sans Variable', sans-serif;
+    --font-heading: 'Playfair Display Variable', serif;
+    --color-sidebar-ring: var(--ring);
+    --color-sidebar-border: var(--border);
+    --color-sidebar-accent-foreground: var(--accent-foreground);
+    --color-sidebar-accent: var(--accent);
+    --color-sidebar-primary-foreground: var(--primary-foreground);
+    --color-sidebar-primary: var(--primary);
+    --color-sidebar-foreground: var(--foreground);
+    --color-sidebar: var(--background);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: calc(var(--radius) * 1.2);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+    html {
+        @apply font-sans;
+    }
+}

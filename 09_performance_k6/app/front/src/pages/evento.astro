@@ -1,0 +1,16 @@
+---
+import { EventDetail } from "../components/event/EventDetail";
+import { Footer } from "../components/layout/Footer";
+import { Header } from "../components/layout/Header";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Detalle del Evento - TicketPass">
+  <Header client:load />
+
+  <main class="container mx-auto px-4 py-8 md:px-6">
+    <EventDetail client:load />
+  </main>
+
+  <Footer />
+</Layout>
