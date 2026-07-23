@@ -1,0 +1,25 @@
+---
+import { EventsPage } from "../../components/event/EventsPage";
+import { Footer } from "../../components/layout/Footer";
+import { Header } from "../../components/layout/Header";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Eventos - TicketPass">
+  <Header client:load />
+
+  <main class="min-h-screen">
+    <section class="bg-[var(--deep-purple)] py-16">
+      <div class="container mx-auto px-4 md:px-6">
+        <h1 class="font-heading text-4xl font-bold text-[var(--light-gray)] md:text-5xl">Todos los Eventos</h1>
+        <p class="mt-3 text-lg text-[var(--light-gray)] opacity-70">Encuentra el evento perfecto para ti</p>
+      </div>
+    </section>
+
+    <section class="container mx-auto px-4 py-12 md:px-6">
+      <EventsPage client:load />
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

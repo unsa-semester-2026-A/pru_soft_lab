@@ -1,0 +1,5 @@
+= CONCLUSIONES
+
+- *Importancia de las Pruebas de Integración:* Las pruebas unitarias exitosas no son suficientes para garantizar la robustez del sistema, ya que las interfaces de comunicación, la consistencia de datos en bases de datos reales y el comportamiento de servicios externos introducen riesgos que solo pueden verificarse integrando componentes reales.
+- *Eficacia de las Herramientas (Postman y Supertest):* La automatización con Supertest y la orquestación en Postman permiten validar contratos de API REST de manera rápida y reproducible. La inyección de variables de entorno y el encadenamiento de peticiones son esenciales para validar flujos CRUD completos sin intervención manual.
+- *Uso de Ambientes de Prueba Reales con Testcontainers:* El uso de contenedores efímeros para la base de datos (PostgreSQL 15) en las pruebas de integración del proyecto final (*alf.io*) asegura un entorno idéntico al de producción, permitiendo simular fallas sintácticas y semánticas complejas sin ensuciar datos productivos ni depender de stubs limitados.
