@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "flask-python": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "flask-python/SKILL.md",
+      "computedHash": "7e55af409afc150c883017cbd8ee290d480b3f8013aab813db40868829707369"
+    },
+    "redis-best-practices": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "redis-best-practices/SKILL.md",
+      "computedHash": "c362f644a6e3ed9b69a86fef4aa41ebcb4ff15552f03b7431f00642af5d3d5f1"
+    },
+    "redis-core": {
+      "source": "redis/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/redis-core/SKILL.md",
+      "computedHash": "5b342de2555699d1785335711883711ff6ef7e213a1ea57d6bf693184a5c8683"
+    },
+    "sqlalchemy-alembic-expert-best-practices-code-review": {
+      "source": "wispbit-ai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/sqlalchemy-alembic-expert-best-practices-code-review/SKILL.md",
+      "computedHash": "995e671e51c95c73542b48eb7372a752ba1b5f6c0d2277e07ab0d53543dd507c"
+    },
+    "sqlalchemy-postgres": {
+      "source": "cfircoo/claude-code-toolkit",
+      "sourceType": "github",
+      "skillPath": "skills/sqlalchemy-postgres/SKILL.md",
+      "computedHash": "8d0a7adb37791dc451aee84ad4f9b4cc736c8ff9ed65c1226177814067798a03"
+    }
+  }
+}
