@@ -26,7 +26,7 @@ Este documento detalla la planificación y la asignación de responsabilidades p
 - **Archivo de trabajo:** `informe/content/ejercicio1_leo.typ`
 
 > [!WARNING]
-> **Instrucciones para Leonardo:** Dado que debes entregar un código con altos estándares (arquitectura limpia, aserciones estrictas), **debes copiar y pegar el siguiente prompt exacto en tu Inteligencia Artificial** para generar la base de tu código:
+> **Instrucciones para Leonardo:** Dado que debes entregar un código con altos estándares (arquitectura limpia, aserciones strictly), **debes copiar y pegar el siguiente prompt exacto en tu Inteligencia Artificial** para generar la base de tu código:
 
 #### 🤖 PROMPT PARA LA IA DE LEONARDO:
 

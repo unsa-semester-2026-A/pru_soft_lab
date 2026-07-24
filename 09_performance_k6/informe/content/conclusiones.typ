@@ -1,5 +1,7 @@
 = CONCLUSIONES
 
-- *Importancia de las Pruebas de Integración:* Las pruebas unitarias exitosas no son suficientes para garantizar la robustez del sistema, ya que las interfaces de comunicación, la consistencia de datos en bases de datos reales y el comportamiento de servicios externos introducen riesgos que solo pueden verificarse integrando componentes reales.
-- *Eficacia de las Herramientas (Postman y Supertest):* La automatización con Supertest y la orquestación en Postman permiten validar contratos de API REST de manera rápida y reproducible. La inyección de variables de entorno y el encadenamiento de peticiones son esenciales para validar flujos CRUD completos sin intervención manual.
-- *Uso de Ambientes de Prueba Reales con Testcontainers:* El uso de contenedores efímeros para la base de datos (PostgreSQL 15) en las pruebas de integración del proyecto final (*alf.io*) asegura un entorno idéntico al de producción, permitiendo simular fallas sintácticas y semánticas complejas sin ensuciar datos productivos ni depender de stubs limitados.
+1. Se logró diseñar e implementar una arquitectura de prueba de alto rendimiento para la API REST *TicketPass*, validando experimentalmente que el almacenamiento y decremento atómico de stock en Redis (`DECRBY`) permite procesar más de 128 peticiones por segundo con latencias inferiores a $60 "ms"$ ($P_95$), garantizando la consistencia de inventario sin sobreventa (*no overbooking*).
+
+2. La evaluación comparativa entre Apache JMeter y K6 demostró la superioridad de K6 en entornos DevOps y pipelines CI/CD debido a su motor asíncrono liviano en Go/JavaScript, alcanzando un throughput significativamente mayor y reduciendo el consumo de memoria en comparación con el modelo multitarea basado en hilos JVM de JMeter.
+
+3. Las pruebas de seguridad mediante Python confirmaron la robustez de la API REST desarrollada, la cual respondió con códigos HTTP estandarizados (`404`, `400`, `405`) y mantuvo la resiliencia ante ataques de fuerza bruta y ráfagas de solicitudes concurrentes, protegiendo las trazas de error internas y asegurando la disponibilidad del servicio.

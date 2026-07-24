@@ -1,0 +1,206 @@
+#  ./08-k6 results.png 
+
+se  muestra el resultado del primer código, que tuve resultado en post de 75%
+
+# ./09-50vusers.png  segundo comando de k6
+
+
+  █ TOTAL RESULTS
+
+    checks_total.......: 4500   97.072395/s
+    checks_succeeded...: 94.13% 4236 out of 4500
+    checks_failed......: 5.86%  264 out of 4500
+
+    ✓ GET /eventos status is 200
+    ✓ GET /eventos duration < 500ms
+    ✗ POST /compras/reservar status is 200/201
+      ↳  82% — ✓ 1236 / ✗ 264
+
+    HTTP
+    http_req_duration..............: avg=19.27ms min=1.27ms med=10.37ms max=255.85ms p(90)=45.68ms p(95)=66.32ms
+      { expected_response:true }...: avg=20.57ms min=1.52ms med=11.85ms max=255.85ms p(90)=50.85ms p(95)=69.06ms
+    http_req_failed................: 8.79%  264 out of 3000
+    http_reqs......................: 3000   64.71493/s
+
+    EXECUTION
+    iteration_duration.............: avg=1.54s   min=1.5s   med=1.53s   max=1.75s    p(90)=1.57s   p(95)=1.58s
+    iterations.....................: 1500   32.357465/s
+    vus............................: 50     min=50          max=50
+    vus_max........................: 50     min=50          max=50
+
+    NETWORK
+    data_received..................: 5.0 MB 107 kB/s
+    data_sent......................: 586 kB 13 kB/s
+
+# ./10.png 
+
+
+
+❯ k6 run --vus 100 --duration 60s scripts/k6_test.js
+
+         /\      Grafana   /‾‾/
+    /\  /  \     |\  __   /  /
+   /  \/    \    | |/ /  /   ‾‾\
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/
+
+
+     execution: local
+        script: scripts/k6_test.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 1m30s max duration (incl. graceful stop):
+              * default: 100 looping VUs for 1m0s (gracefulStop: 30s)
+
+
+
+  █ THRESHOLDS
+
+    http_req_duration
+    ✓ 'p(95)<1500' p(95)=58.26ms
+
+    http_req_failed
+    ✗ 'rate<0.05' rate=25.63%
+
+
+  █ TOTAL RESULTS
+
+    checks_total.......: 11865  192.824684/s
+    checks_succeeded...: 82.90% 9837 out of 11865
+    checks_failed......: 17.09% 2028 out of 11865
+
+    ✓ GET /eventos status is 200
+    ✓ GET /eventos duration < 500ms
+    ✗ POST /compras/reservar status is 200/201
+      ↳  48% — ✓ 1927 / ✗ 2028
+
+    HTTP
+    http_req_duration..............: avg=17.94ms min=1.36ms med=9.71ms  max=258.46ms p(90)=39.75ms p(95)=58.26ms
+      { expected_response:true }...: avg=22.26ms min=1.46ms med=15.57ms max=258.46ms p(90)=47.9ms  p(95)=65.28ms
+    http_req_failed................: 25.63% 2028 out of 7910
+    http_reqs......................: 7910   128.549789/s
+
+    EXECUTION
+    iteration_duration.............: avg=1.53s   min=1.5s   med=1.53s   max=1.8s     p(90)=1.56s   p(95)=1.58s
+    iterations.....................: 3955   64.274895/s
+    vus............................: 55     min=55           max=100
+    vus_max........................: 100    min=100          max=100
+
+    NETWORK
+    data_received..................: 13 MB  210 kB/s
+    data_sent......................: 1.5 MB 25 kB/s
+
+
+
+
+running (1m01.5s), 000/100 VUs, 3955 complete and 0 interrupted iterations
+default ✓ [======================================] 100 VUs  1m0s
+ERRO[0062] thresholds on metrics 'http_req_failed' have been crossed
+
+# ./11.png
+
+configuracion de primer escenario
+
+# ./12.png
+
+resultados el secenario 1
+
+La imagen "image_6a7fa0.png" muestra la interfaz de **Apache JMeter**, específicamente un "Summary Report" (Reporte de Resumen) para un plan de pruebas de rendimiento denominado "TicketPass API Performance Test Plan".
+
+El reporte detalla los resultados de ejecución para dos peticiones HTTP específicas. A continuación, se transcriben los datos presentados en la tabla:
+
+### Datos del Summary Report
+
+| Label | # Samples | Average (ms) | Min (ms) | Max (ms) | Std. Dev. | Error % | Throughput | Received KB/sec | Sent KB/sec | Avg. Bytes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **HTTP Request - List ...** | 100 | 9 | 4 | 100 | 10.42 | 0.00% | 10.6/sec | 30.83 | 1.69 | 2979.5 |
+| **HTTP Request - Res...** | 100 | 4 | 2 | 47 | 6.01 | 40.00% | 10.7/sec | 3.04 | 3.91 | 290.2 |
+| **TOTAL** | 200 | 6 | 2 | 100 | 8.79 | 20.00% | 21.2/sec | 33.82 | 5.56 | 1634.9 |
+
+*(Nota: Según el árbol de navegación a la izquierda, los nombres completos de las peticiones son "HTTP Request - List Events (GET)" y "HTTP Request - Reserve Ticket (POST)").*
+
+### Análisis Directo de los Resultados
+
+* **Volumen:** Se enviaron 100 peticiones para cada *endpoint*, sumando un total de 200 muestras.
+* **Tiempos de respuesta:** Ambas peticiones muestran tiempos de respuesta promedio sumamente bajos (9 ms para List Events y 4 ms para Reserve Ticket). El máximo registrado fue de 100 ms.
+* **Problema crítico:** La petición `Reserve Ticket (POST)` falló en un **40.00%** de las ocasiones. Esto es un índice de error inaceptable para una prueba de carga y sesga el total del plan de pruebas a un 20.00% de error general. Es necesario revisar el árbol de resultados ("View Results Tree") para identificar si los fallos corresponden a errores de código HTTP (como 400 Bad Request o 500 Internal Server Error), aserciones fallidas o problemas con los datos enviados en el POST.
+
+# ./13.png
+
+segundo escenario
+
+# ./14.png
+
+A continuación, se presenta la transcripción de los datos mostrados en el archivo "image_6a8781.png".
+
+**Estructura del Plan de Pruebas (Panel izquierdo):**
+
+* TicketPass API Performance Test Plan
+* Thread Group - TicketPass Load Scenario
+* HTTP Header Manager
+* HTTP Request - List Events (GET)
+* HTTP Request - Reserve Ticket (POST)
+* View Results Tree
+* Summary Report (Seleccionado)
+* Aggregate Report
+* Graph Results
+
+
+
+
+
+**Configuración del Reporte (Panel derecho superior):**
+
+* **Name:** Summary Report
+* **Comments:** [Vacío]
+* **Filename:** [Vacío]
+
+**Tabla de Resultados (Summary Report):**
+
+| Label | # Samples | Average | Min | Max | Std. Dev. | Error % | Throughput | Received KB/sec | Sent KB/sec | Avg. Bytes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| HTTP Request - List ... | 600 | 7 | 4 | 100 | 5.22 | 0.00% | 2.5/sec | 7.25 | 0.39 | 2997.4 |
+| HTTP Request - Res... | 600 | 3 | 2 | 47 | 3.03 | 40.00% | 2.5/sec | 0.70 | 0.90 | 290.2 |
+| TOTAL | 1200 | 5 | 2 | 100 | 4.68 | 20.00% | 5.0/sec | 7.95 | 1.30 | 1643.8 |
+
+*(En la esquina superior derecha también se observa el tiempo de ejecución `00:00:19` y los hilos `0 / 50`)*.
+
+# ./15.png 
+
+configuracion 3er escenario
+
+# ./16.png
+
+A continuación, se presenta la transcripción de los datos mostrados en el archivo "image_6a8b43.png", los cuales son idénticos a los de la imagen anterior.
+
+**Estructura del Plan de Pruebas (Panel izquierdo):**
+
+* TicketPass API Performance Test Plan
+* Thread Group - TicketPass Load Scenario
+* HTTP Header Manager
+* HTTP Request - List Events (GET)
+* HTTP Request - Reserve Ticket (POST)
+* View Results Tree
+* Summary Report (Seleccionado)
+* Aggregate Report
+* Graph Results
+
+
+
+
+
+**Configuración del Reporte (Panel derecho superior):**
+
+* **Name:** Summary Report
+* **Comments:** [Vacío]
+* **Filename:** [Vacío]
+
+**Tabla de Resultados (Summary Report):**
+
+| Label | # Samples | Average | Min | Max | Std. Dev. | Error % | Throughput | Received KB/sec | Sent KB/sec | Avg. Bytes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| HTTP Request - List ... | 600 | 7 | 4 | 100 | 5.22 | 0.00% | 2.5/sec | 7.25 | 0.39 | 2997.4 |
+| HTTP Request - Res... | 600 | 3 | 2 | 47 | 3.03 | 40.00% | 2.5/sec | 0.70 | 0.90 | 290.2 |
+| TOTAL | 1200 | 5 | 2 | 100 | 4.68 | 20.00% | 5.0/sec | 7.95 | 1.30 | 1643.8 |
+
+*(En la esquina superior derecha se observa el tiempo de ejecución `00:00:19` y los hilos `0 / 50`).*

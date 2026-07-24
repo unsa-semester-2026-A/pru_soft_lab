@@ -1,36 +1,31 @@
-= SOLUCIÓN DEL CUESTIONARIO
+= CUESTIONARIO
 
-== 1. ¿Por qué las pruebas unitarias exitosas no garantizan que la integración será exitosa?
-Las pruebas unitarias verifican un componente de forma aislada, generalmente reemplazando sus dependencias por versiones simuladas @travisci2025 @semaphore2024. Esto permite obtener retroalimentación precisa sobre esa parte de código, pero deja fuera un tipo de error muy común: los que solo aparecen cuando dos o más módulos "conversan" entre sí, por ejemplo mediante formatos de datos incompatibles, supuestos distintos sobre el orden de las llamadas, problemas de concurrencia o fallas al comunicarse con una base de datos real @circleci2026 @semaphore2024.
+== Pregunta 1: Pruebas Funcionales vs. Pruebas No Funcionales
+- Pruebas Funcionales: Evalúan qué hace el sistema (cumplimiento de requisitos lógicos y resultados esperados).
+- Pruebas No Funcionales: Evalúan cómo opera el sistema (atributos de calidad como velocidad, estabilidad, escalabilidad y consumo de recursos).
 
-Sería como probar por separado cada pieza de un motor y luego el motor completo dentro del auto: que cada pieza funcione de manera individual no implica que funcionen bien juntas una vez ensambladas, porque el comportamiento conjunto depende de las interfaces entre ellas, no solo de la lógica interna de cada una @travisci2025. Por eso las pruebas de integración cumplen un rol complementario: buscan específicamente inconsistencias de datos, fallas de comunicación y comportamientos inesperados que surgen al combinar los distintos componentes de la aplicación @semaphore2024.
+Justificación: Las pruebas de rendimiento son no funcionales porque miden tiempos de respuesta, throughput y comportamiento del servidor bajo carga, en lugar de verificar la lógica de negocio individual.
 
-== 2. Explique la diferencia entre un Stub y un Driver y proporcione un ejemplo de cuándo usó uno de ellos en su proyecto.
-En las pruebas de integración incremental, cuando un módulo bajo prueba depende de otro que todavía no está desarrollado, se recurre a componentes ficticios para poder ejecutar la prueba de todas formas:
+== Pregunta 2: Tipos de Pruebas de Rendimiento
+- Load Testing (Carga): Mide el desempeño bajo carga normal esperada (ej. 500 usuarios simultáneos en e-commerce).
+- Stress Testing (Estrés): Evalúa el comportamiento al sobrepasar la capacidad máxima hasta hallar el punto de fallo (ej. subir de 1,000 a 10,000 usuarios hasta saturar la base de datos).
+- Spike Testing (Picos): Analiza la reacción ante ráfagas súbitas e instantáneas de tráfico (ej. 5,000 accesos repentinos al abrir un proceso de matrícula).
+- Endurance Testing (Resistencia/Soak): Mantiene carga constante durante periodos prolongados para detectar fugas de memoria o degradación (ej. 200 VUs durante 24 horas continuas).
 
-- *Stub (talón de prueba):* simula un módulo de _nivel inferior_ que es llamado por el módulo bajo prueba. Es un componente _pasivo_: recibe los parámetros que le envía el módulo real y devuelve una respuesta predefinida, sin lógica propia. Se usa típicamente en la integración _descendente (top-down)_ @ittester2024 @wikipedia2025testdriver.
+== Pregunta 3: Interpretación de Indicadores de Rendimiento
+- Tiempo Promedio (850 ms): Aceptable pero cercano al límite razonable (1s).
+- Throughput (180 req/s): Elevada capacidad de procesamiento.
+- Error Rate (3%): Inaceptable para producción (> 0.1%).
+- Percentil 95 (P_95 = 1.8 "s"): Deficiente; el 5% de las peticiones sufren alta latencia.
 
-- *Driver (controlador de prueba):* simula un módulo de _nivel superior_ que invoca al módulo bajo prueba. Es un componente _activo_: inicializa el entorno y llama al módulo real con distintos datos de entrada, sin necesidad de estímulos adicionales una vez lanzado. Se usa típicamente en la integración _ascendente (bottom-up)_ @wikipedia2025testdriver @ittester2024.
+Dictamen: El desempeño NO es aceptable. La tasa de error del 3% y el P_95 de 1.8 segundos indican inestabilidad en la experiencia de usuario.
 
-*Ejemplo de aplicación en el proyecto:* en una API construida con Node.js y probada con Postman/Supertest, el módulo de "Órdenes" dependía del servicio de "Pagos", que aún no estaba terminado. Se construyó un *stub* que simulaba las respuestas del servicio de pagos (aprobado/rechazado) con datos fijos en formato JSON, lo que permitió validar la lógica de creación de órdenes antes de que el módulo de pagos existiera. En otro punto del proyecto se usó un *driver* para invocar directamente al módulo de "Notificaciones" con distintos casos de prueba, ya que el controlador principal que normalmente lo llamaría todavía no estaba integrado.
+== Pregunta 4: Comparación entre Apache JMeter y K6
+- JMeter: Basado en Java con GUI intuitiva. Alto consumo de recursos (un hilo JVM por VU). Ideal para sistemas legacy y protocolos heterogéneos (SOAP, JDBC).
+- K6: Basado en Go/JavaScript mediante código CLI. Muy bajo consumo de recursos y alta escalabilidad. Ideal para APIs REST modernas, microservicios y pipelines CI/CD (DevOps).
 
-== 3. Según Myers, ¿por qué es arriesgado que el mismo desarrollador que escribió el código de los módulos diseñe también las pruebas de integración?
-Myers plantea que un programador debería evitar probar su propio programa @myers2011art. Su argumento central es psicológico: probar es, por naturaleza, un proceso _destructivo_ (busca encontrar fallas), mientras que escribir código es un proceso _constructivo_. Resulta muy difícil para quien ha mantenido una actitud constructiva durante toda la escritura de un módulo cambiar de mentalidad de forma repentina y actuar con la misma agresividad destructiva necesaria para encontrarle errores @myers2011art.
-
-A esto se suma un segundo riesgo, más específico de la integración: si el desarrollador malinterpretó la especificación al escribir el código, es probable que reproduzca exactamente el mismo malentendido al diseñar los casos de prueba, porque ambos se basan en su misma comprensión (posiblemente errónea) del problema. El resultado son pruebas que "confirman" un comportamiento incorrecto en lugar de exponerlo. Por esta razón se recomienda que las pruebas, sobre todo las de integración, donde interactúan supuestos de distintos autores, sean diseñadas por alguien distinto de quien escribió el código, o al menos revisadas por un tercero.
-
-== 4. Defina "Integración Incremental" y explique por qué el enfoque "Big Bang" debe evitarse en proyectos complejos.
-La *integración incremental* consiste en ensamblar y probar los módulos del sistema de a poco —uno o un pequeño grupo a la vez— en lugar de esperar a que todos estén listos. Cada incremento agrega un módulo nuevo al conjunto ya probado, usando *stubs* o *drivers* para sustituir temporalmente las piezas que todavía faltan @transti2020 @zaptest2022.
-
-El enfoque *"Big Bang"*, en cambio, integra _todos_ los módulos al mismo tiempo y recién entonces se prueba el sistema como un todo @transti2020 @zaptest2022. Su principal problema en proyectos complejos es el aislamiento de errores: cuando aparece una falla, puede originarse en la interacción entre muchos módulos distintos, lo que vuelve muy costoso y lento identificar la causa raíz @zaptest2022 @qalified2024. Además, obliga a esperar a que _todos_ los componentes estén terminados antes de poder ejecutar cualquier prueba de integración, retrasando la detección de problemas hasta etapas avanzadas del proyecto, cuando corregirlos es más caro @qalified2024.
-
-La integración incremental evita estos problemas porque los defectos se detectan tempranamente, en un conjunto más pequeño de módulos, donde es más sencillo ubicar la causa; su costo es el tiempo adicional que implica construir y mantener los stubs y drivers necesarios @transti2020.
-
-== 5. ¿Cómo ayuda la herramienta seleccionada por su grupo a detectar "defectos enmascarados" entre sus subsistemas?
-Un defecto "enmascarado" es aquel que no se manifiesta cuando cada módulo se prueba de forma aislada —porque ahí cumple su contrato individual— pero sí aparece cuando dos módulos reales interactúan entre sí, por ejemplo por un formato de respuesta distinto al esperado, un código de estado HTTP incorrecto o datos que se pierden al pasar de un endpoint a otro.
-
-*Postman* permite encadenar solicitudes reales en _colecciones_, pasando datos de la respuesta de un endpoint como entrada del siguiente, lo que reproduce el flujo real entre subsistemas (por ejemplo, autenticación → creación de orden → notificación) y detecta inconsistencias en ese flujo de datos que una prueba unitaria de cada endpoint por separado no vería @postmandocs @postmanblog2024. Sus scripts de prueba validan automáticamente el código de estado, el esquema y el contenido de cada respuesta dentro de ese flujo encadenado @postmandocs.
-
-*Supertest*, por su parte, ejecuta pruebas de integración directamente contra la aplicación Express, verificando el comportamiento combinado de rutas, middlewares y capa de datos en un mismo test versionado junto al código @codoid2025. Esto permite detectar, por ejemplo, que un cambio en un módulo (como el de autenticación) rompe silenciosamente el contrato esperado por otro módulo (como el de órdenes), algo que las pruebas unitarias de cada módulo por separado no revelan porque ambas siguen "pasando" de forma individual.
-
-En conjunto, ambas herramientas exponen los defectos enmascarados porque prueban el comportamiento conjunto real de los subsistemas —con solicitudes HTTP reales y datos que fluyen entre ellos— en vez de sustituir esas interacciones por mocks o supuestos aislados, como hacen las pruebas unitarias.
+== Pregunta 5: Respuestas y Códigos HTTP ante Situaciones de Seguridad
+1. Recursos Inexistentes: Devolver HTTP 404 Not Found con JSON descriptivo sin stacktraces.
+2. Parámetros Inválidos: Devolver HTTP 400 Bad Request o 422 Unprocessable Entity indicando la falla de validación.
+3. Métodos No Permitidos: Devolver HTTP 405 Method Not Allowed con cabecera Allow.
+4. Ataques de Fuerza Bruta: Devolver HTTP 429 Too Many Requests (o 401 Unauthorized) aplicando rate limiting y bloqueo temporal por IP.

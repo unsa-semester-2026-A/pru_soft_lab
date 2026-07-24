@@ -10,7 +10,7 @@ from redis import Redis
 
 from src.config import config
 from src.database import db
-from src.main import create_app
+from main import create_app
 from src.models.db_models import Asistente, Compra
 from src.services.redis_queue import get_redis
 

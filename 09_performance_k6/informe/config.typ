@@ -1,7 +1,7 @@
 // Variables de fecha y semestre
 #let courseName = "Pruebas de Software"
-#let labTitle = "Pruebas de Integración: API Testing con Postman y Supertest"
-#let labNumber = "08"
+#let labTitle = "Pruebas de Rendimiento y Seguridad"
+#let labNumber = "09"
 #let instructorName = "Msc. Robert Edison Arisaca Mamani"
 #let memberList = (
   "Arce Mayhua, Leonardo Ruben",
